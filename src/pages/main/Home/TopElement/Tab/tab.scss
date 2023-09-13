@@ -1,0 +1,22 @@
+.tab-list {
+  border-bottom: 1px solid #ccc;
+  padding-left: 0;
+}
+
+.tab-list-item {
+  color: #202d3d;
+  display: block;
+  padding: 35px 0;
+  cursor: pointer;
+}
+
+.tab-list-active {
+  background: #2c2c2c!important;
+}
+
+.tabSpan {
+  display: block;
+  font-size: 0.875rem;
+  hyphens: auto;
+  padding: 0px 5px;
+}
