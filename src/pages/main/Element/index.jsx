@@ -1,8 +1,27 @@
-import React from "react";
+import { useEffect } from "react";
 import Cards from "../../../components/Cards";
 import { useParseUrl } from "../../../hooks/useParseUrl";
+import { useIsLoading } from "../../../hooks/useIsLoading";
+import { getElements } from "../../../store/element/elements-slice";
+import { getListElements } from "../../../api/element";
+import { useDispatch } from "react-redux";
 function Element() {
+  const dispatch = useDispatch();
   const { search } = useParseUrl();
+  const { Loading, setLoading } = useIsLoading();
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+    setLoading(true);
+    getListElements(search.category).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        dispatch(getElements(data.list));
+      }
+      setLoading(false);
+    });
+    // eslint-disable-next-line
+  }, [search.category]);
   return (
     <main className="category-page">
       <div className="category-hero">
@@ -190,6 +209,7 @@ function Element() {
           </div>
         </div>
       </div>
+      {/* <Loading />  */}
       <Cards category={search.category} />
     </main>
   );

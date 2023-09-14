@@ -1,3 +1,6 @@
+import { API } from "../../utils/define";
+import { handleApi } from "../../utils/helper";
+
 const API_URL = import.meta.env.VITE_DOMAIN;
 
 export const list = (category) => {
@@ -9,3 +12,7 @@ export const list = (category) => {
     })
     .catch((err) => console.log(err));
 };
+export const getListElements = handleApi(async (category) => {
+  const result = await API().get(`/posts?type=${category}`);
+  return result.data;
+});

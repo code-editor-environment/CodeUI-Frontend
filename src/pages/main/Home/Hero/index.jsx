@@ -6,6 +6,13 @@ import jsIcon from "../../../../assets/images/js.png";
 import { Link } from "react-router-dom";
 function Hero() {
   const slogan = "The world most creative coding community";
+  setTimeout(
+    function () {
+      this.setState({ position: 1 });
+    }.bind(this),
+    3000
+  );
+  console.log("🚀 ~ file: index.jsx:3 ~ thumnailcode:", thumnailcode);
   return (
     <div className="home-page_hero">
       <div className="home-page__hero">
@@ -35,17 +42,17 @@ function Hero() {
             <img
               src={htmlIcon}
               alt="htmlIcon"
-              style={{ height: "10%", width: "10%", marginTop: "15px" }}
+              style={{ height: "8%", width: "8%", marginTop: "23px" }}
             />
             <img
               src={cssIcon}
               alt="cssIcon"
-              style={{ height: "10%", width: "10%", marginTop: "15px" }}
+              style={{ height: "8%", width: "8%", marginTop: "23px" }}
             />
             <img
               src={jsIcon}
               alt="cssIcon"
-              style={{ height: "10%", width: "10%", marginTop: "15px" }}
+              style={{ height: "8%", width: "8%", marginTop: "23px" }}
             />
           </div>
         </div>

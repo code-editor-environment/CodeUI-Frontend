@@ -5,7 +5,7 @@ export const ElementSlice = createSlice({
   initialState,
   reducers: {
     getElements: (state, { payload }) => {
-      state = payload;
+      state.elements = payload;
     },
   },
 });

@@ -287,7 +287,7 @@ function Detail() {
                         viewBox="0 0 24 24"
                         width="24"
                         height="24"
-                        class="h-5 w-5"
+                        className="h-5 w-5"
                       >
                         <path fill="none" d="M0 0h24v24H0z"></path>
                         <path
@@ -306,7 +306,7 @@ function Detail() {
                         viewBox="0 0 24 24"
                         width="24"
                         height="24"
-                        class="h-5 w-5 false"
+                        className="h-5 w-5 false"
                       >
                         <path fill="none" d="M0 0h24v24H0z"></path>
                         <path

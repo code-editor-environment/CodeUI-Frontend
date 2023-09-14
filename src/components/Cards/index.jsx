@@ -1,58 +1,35 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { list } from './../../api/element/index';
 
 function Cards({ category }) {
-  const dispatch = useDispatch();
   const { elements, favoriteElement } = useSelector((state) => state.element);
-  const [element, setElement] = useState(null);
-  // useEffect(
-  //   () => {
-  //     dispatch(
-  //       category === "favorites" ? getFavoritePost() : getPost(category)
-  //     );
-  //   },
-  //   // eslint-disable-next-line
-  //   [category]
-  // );
-    useEffect(() => {
-      list(category).then((data) => {
-        if (data.error) {
-          console.log(data.error);
-        } else {
-          setElement(data.list);
-        }
-      });
-    }, [category]);
   return (
     <section className="cards-container cards-container--all">
       {(category === "favorites"
         ? favoriteElement?.list?.length
-        : element?.length) > 0
-        ? (category === "favorites" ? favoriteElement.list : element).map(
+        : elements?.length) > 0
+        ? (category === "favorites" ? favoriteElement.list : elements).map(
             (post, index) => (
               <article
                 className="card card--checkbox dark-background false"
                 key={index}
               >
                 <div className="card-content">
-                  <Link
-                    to={`/detail/${post._id}`}
-                    className="clickable-wrapper"
-                  >
-                    <style
-                      dangerouslySetInnerHTML={{
-                        __html: `.ui${post._id} {${post.css}} `,
-                      }}
-                    />
-                    <div
-                      id="container"
-                      className={`card__button-container ${"ui" + post._id}`}
-                      dangerouslySetInnerHTML={{ __html: post.html }}
-                    ></div>
+                  <Link className="get-html-css" to="/">
+                    Get <span className="html">HTML</span> &amp;{" "}
+                    <span className="css">CSS</span>
                   </Link>
+                  <style
+                    dangerouslySetInnerHTML={{
+                      __html: `.ui${post._id} {${post.css}} `,
+                    }}
+                  />
+                  <div
+                    id="container"
+                    className={`card__button-container ${"ui" + post._id}`}
+                    dangerouslySetInnerHTML={{ __html: post.html }}
+                  ></div>
                 </div>
                 <button type="submit" className="card__bookmark false">
                   <svg
