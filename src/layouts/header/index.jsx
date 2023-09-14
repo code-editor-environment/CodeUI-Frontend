@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useIsLogin } from "../../hooks/useIsLogin";
-import { actLogout } from "../../store/actions/user.action";
 import Menu from "./menu";
 import logo from "../../assets/images/logo.png";
 import Notification from "./notifications/index";
@@ -55,7 +54,7 @@ function Header() {
   };
   function handleLogout(e) {
     e.preventDefault();
-    dispatch(actLogout());
+    // dispatch(actLogout());
   }
   return (
     <header className="root-container header">

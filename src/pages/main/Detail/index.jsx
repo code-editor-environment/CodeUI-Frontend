@@ -5,10 +5,7 @@ import { useIsHidden } from "../../../hooks/useIsHidden";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPostById } from "../../../store/actions/post.action";
 import { useIsLogin } from "../../../hooks/useIsLogin";
-import { deletePost, updatePost } from "./../../../store/actions/post.action";
-import { favorite } from "../../../store/actions/user.action";
 import axios from "axios";
 
 function Detail() {
@@ -27,7 +24,7 @@ function Detail() {
   useEffect(
     () => {
       window.scrollTo({ top: 0 });
-      dispatch(getPostById(postId));
+      // dispatch(getPostById(postId));
     },
     // eslint-disable-next-line
     [postId]
@@ -63,15 +60,15 @@ function Detail() {
     setHtmlText(value);
   }
   const onDeletePost = () => {
-    dispatch(deletePost(postId, navigate));
+    // dispatch(deletePost(postId, navigate));
   };
   const onUpdatePost = () => {
       dispatch(
-        updatePost(postId, postById, htmlText, cssText, hidden, navigate)
+        // updatePost(postId, postById, htmlText, cssText, hidden, navigate)
       );
   };
   const onFavorite = () => {
-    dispatch(favorite(findFavorite, postId,check,setCheck));
+    // dispatch(favorite(findFavorite, postId,check,setCheck));
   };
   const options = { fontSize: 17, emptySelectionClipboard: true };
   return (

@@ -3,7 +3,6 @@ import Editor from "@monaco-editor/react";
 import { useIsHidden } from "../../../hooks/useIsHidden";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Post } from "../../../store/actions/post.action";
 import { OPEN_MODAL } from "../../../store/constants/modal.const";
 import PostStatusModal from "../../../components/Modal/postStatusModal";
 import { defaultButtonHTML, defaultCardHTML, defaultCheckboxHTML, defaultInputHTML, defaultSpinnerHTML, defaultSwitchHTML } from "./defaultHTML";
@@ -84,7 +83,7 @@ function myFunction() {iframe.style.color = "red";}`
   }
   const options = { fontSize: 17 };
   const clickSubmit = () => {
-    dispatch(Post(htmlText, cssText, hidden, type, navigate));
+    // dispatch(Post(htmlText, cssText, hidden, type, navigate));
   };
   // useEffect(() => {
   //   var contents = $("iframe").contents(),

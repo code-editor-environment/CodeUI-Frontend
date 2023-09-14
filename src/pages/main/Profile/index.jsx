@@ -5,8 +5,6 @@ import planet from "../../../assets/images/planet.png";
 import timeLineYellow from "../../../assets/images/time-line-yellow.svg";
 import timeLineRed from "../../../assets/images/time-line-red.svg";
 import { useIsLogin } from "../../../hooks/useIsLogin";
-import { postsByUser } from "../../../store/actions/post.action";
-import { actLogout, getUser } from "../../../store/actions/user.action";
 function Profile() {
   const { login } = useParams();
   const dispatch = useDispatch();
@@ -20,21 +18,21 @@ function Profile() {
   const [loading, setLoading] = useState(false);
   useEffect(
     () => {
-      dispatch(getUser(login));
-      dispatch(
-        postsByUser(
-          login,
-          postApproved,
-          postReview,
-          postRejected,
-          setPostApproved,
-          setPostReview,
-          setPostRejected,
-          setLoading,
-          page,
-          setTotalPages
-        )
-      );
+      // dispatch(getUser(login));
+      // dispatch(
+      //   postsByUser(
+      //     login,
+      //     postApproved,
+      //     postReview,
+      //     postRejected,
+      //     setPostApproved,
+      //     setPostReview,
+      //     setPostRejected,
+      //     setLoading,
+      //     page,
+      //     setTotalPages
+      //   )
+      // );
     },
     // eslint-disable-next-line
     [login]
@@ -42,7 +40,7 @@ function Profile() {
 
   function handleLogout(e) {
     e.preventDefault();
-    dispatch(actLogout());
+    // dispatch(actLogout());
   }
   return (
     <main className="profile-page">
