@@ -1,9 +1,7 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-function Cards({ category }) {
-  const { elements, favoriteElement } = useSelector((state) => state.element);
+function Cards({ category, elements, favoriteElement }) {
   return (
     <section className="cards-container cards-container--all">
       {(category === "favorites"
@@ -22,7 +20,7 @@ function Cards({ category }) {
                   </Link>
                   <style
                     dangerouslySetInnerHTML={{
-                      __html: `.ui${post._id} {${post.css}} `,
+                      __html: `.ui${post._id} ${post.css} `,
                     }}
                   />
                   <div
@@ -47,12 +45,12 @@ function Cards({ category }) {
                   <span>Save</span>
                 </button>
                 <div className="card__footer">
-                  <a href="/profile/bimbx">
+                  <Link to={`/profile/${post.postedBy.login}`}>
                     <span className="card__nickname text-color">
                       {post.postedBy.name}
                     </span>
-                  </a>
-                  <div className="card__views">1000 views</div>
+                  </Link>
+                  <div className="card__views">1000 Favorites</div>
                 </div>
               </article>
             )

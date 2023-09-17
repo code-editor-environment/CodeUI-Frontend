@@ -221,7 +221,7 @@ function Checkboxes() {
       </div>
       <Link
         className="button button--secondary see-more-button"
-        to="/elements/checkbox"
+        to="/elements?category=checkbox"
       >
         See all checkboxes
       </Link>

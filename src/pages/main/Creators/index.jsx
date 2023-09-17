@@ -1,35 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import points from "../../../assets/images/logoCover.png";
-import useQuery from "../../../hooks/useQuery";
+// import useQuery from "../../../hooks/useQuery";
+import { getTopCreators } from "../../../api/account";
+import { useDispatch, useSelector } from "react-redux";
+import { getTopCreator } from "../../../store/creator/creator-slice";
 function Creators() {
-  const query = useQuery();
-  const text = query.get("text");
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  // const query = useQuery();
+  // const text = query.get("text");
+  const { topCreator } = useSelector((state) => state.creator);
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      fetch(
-        `${process.env.REACT_APP_API_URL}/users?page=1&perPage=10&name=${
-          text || ""
-        }`,
-        {
-          method: "GET",
-        }
-      )
-        .then((response) => response.json())
-        .then((result) => {
-          setData(result.list);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
-    };
-    fetchData();
-  }, [text]);
+    window.scrollTo({ top: 0 });
+    getTopCreators().then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        dispatch(getTopCreator(data.list));
+      }
+    });
+    // eslint-disable-next-line
+  }, []);
   return (
     <div className="creators-page">
       <div>
@@ -38,9 +29,9 @@ function Creators() {
       </div>
       <h1 className="heading">Top Creators</h1>
       <section className="creators">
-        {data.length > 0 ? (
+        {topCreator.length > 0 ? (
           <>
-            {data.map((user, index) => (
+            {topCreator.map((user, index) => (
               <article className="creator" key={index}>
                 <span className="rank">{index + 1}</span>
                 <img className="avatar" src={user.avatar_url} alt="" />
@@ -50,8 +41,19 @@ function Creators() {
                     Visit profile
                   </span>
                 </Link>
-                <div className="points-tag">
-                  <img src={points} alt="" /> 100
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                  }}
+                >
+                  <div className="points-tag">
+                    <img src={points} alt="" /> 100
+                  </div>
+                  <div className="points-tag">Post: 100</div>
+                  <div className="points-tag">
+                    Follow: 100
+                  </div>
                 </div>
               </article>
             ))}
@@ -60,7 +62,7 @@ function Creators() {
           "not found"
         )}
       </section>
-      <button className="button cre-button">See all Creator</button>
+      <button className="button cre-button">See more Creator</button>
     </div>
   );
 }

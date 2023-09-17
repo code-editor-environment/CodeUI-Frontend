@@ -306,6 +306,7 @@ a {
   align-items: center;
 }
 .points-tag {
+  position: relative;
   color: var(--offwhite);
   border-radius: 200px;
   font-weight: var(--semibold);
@@ -313,6 +314,15 @@ a {
   align-items: center;
   background: var(--dark);
   padding: 7px 12px 7px 7px;
+  &:before {
+    content: "";
+    width: 2px;
+    height: 100%;
+    background: var(--grey);
+    position: absolute;
+    opacity: 0.2;
+    left: -5px;
+}
 }
 .points-tag svg,
 .points-tag img {
@@ -1749,7 +1759,7 @@ kbd {
 .dropdown-menu {
   --item-height: 44px;
   --menu-border-radius: var(--border-radius);
-  background: #ffffff;
+  background: #212121;
   border-radius: var(--menu-border-radius);
   position: absolute;
   top: 30px;
@@ -1782,7 +1792,7 @@ kbd {
   height: var(--item-height);
   font-family: Roboto, sans-serif;
   text-decoration: none;
-  color: var(--maindark);
+  color: var(--offwhite);
   padding: 0 19px 0 16px;
   display: flex;
   align-items: center;
@@ -1802,7 +1812,7 @@ kbd {
   white-space: nowrap;
 }
 .dropdown-container .dropdown-menu .list-item .item:hover {
-  background: rgba(0, 0, 0, 0.06);
+  background:#171717;
 }
 .dropdown-container .dropdown-menu .list-item .item--help {
   background: linear-gradient(to right, #3f5efb, #fc466b);
@@ -2051,7 +2061,7 @@ kbd {
 .main-container > .header .logo-wrapper {
   display: flex;
   align-items: center;
-  padding: 17px 54px 17px 12px;
+  padding: 17px 54px 10px 12px;
 }
 @media only screen and (max-width: 770px) {
   .main-container > .header .logo-wrapper {
@@ -2199,8 +2209,10 @@ kbd {
   height: 36px;
   transition: all 0.3s;
 }
-.main-container > .header .navigation .button.button--profile .profile-name {
+.profile-name {
   display: inline-block;
+  padding-top: 5px;
+  color: var(--grey);
 }
 .main-container > .header .navigation .button.button--profile svg {
   width: 26px;
@@ -2314,6 +2326,7 @@ kbd {
   position: relative;
   padding-top: 35px;
   padding-right: 20px;
+  margin-bottom: 80px;
   z-index: 1;
   &:before {
     content: "";
@@ -2351,7 +2364,6 @@ kbd {
   align-content: start;
   align-items: start;
   width: 100%;
-  margin-bottom: 200px;
 }
 .cards-container--featured {
   margin-bottom: 20px;
@@ -2403,7 +2415,7 @@ kbd {
   padding: 60px;
   box-shadow: 0 5px 15px #2b2b2b26;
   border-radius: var(--border-radius);
-  overflow: hidden;
+  // overflow: hidden;
 }
 .customModal:has(.customModal--options) {
   max-width: 700px;
@@ -2630,6 +2642,9 @@ kbd {
   cursor: pointer;
   height: 0;
   width: 0;
+}
+input:focus-visible {
+  outline: 2px solid rgba(202, 202, 202, 0.13);
 }
 .rules-modal .agree .checkmark {
   position: absolute;
@@ -3432,6 +3447,7 @@ kbd {
 }
 .span-gradient-lighterMain {
   background: linear-gradient(141deg, #ec4899, #a855f7);
+  -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 700;
@@ -3493,22 +3509,32 @@ kbd {
   width: max-content;
   margin: auto;
   padding: 0 30px;
-  background: linear-gradient(90deg, #06b6d4, #3b82f6);
+  background: linear-gradient(90deg,#06b6d4,#3b82f6,#06b6d4);
+  background-size: 200% 200%;
   color: var(--lightgray);
   font-weight: var(--semibold);
   z-index: 0;
   position: relative;
+  transition: 0.6s all;
+}
+.sup-button:hover{
+  background-position: 100% 50%;
 }
 .cre-button {
   width: max-content;
   margin: auto;
   margin-top: 60px;
   padding: 0 30px;
-  background: linear-gradient(90deg, #a855f7, #ec4899);
+  background: linear-gradient(90deg,#a855f7,#ec4899,#a855f7);
+  background-size: 200% 200%;
   color: var(--lightgray);
   font-weight: var(--semibold);
   z-index: 0;
   position: relative;
+  transition: 0.6s all;
+}
+.cre-button:hover{
+  background-position: 100% 50%;
 }
 .home-page .creators-section__heading {
   background: linear-gradient(90deg, #a855f7, #ec4899);
@@ -3648,7 +3674,7 @@ kbd {
   align-self: end;
   display: block;
   overflow: hidden;
-  max-width: 160px;
+  max-width: 180px;
 }
 @media only screen and (max-width: 400px) {
   .creators .creator .username {
@@ -3662,14 +3688,19 @@ kbd {
   margin-left: auto;
   /* background: #2c2c2c */
 }
-.home-page .cta-button {
+.cta-button {
   width: fit-content;
   margin-top: 30px;
   margin-right: 40px;
   padding: 0 30px;
-  background: linear-gradient(90deg, #a855f7, #ec4899);
+  background: linear-gradient(90deg,#ec4899,#a855f7,#ec4899);
+  background-size: 200% 200%;
   color: var(--lightgray);
   font-weight: var(--semibold);
+  transition: 0.6s all;
+}
+.cta-button:hover{
+  background-position: 100% 50%;
 }
 .home-page .hero-image {
   max-width: 800px;
@@ -4314,7 +4345,7 @@ kbd {
   margin: 1.2rem;
   padding: 1.2rem;
   position: relative;
-  overflow-y: auto;
+  // overflow-y: auto;
 }
 .react-responsive-modal-closeButton {
   position: absolute;
@@ -4506,6 +4537,9 @@ kbd {
     grid-column: span 6 / span 6 !important;
   }
 }
+.relative{
+  position: relative;
+}
 
 .form-login {
   width: 100%;
@@ -4609,5 +4643,43 @@ input {
 
   100% {
     stroke-dashoffset: 5;
+  }
+}
+.react-select-container{
+  margin-top: 0.25rem;
+  .react-select__control{
+    background-color: rgb(41, 41, 41);
+    border-style: none;
+    cursor: pointer;
+    .react-select__value-container{
+      padding: 4px 8px;
+      .react-select__single-value{
+        display: flex;
+        align-items: center;
+        span{
+          color: rgb(242, 242, 242);
+          margin-left: 6px;
+        }
+      }
+      .react-select__input-container{
+        color: rgb(242, 242, 242);
+      }
+    }
+  }
+  .react-select__menu{
+    background-color: rgb(41, 41, 41);
+    border-style: none;
+    .react-select__menu-list{
+      padding: 4px 8px;
+      .react-select__option{
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        span{
+          color: rgb(242, 242, 242);
+          margin-left: 6px;
+        }
+      }
+    }
   }
 }

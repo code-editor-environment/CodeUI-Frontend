@@ -299,7 +299,7 @@ function Inputs() {
       </div>
       <Link
         className="button button--secondary see-more-button"
-        to="/elements/input"
+        to="/elements?category=input"
       >
         See all inputs
       </Link>

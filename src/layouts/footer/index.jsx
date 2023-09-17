@@ -22,9 +22,15 @@ function Footer() {
         </h1>
       </Link>
       <div className="footer-main">
-        <img src={social1} alt="social" />
-        <img src={social2} alt="social" />
-        <img src={social3} alt="social" />
+        <a href="https://www.instagram.com/_codeui_/" target="blank">
+          <img src={social1} alt="social" />
+        </a>
+        <a href="https://www.instagram.com/_codeui_/" target="blank">
+          <img src={social2} alt="social" />
+        </a>
+        <a href="https://www.instagram.com/_codeui_/" target="blank">
+          <img src={social3} alt="social" />
+        </a>
       </div>
     </footer>
   );

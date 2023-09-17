@@ -233,7 +233,7 @@ function Toggle() {
       </div>
       <Link
         className="button button--secondary see-more-button"
-        to="/elements/switch"
+        to="/elements?category=switch"
       >
         See all toggle switches
       </Link>

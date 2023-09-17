@@ -225,7 +225,7 @@ function Buttons() {
       </div>
       <Link
         className="button button--secondary see-more-button"
-        to="/elements/button"
+        to="/elements?category=button"
       >
         See all buttons
       </Link>

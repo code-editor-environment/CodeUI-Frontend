@@ -208,7 +208,7 @@ function Loaders() {
       </div>
       <Link
         className="button button--secondary see-more-button"
-        to="/elements/spinner"
+        to="/elements?category=spinner"
       >
         See all loaders
       </Link>

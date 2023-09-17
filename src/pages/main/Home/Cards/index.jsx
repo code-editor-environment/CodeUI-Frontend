@@ -253,7 +253,7 @@ function Cards() {
       </div>
       <Link
         className="button button--secondary see-more-button"
-        to="/elements/card"
+        to="/elements?category=card"
       >
         See all cards
       </Link>

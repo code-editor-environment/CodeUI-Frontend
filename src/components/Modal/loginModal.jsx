@@ -1,21 +1,53 @@
-import React from "react";
 import { useDispatch } from "react-redux";
+import {
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import { open } from "../../store/modal/modal-slice";
 import RegisterModal from "./registerModal";
+import useForm from "./../../hooks/useForm";
+import { validateLogin } from "../validateInput/validateInput";
+import Validate from "./../validateInput/index";
+import { auth } from "../../configs/firebase.configs";
 
 function LoginModal() {
   const dispatch = useDispatch();
-  //   const [type, setType] = useState("button");
-  //   const changeStatus = (e) => {
-  //     setType(e.target.value);
-  //   };
-  //   const close = () => {
-  //     dispatch({
-  //       type: CLOSE_MODAL,
-  //     });
-  //   };
   const onRegisterModal = () => {
     dispatch(open(<RegisterModal />));
+  };
+  const { values, errors, handleChange, handleSubmit } = useForm(
+    login,
+    validateLogin
+  );
+  function login() {
+    console.log(values);
+  }
+  const googleSignIn = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then(function (result) {
+        var user = result.user;
+        console.log("Google-accessToken: ", user.accessToken);
+      })
+      .catch(function (error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.error(errorCode, errorMessage);
+      });
+  };
+  const gitHubSignIn = () => {
+    const provider = new GithubAuthProvider();
+    signInWithPopup(auth, provider)
+      .then(function (result) {
+        var user = result.user;
+        console.log("GitHub-accessToken: ", user.accessToken);
+      })
+      .catch(function (error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.error(errorCode, errorMessage);
+      });
   };
   return (
     <div className="customModal--sign-in options-modal">
@@ -29,7 +61,10 @@ function LoginModal() {
           marginBottom: "16px",
         }}
       >
-        <button className="button button--secondary button--sign-in">
+        <button
+          className="button button--secondary button--sign-in"
+          onClick={googleSignIn}
+        >
           <svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +94,10 @@ function LoginModal() {
           </svg>
           Continue Google
         </button>
-        <button className="button button--secondary button--sign-in">
+        <button
+          className="button button--secondary button--sign-in"
+          onClick={gitHubSignIn}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width={24}
@@ -74,53 +112,41 @@ function LoginModal() {
           Continue Github
         </button>
       </div>
-      <form method="post" className="form-login">
-        {/* <div className="form-label grid-cols-3">
-          <label htmlFor="name">Name</label>
+      <form className="form-login" onSubmit={handleSubmit} noValidate>
+        <div className="form-label grid-cols-6 relative">
+          <label>Username</label>
           <input
             type="text"
-            name="name"
-            id="name"
-            placeholder
-            defaultValue="Trần Quốc Long"
-          />
-        </div>
-        <div className="form-label grid-cols-3">
-          <label htmlFor="location">Location</label>
-          <input
-            type="text"
-            name="location"
-            id="location"
-            placeholder
-            defaultValue="VietNam"
-          />
-        </div> */}
-        <div className="form-label grid-cols-6">
-          <label htmlFor="blog">Username</label>
-          <input
-            type="text"
-            name="blog"
-            id="blog"
+            name="username"
             placeholder="Enter your username"
+            onChange={handleChange}
+            value={values.username || ""}
+            required
           />
+          <Validate errors={errors.username} />
         </div>
-        <div className="form-label grid-cols-6">
-          <label htmlFor="blog">Password</label>
+        <div className="form-label grid-cols-6 relative">
+          <label>Password</label>
           <input
             type="text"
-            name="blog"
-            id="blog"
+            name="password"
             placeholder="Enter your password"
+            onChange={handleChange}
+            value={values.password || ""}
+            required
           />
+          <Validate errors={errors.password} />
         </div>
         <div className="form-label grid-cols-6">
-          <label htmlFor="blog">Forgot your password ? </label>
+          <label>Forgot your password ? </label>
+        </div>
+        <div
+          className="form-label grid-cols-6"
+          style={{ display: "grid", justifyContent: "end" }}
+        >
+          <button className="button sup-button">Login</button>
         </div>
       </form>
-
-      <div className="buttons">
-        <button className="button sup-button">Login</button>
-      </div>
       <p style={{ marginTop: "26px" }}>
         Are you new to CodeUi ?{" "}
         <span className="span-gradient-lighter" onClick={onRegisterModal}>

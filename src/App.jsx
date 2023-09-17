@@ -5,9 +5,10 @@ import Home from "./pages/main/Home";
 import store from "./store";
 import MainLayout from "./layouts";
 import Element from "./pages/main/Element";
-
-import "./assets/css/styles.scss";
 import Creators from "./pages/main/Creators";
+import Profile from "./pages/main/Profile";
+import Err from "./pages/main/Err";
+import "./assets/css/styles.scss";
 
 function App() {
   return (
@@ -18,7 +19,9 @@ function App() {
             <Route path="" element={<Home />} />
             <Route path="elements" element={<Element />} />
             <Route path="creators" element={<Creators />} />
+            <Route path="profile/:login" element={<Profile />} />
           </Route>
+          <Route path="*" element={<Err />} />
         </Routes>
       </BrowserRouter>
     </Provider>

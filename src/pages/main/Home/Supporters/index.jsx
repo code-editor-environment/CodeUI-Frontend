@@ -12,28 +12,48 @@ function Supporters() {
       <h2 className="supporters-section__heading">Supporters</h2>
       <section className="supporters creators">
         <Link className="creator" to="/profile/tranquoclong">
-          <img className="avatar" src="" alt="" loading="lazy" />
+          <img
+            className="avatar"
+            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
+            alt=""
+            loading="lazy"
+          />
           <span className="username-sup">tranquoclong</span>
           <div className="number-of-posts">
             <span className="button button--sup">PRO</span>
           </div>
         </Link>
         <Link className="creator" to="/profile/tranquoclong">
-          <img className="avatar" src="" alt="" loading="lazy" />
+          <img
+            className="avatar"
+            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
+            alt=""
+            loading="lazy"
+          />
           <span className="username-sup">quannguyen</span>
           <div className="number-of-posts">
             <span className="button button--sup">PRO</span>
           </div>
         </Link>
         <Link className="creator" to="/profile/tranquoclong">
-          <img className="avatar" src="" alt="" loading="lazy" />
+          <img
+            className="avatar"
+            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
+            alt=""
+            loading="lazy"
+          />
           <span className="username-sup">tuanlac</span>
           <div className="number-of-posts">
             <span className="button button--sup">PRO</span>
           </div>
         </Link>
         <Link className="creator" to="/profile/tranquoclong">
-          <img className="avatar" src="" alt="" loading="lazy" />
+          <img
+            className="avatar"
+            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
+            alt=""
+            loading="lazy"
+          />
           <span className="username-sup">nguyenductai</span>
           <div className="number-of-posts">
             <span className="button button--sup">PRO</span>
