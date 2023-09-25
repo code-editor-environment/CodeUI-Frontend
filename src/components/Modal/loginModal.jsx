@@ -41,7 +41,7 @@ function LoginModal() {
     signInWithPopup(auth, provider)
       .then(function (result) {
         var user = result.user;
-        console.log("GitHub-accessToken: ", user.accessToken);
+        console.log("GitHub-accessToken: ", user);
       })
       .catch(function (error) {
         var errorCode = error.code;

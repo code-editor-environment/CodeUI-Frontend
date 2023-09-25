@@ -5,14 +5,13 @@ import cssIcon from "../../../../assets/images/css.svg";
 import jsIcon from "../../../../assets/images/js.png";
 import { Link } from "react-router-dom";
 function Hero() {
-  const slogan = "The world most creative coding community";
+  const slogan = "Celebrating the Artistry of Creative Coders";
   setTimeout(
     function () {
       this.setState({ position: 1 });
     }.bind(this),
     3000
   );
-  console.log("🚀 ~ file: index.jsx:3 ~ thumnailcode:", thumnailcode);
   return (
     <div className="home-page_hero">
       <div className="home-page__hero">
