@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import Editor from "@monaco-editor/react";
 import { useIsHidden } from "../../../hooks/useIsHidden";
@@ -8,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import axios from "axios";
 import ColorPicker from "react-pick-color";
+import { ResizableBox } from "react-resizable";
 import { getElementById } from "../../../store/element/elements-slice";
 import { getListElementById } from "../../../api/element";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 import EditorHeader from "./editorHeader";
-
 function Detail() {
   const { postId } = useParams();
   const navigate = useNavigate();
@@ -115,7 +114,7 @@ function Detail() {
           "html",
           htmlText === "" ? elementById.html : htmlText
         );
-    
+
     axios({
       method: "POST",
       url: `https://api.dotmaui.com/client/1.0/${
@@ -125,13 +124,27 @@ function Detail() {
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then((res) => {
-        changeEditor ? setCssText(res.data): setHtmlText(res.data);;
+        changeEditor ? setCssText(res.data) : setHtmlText(res.data);
       })
       .catch((err) => {
         console.error(err);
       });
   };
   const options = { fontSize: 17, emptySelectionClipboard: true };
+
+const CoolDiv = (props) => {
+  return (
+    <ResizableBox
+      className="box"
+      width={900}
+      axis="x"
+      handle={<span className="custom-handle" />}
+    >
+      {props.children}
+    </ResizableBox>
+  );
+};
+
   return (
     <main className="wrapper">
       <button
@@ -156,44 +169,49 @@ function Detail() {
       </button>
       {elementById && (
         <>
-          <div className="detail-page detail-page--button">
-            <section className="css-editor">
-              <EditorHeader
-                changeEditor={changeEditor}
-                setChangeEditor={setChangeEditor}
-                onConvert={onConvert}
-                onBeautify={onBeautify}
-              />
-              <div
-                className={`editor-wrapper ${
-                  changeEditor ? "editor-wrapper_html" : ""
-                }`}
-              >
-                <Editor
-                  height="100%"
-                  options={options}
-                  theme="vs-dark"
-                  language="html"
-                  value={htmlText === "" ? elementById.html : htmlText}
-                  onChange={handleEditorChangeHtml}
+          <div className="detail-page detail-page--button flexer">
+            <CoolDiv>
+              <section className="css-editor">
+                <EditorHeader
+                  changeEditor={changeEditor}
+                  setChangeEditor={setChangeEditor}
+                  htmlText={htmlText}
+                  cssText={cssText}
+                  convert={convert}
+                  onConvert={onConvert}
+                  onBeautify={onBeautify}
                 />
-              </div>
-              <div
-                className={`editor-wrapper ${
-                  !changeEditor ? "editor-wrapper_css" : ""
-                }`}
-              >
-                <Editor
-                  height="100%"
-                  options={options}
-                  theme="vs-dark"
-                  language={convert ? "scss" : "css"}
-                  value={cssText === "" ? elementById.css : cssText}
-                  onChange={handleEditorChangeCss}
-                />
-              </div>
-            </section>
-            <div className="preview-section">
+                <div
+                  className={`editor-wrapper ${
+                    changeEditor ? "editor-wrapper_html" : ""
+                  }`}
+                >
+                  <Editor
+                    height="100%"
+                    options={options}
+                    theme="vs-dark"
+                    language="html"
+                    value={htmlText === "" ? elementById.html : htmlText}
+                    onChange={handleEditorChangeHtml}
+                  />
+                </div>
+                <div
+                  className={`editor-wrapper ${
+                    !changeEditor ? "editor-wrapper_css" : ""
+                  }`}
+                >
+                  <Editor
+                    height="100%"
+                    options={options}
+                    theme="vs-dark"
+                    language={convert ? "scss" : "css"}
+                    value={cssText === "" ? elementById.css : cssText}
+                    onChange={handleEditorChangeCss}
+                  />
+                </div>
+              </section>
+            </CoolDiv>
+            <div className="preview-section second">
               <div
                 className={`preview-container ${
                   hidden

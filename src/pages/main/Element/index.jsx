@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Cards from "../../../components/Cards";
 import { useParseUrl } from "../../../hooks/useParseUrl";
-import { useIsLoading } from "../../../hooks/useIsLoading";
+// import { useIsLoading } from "../../../hooks/useIsLoading";
 import { getElements } from "../../../store/element/elements-slice";
 import { getListElements } from "../../../api/element";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ import SkeletonElement from "./../../../components/Skeleton/skeletonElement";
 function Element() {
   const dispatch = useDispatch();
   const { search } = useParseUrl();
-  const { loading, setLoading } = useIsLoading();
+  const [loading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(10);
   const [page, setPage] = useState(4);
   const { elements, favoriteElement } = useSelector((state) => state.element);
@@ -119,7 +119,7 @@ function Element() {
         </div>
       </div>
       {/* <Loading />  */}
-      {loading ? (
+      {!elements ? (
         <SkeletonElement total={10} />
       ) : (
         <Cards
