@@ -1,0 +1,64 @@
+.cardElement {
+  height: 250px;
+  border-radius: 8px;
+}
+
+.cardCreator {
+  position: relative;
+  height: 90px;
+  border-radius: 8px;
+}
+
+.cardFooter {
+  margin-top: 6px;
+}
+.cardTitle {
+  font-size: 1.25rem;
+  line-height: 1.33;
+  font-weight: 700;
+  &.skeleton {
+    min-height: 28px;
+    border-radius: 8px;
+  }
+}
+
+.cardIntro {
+  margin-top: 0.75rem;
+  line-height: 1.5;
+  &.skeleton {
+    min-height: 72px;
+    border-radius: 8px;
+  }
+}
+.skeleton2 {
+  background-color: #212121;
+  background-image: linear-gradient(
+    90deg,
+    rgba(#171717, 0),
+    rgba(#171717, 0.5),
+    rgba(#171717, 0)
+  );
+  background-size: 50px 100%;
+  background-repeat: no-repeat;
+  background-position: left -40px top 0;
+  animation: shine 1.5s ease infinite;
+}
+.skeleton {
+  border-radius: 8px;
+  background-image: linear-gradient(270deg, #111, #333, #333, #111);
+  background-size: 200% 100%;
+  animation: skeleton_loading 4s ease-in-out infinite;
+}
+@keyframes shine {
+  to {
+    background-position: right -40px top 0;
+  }
+}
+@keyframes skeleton_loading {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}

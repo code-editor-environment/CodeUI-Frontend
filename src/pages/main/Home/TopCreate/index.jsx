@@ -1,6 +1,8 @@
 import React from "react";
 import points from "../../../../assets/images/logoCover.png";
 import { Link } from "react-router-dom";
+import AppButton from "../../../../components/Button";
+// import SkeletonCreator from "../../../../components/Skeleton/skeletonCreator";
 function TopCreate() {
   return (
     <div className="creators-section">
@@ -10,6 +12,7 @@ function TopCreate() {
         <div className="bg-grid-slate-900/[0.04] dark:bg-grid-slate-100/[0.03] absolute inset-x-0 top-0 h-[37.5rem] bg-top [mask-image:linear-gradient(0deg,transparent,black)] dark:bg-[center_top_-1px]"></div>
       </div>
       <h2 className="creators-section__heading">Top Creators</h2>
+      {/* <SkeletonCreator total ={6}/> */}
       <section className="creators">
         <Link className="creator" to="/creators">
           <span className="rank">1</span>
@@ -114,9 +117,12 @@ function TopCreate() {
           </div>
         </Link>
       </section>
-      <Link className="button cre-button" to="/creators">
-        See all Creator
-      </Link>
+      <AppButton
+        children="See all Creators"
+        btnType="button_0"
+        htmlType="link"
+        url="/creators"
+      />
     </div>
   );
 }

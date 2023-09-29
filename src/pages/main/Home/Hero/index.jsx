@@ -55,7 +55,10 @@ function Hero() {
             />
           </div>
         </div>
-        <img src={thumnailcode} alt="thumnailcode" />
+        <img
+          src="https://cdn.dribbble.com/users/1139587/screenshots/14694006/media/5a5ac23e2385cf6a2afb6b02b94c0d3d.png?resize=1000x750&vertical=center"
+          alt="thumnailcode"
+        />
       </div>
     </div>
   );

@@ -1,0 +1,55 @@
+.open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+}
+.dropdownMenu {
+  --item-height: 40px;
+  --menu-border-radius: var(--border-radius);
+  width: 180px;
+  background: #212121;
+  border-radius: var(--menu-border-radius);
+  position: absolute;
+  top: 42px;
+  right: 0;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1411764706);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+  z-index: 1000;
+  padding: 5px;
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    .item {
+      height: var(--item-height);
+      font-family: Roboto, sans-serif;
+      text-decoration: none;
+      color: var(--offwhite);
+      padding:0 6px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      font-weight: var(--semibold);
+      margin: 0;
+      white-space: nowrap;
+      border-radius: calc(var(--menu-border-radius) - 2px);
+      &:hover{
+            background: #171717;
+      }
+      svg {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+      }
+    }
+  }
+}

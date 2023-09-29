@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import AppButton from "../../../../components/Button";
 function Toggle() {
   return (
     <section className="posts-preview" style={{ width: "100%" }}>
@@ -231,12 +232,12 @@ function Toggle() {
           </div>
         </article>
       </div>
-      <Link
-        className="button button--secondary see-more-button"
-        to="/elements?category=switch"
-      >
-        See all toggle switches
-      </Link>
+      <AppButton
+        children="See all switches"
+        btnType="button_2"
+        htmlType="link"
+        url="/elements?category=switch"
+      />
     </section>
   );
 }

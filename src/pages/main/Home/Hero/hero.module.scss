@@ -1,0 +1,1049 @@
+.hero {
+  padding-top: 110px;
+  position: relative;
+  &:before {
+    background: radial-gradient(
+      37.74% 81.78% at 50% 26.56%,
+      rgba(148, 101, 255, 0.08) 0%,
+      rgba(3, 0, 20, 0) 100%
+    );
+    content: "";
+    display: block;
+    height: 900px;
+    left: 50%;
+    pointer-events: none;
+    position: absolute;
+    top: -173px;
+    transform: translate(-50%);
+    width: 1440px;
+    z-index: 1;
+  }
+  .heroContent {
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    z-index: 1;
+    .sectionHeader {
+      position: relative;
+      z-index: 3;
+      h1 {
+        margin-bottom: 12px;
+        text-align: center;
+        font-size: 54px;
+        line-height: 80px;
+        span {
+          background: linear-gradient(
+            180deg,
+            #fff 0%,
+            rgba(255, 255, 255, 0.7) 100%
+          );
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;
+          display: block;
+        }
+      }
+    }
+    .heroDescription {
+      font-size: 22px;
+    }
+  }
+  .heroBlackHole {
+    height: 810px;
+    left: 50%;
+    -webkit-mask-image: radial-gradient(
+      50% 50% at 50% 50%,
+      #fff 60.94%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      50% 50% at 50% 50%,
+      #fff 60.94%,
+      transparent 100%
+    );
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    position: absolute;
+    top: 60px;
+    transform: translate(-50%);
+    width: 1440px;
+    .video {
+      opacity: 1;
+      transition: 0.75s cubic-bezier(0.6, 0.6, 0, 1) opacity;
+      pointer-events: none;
+      video {
+        height: auto;
+        width: 100%;
+      }
+    }
+    .circles {
+      height: 808px;
+      margin-top: -12px;
+      left: 50%;
+      top: 50%;
+      position: absolute;
+      transform: translateZ(0) translate(-50%, -50%);
+      width: 808px;
+      z-index: 9999;
+      .bg {
+        height: 100%;
+        -webkit-mask-image: linear-gradient(
+          180deg,
+          rgba(186, 156, 255, 0.6) 9.41%,
+          rgba(186, 156, 255, 0) 29.79%
+        );
+        mask-image: linear-gradient(
+          180deg,
+          rgba(186, 156, 255, 0.6) 9.41%,
+          rgba(186, 156, 255, 0) 29.79%
+        );
+        width: 100%;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translateZ(0) translate(-50%, -50%);
+        &:nth-child(2) {
+          height: 608px;
+          opacity: 0.6;
+          width: 608px;
+        }
+        &:nth-child(3) {
+          height: 416px;
+          width: 416px;
+          z-index: 1;
+        }
+      }
+      .circle {
+        border-radius: 50%;
+        height: 100%;
+        position: relative;
+        top: 4px;
+        width: 100%;
+        animation: heroBlackHoleCirclesRotate 100s linear infinite;
+        &:before {
+          background: rgba(186, 156, 255, 0.04);
+          border: 1px solid rgba(186, 156, 255, 0.3);
+          border-radius: 50%;
+          content: "";
+          height: calc(100% - 2px);
+          left: 0;
+          pointer-events: none;
+          position: absolute;
+          top: 0;
+          width: calc(100% - 2px);
+        }
+        .dot {
+          height: 8px;
+          position: absolute;
+          width: 8px;
+          z-index: 99;
+          &:before {
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            background: rgba(186, 156, 255, 0.01);
+            border: 1px solid rgba(186, 156, 255, 0.3);
+            border-radius: 50%;
+            content: "";
+            display: block;
+            height: 6px;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 6px;
+          }
+          &:nth-child(1) {
+            left: -4px;
+          }
+          &:nth-child(1),
+          &:nth-child(8) {
+            top: 50%;
+            transform: translateY(-50%);
+          }
+          &:nth-child(2),
+          &:nth-child(6) {
+            top: var(--position-1);
+          }
+          &:nth-child(2),
+          &:nth-child(3) {
+            left: var(--position-1);
+          }
+          &:nth-child(3),
+          &:nth-child(7) {
+            bottom: var(--position-1);
+          }
+          &:nth-child(4) {
+            top: -4px;
+          }
+          &:nth-child(4),
+          &:nth-child(5) {
+            left: 50%;
+            transform: translate(-50%);
+          }
+          &:nth-child(5) {
+            bottom: -4px;
+          }
+          &:nth-child(6),
+          &:nth-child(7) {
+            right: var(--position-1);
+          }
+          &:nth-child(8) {
+            right: -4px;
+          }
+        }
+      }
+      .circle0 {
+        --position-1: 14.2%;
+      }
+      .circle1 {
+        --position-1: 14.1%;
+      }
+      .circle2 {
+        --position-1: 13.8%;
+      }
+    }
+    .stars {
+      height: 700px;
+      left: 50%;
+      -webkit-mask-image: radial-gradient(
+        50% 50% at 50% 50%,
+        rgba(217, 217, 217, 0) 27.08%,
+        #d9d9d9 47.92%,
+        rgba(217, 217, 217, 0.8) 75%,
+        rgba(217, 217, 217, 0) 100%
+      );
+      mask-image: radial-gradient(
+        50% 50% at 50% 50%,
+        rgba(217, 217, 217, 0) 27.08%,
+        #d9d9d9 47.92%,
+        rgba(217, 217, 217, 0.8) 75%,
+        rgba(217, 217, 217, 0) 100%
+      );
+      -webkit-mask-position: 0 0;
+      mask-position: 0 0;
+      -webkit-mask-size: cover;
+      mask-size: cover;
+      pointer-events: none;
+      position: absolute;
+      top: 50%;
+      transform: translateZ(0) translate(-50%, -50%);
+      width: 700px;
+      animation: heroBlackHoleStarsRotate 70s linear infinite;
+      div {
+        background: rgba(255, 255, 255, 0);
+        border-radius: 5px;
+        height: 2px;
+        left: 50%;
+        position: absolute;
+        transform: translateZ(0) translate(0) scale(1);
+        width: 2px;
+        animation: heroBlackHoleStarsTwinkle linear infinite;
+        &:nth-child(3n) {
+          opacity: 0.5;
+        }
+      }
+      .star0 {
+        animation-duration: 11.325280213955214s;
+        animation-delay: 1.9582873307828208s;
+        top: 5.611163840784639%;
+        left: 73.58743805098223%;
+        --transform: translate(-148.60085972118796px, 279.6496678030568px);
+      }
+      .star1 {
+        animation-duration: 13.628929246574351s;
+        animation-delay: 3.6351026979520276s;
+        top: 9.747772407743472%;
+        left: 8.67919830391859%;
+        --transform: translate(260.3210506853129px, 253.58903383121614px);
+      }
+      .star2 {
+        animation-duration: 12.546190652025931s;
+        animation-delay: 4.590315146967658s;
+        top: 99.47440252062722%;
+        left: 95.57318374738357%;
+        --transform: translate(-287.11105760851655px, -311.68873587995154px);
+      }
+      .star3 {
+        animation-duration: 13.037963811174963s;
+        animation-delay: 2.4916313543344835s;
+        top: 11.445951468153194%;
+        left: 96.25532439583483%;
+        --transform: translate(-291.4085436937595px, 242.8905057506349px);
+      }
+      .star4 {
+        animation-duration: 13.843304537198723s;
+        animation-delay: 4.9935036316082435s;
+        top: 88.64033153981038%;
+        left: 42.23729145662332%;
+        --transform: translate(48.9050638232731px, -243.43408870080535px);
+      }
+      .star5 {
+        animation-duration: 8.162275238995s;
+        animation-delay: 0.9624730527520797s;
+        top: 81.14413104382889%;
+        left: 13.053037436534698%;
+        --transform: translate(232.76586414983143px, -196.20802557612203px);
+      }
+      .star6 {
+        animation-duration: 10.739409905577878s;
+        animation-delay: 3.5498576109837323s;
+        top: 96.6666338104067%;
+        left: 23.47209638983223%;
+        --transform: translate(167.12579274405695px, -293.9997930055622px);
+      }
+      .star7 {
+        animation-duration: 11.12074939135288s;
+        animation-delay: 2.781583924037132s;
+        top: 46.34137340661586%;
+        left: 91.90786882709152%;
+        --transform: translate(-264.01957361067656px, 23.04934753832008px);
+      }
+      .star8 {
+        animation-duration: 11.50492266824768s;
+        animation-delay: 3.9801718499118053s;
+        top: 15.52820102051169%;
+        left: 25.031022392292492%;
+        --transform: translate(157.3045589285573px, 217.17233357077637px);
+      }
+      .star9 {
+        animation-duration: 8.213062899279139s;
+        animation-delay: 4.775724682764288s;
+        top: 91.73498766287376%;
+        left: 63.50362066172808%;
+        --transform: translate(-85.0728101688869px, -262.9304222761047px);
+      }
+      .star10 {
+        animation-duration: 8.730130389588126s;
+        animation-delay: 4.999265762349889s;
+        top: 90.58747319713343%;
+        left: 8.361825984507988%;
+        --transform: translate(262.32049629759973px, -255.7010811419406px);
+      }
+      .star11 {
+        animation-duration: 12.94335877394353s;
+        animation-delay: 0.05423136337653567s;
+        top: 97.91858222558733%;
+        left: 0.37868918367691684%;
+        --transform: translate(312.61425814283547px, -301.8870680212002px);
+      }
+      .star12 {
+        animation-duration: 13.711380544585069s;
+        animation-delay: 1.4271514273744945s;
+        top: 47.97958935868514%;
+        left: 82.73873367915871%;
+        --transform: translate(-206.2540221786999px, 12.728587040283617px);
+      }
+      .star13 {
+        animation-duration: 9.975126632249772s;
+        animation-delay: 4.119777722023774s;
+        top: 67.3501492852156%;
+        left: 90.51286409793819%;
+        --transform: translate(-255.23104381701063px, -109.30594049685818px);
+      }
+      .star14 {
+        animation-duration: 8.996339953218921s;
+        animation-delay: 2.207118600602919s;
+        top: 70.62879657464214%;
+        left: 96.3913108350124%;
+        --transform: translate(-292.26525826057815px, -129.96141842024548px);
+      }
+      .star15 {
+        animation-duration: 12.404028671124738s;
+        animation-delay: 0.10796920315900072s;
+        top: 51.37100260322936%;
+        left: 97.73587892838731%;
+        --transform: translate(-300.7360372488401px, -8.637316400344924px);
+      }
+      .star16 {
+        animation-duration: 13.178684047320807s;
+        animation-delay: 3.8269333367927496s;
+        top: 60.36757943590199%;
+        left: 2.3819062037108374%;
+        --transform: translate(299.9939909166217px, -65.31575044618253px);
+      }
+      .star17 {
+        animation-duration: 11.217859913039334s;
+        animation-delay: 0.7080307170848532s;
+        top: 82.59446588103067%;
+        left: 90.80178488314996%;
+        --transform: translate(-257.0512447638448px, -205.3451350504933px);
+      }
+      .star18 {
+        animation-duration: 13.612974933247921s;
+        animation-delay: 4.870907079918526s;
+        top: 5.3614267647778435%;
+        left: 23.015398016198386%;
+        --transform: translate(170.00299249795017px, 281.2230113818996px);
+      }
+      .star19 {
+        animation-duration: 7.921766351530694s;
+        animation-delay: 1.9395533719607316s;
+        top: 83.15427729507543%;
+        left: 46.18296020217449%;
+        --transform: translate(24.04735072630067px, -208.87194695897523px);
+      }
+      .star20 {
+        animation-duration: 7.764675605727573s;
+        animation-delay: 3.2235999299577047s;
+        top: 52.17236565210044%;
+        left: 85.89894292478026%;
+        --transform: translate(-226.16334042611572px, -13.685903608232763px);
+      }
+      .star21 {
+        animation-duration: 7.197389590106012s;
+        animation-delay: 0.873725680006846s;
+        top: 35.01790647836571%;
+        left: 10.876424851611599%;
+        --transform: translate(246.47852343484695px, 94.38718918629601px);
+      }
+      .star22 {
+        animation-duration: 7.676952472586562s;
+        animation-delay: 4.67758864856993s;
+        top: 45.810522440200295%;
+        left: 17.182937156164037%;
+        --transform: translate(206.74749591616657px, 26.393708626738114px);
+      }
+      .star23 {
+        animation-duration: 8.91651935130754s;
+        animation-delay: 0.8347651361754449s;
+        top: 7.548458143270764%;
+        left: 42.33576785165194%;
+        --transform: translate(48.28466253459276px, 267.4447136973942px);
+      }
+      .star24 {
+        animation-duration: 13.168124713736198s;
+        animation-delay: 1.204477792096832s;
+        top: 52.60808999518718%;
+        left: 86.81002494732417%;
+        --transform: translate(-231.90315716814231px, -16.43096696967922px);
+      }
+      .star25 {
+        animation-duration: 11.132015106138942s;
+        animation-delay: 0.7405052247172461s;
+        top: 18.2376412598003%;
+        left: 15.940379582420295%;
+        --transform: translate(214.57560863075216px, 200.10286006325813px);
+      }
+      .star26 {
+        animation-duration: 10.384804230869872s;
+        animation-delay: 4.087667248769251s;
+        top: 3.7268683694363425%;
+        left: 99.43195555624531%;
+        --transform: translate(-311.42132000434543px, 291.5207292725511px);
+      }
+      .star27 {
+        animation-duration: 12.767566365051962s;
+        animation-delay: 0.8875589406096018s;
+        top: 19.453696455660598%;
+        left: 71.42008674960967%;
+        --transform: translate(-134.94654652254093px, 192.44171232933823px);
+      }
+      .star28 {
+        animation-duration: 9.525783838842825s;
+        animation-delay: 3.989581826906803s;
+        top: 4.388048281645229%;
+        left: 27.152510967606492%;
+        --transform: translate(143.9391809040791px, 287.35529582563504px);
+      }
+      .star29 {
+        animation-duration: 10.190178760477592s;
+        animation-delay: 4.093348038414416s;
+        top: 80.71635968933715%;
+        left: 1.3442942602665875%;
+        --transform: translate(306.53094616032047px, -193.51306604282402px);
+      }
+      .star30 {
+        animation-duration: 8.81283429613804s;
+        animation-delay: 2.2337735657029514s;
+        top: 9.83893603786452%;
+        left: 74.54858606599284%;
+        --transform: translate(-154.65609221575488px, 253.01470296145354px);
+      }
+      .star31 {
+        animation-duration: 12.59533289873876s;
+        animation-delay: 1.139662213969448s;
+        top: 12.217845914801572%;
+        left: 66.66372572767838%;
+        --transform: translate(-104.98147208437379px, 238.02757073675008px);
+      }
+      .star32 {
+        animation-duration: 7.262766130966976s;
+        animation-delay: 0.2117196602345417s;
+        top: 65.18997599468237%;
+        left: 8.651374320724559%;
+        --transform: translate(260.4963417794353px, -95.69684876649895px);
+      }
+      .star33 {
+        animation-duration: 12.711930129983468s;
+        animation-delay: 0.6915290546966424s;
+        top: 78.47722470710276%;
+        left: 49.140721491090304%;
+        --transform: translate(5.4134546061311255px, -179.4065156547474px);
+      }
+      .star34 {
+        animation-duration: 9.420552035101629s;
+        animation-delay: 1.8948956300792041s;
+        top: 42.79230019471314%;
+        left: 12.372731237033928%;
+        --transform: translate(237.05179320668623px, 45.408508773307226px);
+      }
+      .star35 {
+        animation-duration: 10.238637155614185s;
+        animation-delay: 4.436322768167091s;
+        top: 11.404883527193688%;
+        left: 51.91516566085521%;
+        --transform: translate(-12.065543663387855px, 243.1492337786798px);
+      }
+      .star36 {
+        animation-duration: 7.086839489507842s;
+        animation-delay: 2.401576380624475s;
+        top: 90.82699702982751%;
+        left: 89.20415506924822%;
+        --transform: translate(-246.98617693626372px, -257.2100812879133px);
+      }
+      .star37 {
+        animation-duration: 9.355759385318809s;
+        animation-delay: 4.154946261000836s;
+        top: 67.35642072613643%;
+        left: 80.62107226489461%;
+        --transform: translate(-192.91275526883607px, -109.34545057465954px);
+      }
+      .star38 {
+        animation-duration: 11.686006717230727s;
+        animation-delay: 4.920830094004135s;
+        top: 62.85277104571476%;
+        left: 87.83127527088317%;
+        --transform: translate(-238.33703420656403px, -80.97245758800301px);
+      }
+      .star39 {
+        animation-duration: 7.996945485478403s;
+        animation-delay: 1.6887822316781809s;
+        top: 12.307286240681869%;
+        left: 10.919872454846868%;
+        --transform: translate(246.20480353446476px, 237.46409668370424px);
+      }
+      .star40 {
+        animation-duration: 9.862152941454248s;
+        animation-delay: 4.998713532328832s;
+        top: 23.86006910090932%;
+        left: 75.47055125303139%;
+        --transform: translate(-160.4644728940978px, 164.6815646642713px);
+      }
+      .star41 {
+        animation-duration: 8.519388577371412s;
+        animation-delay: 2.329924521832696s;
+        top: 94.74766630702285%;
+        left: 36.591586979837444%;
+        --transform: translate(84.47300202702412px, -281.91029773424395px);
+      }
+      .star42 {
+        animation-duration: 7.793680464806419s;
+        animation-delay: 3.719405816078015s;
+        top: 84.92392760997483%;
+        left: 13.33716151828761%;
+        --transform: translate(230.97588243478805px, -220.0207439428414px);
+      }
+      .star43 {
+        animation-duration: 11.002376834613235s;
+        animation-delay: 3.3722548705201882s;
+        top: 90.89903469711113%;
+        left: 89.28559161617085%;
+        --transform: translate(-247.4992271818763px, -257.66391859180015px);
+      }
+      .star44 {
+        animation-duration: 10.4792852325256s;
+        animation-delay: 2.2777548099838816s;
+        top: 47.69143081246789%;
+        left: 97.09186286085318%;
+        --transform: translate(-296.67873602337505px, 14.543985881452285px);
+      }
+      .star45 {
+        animation-duration: 10.402469374219145s;
+        animation-delay: 2.8240848759087465s;
+        top: 86.9776242330204%;
+        left: 35.89780704442833%;
+        --transform: translate(88.84381562010151px, -232.9590326680285px);
+      }
+      .star46 {
+        animation-duration: 8.267026345968642s;
+        animation-delay: 3.3988230796177685s;
+        top: 39.642681183422354%;
+        left: 83.54674843585579%;
+        --transform: translate(-211.3445151458915px, 65.25110854443915px);
+      }
+      .star47 {
+        animation-duration: 7.939070506268618s;
+        animation-delay: 4.479000615762833s;
+        top: 82.56262364127784%;
+        left: 65.36760511887587%;
+        --transform: translate(-96.815912248918px, -205.1445289400504px);
+      }
+      .star48 {
+        animation-duration: 11.319783392701972s;
+        animation-delay: 1.8706464127580602s;
+        top: 15.127224755397894%;
+        left: 33.566302941937984%;
+        --transform: translate(103.53229146579069px, 219.69848404099326px);
+      }
+      .star49 {
+        animation-duration: 7.716120081733968s;
+        animation-delay: 4.715496973416799s;
+        top: 79.63174488843279%;
+        left: 46.88276919634007%;
+        --transform: translate(19.638554063057548px, -186.67999279712652px);
+      }
+      .star50 {
+        animation-duration: 13.640265108055186s;
+        animation-delay: 4.792372333719454s;
+        top: 57.75917252632474%;
+        left: 95.13383027314055%;
+        --transform: translate(-284.34313072078555px, -48.88278691584587px);
+      }
+      .star51 {
+        animation-duration: 8.15498934622315s;
+        animation-delay: 1.6179393648490337s;
+        top: 66.03925614169725%;
+        left: 5.747664402647867%;
+        --transform: translate(278.78971426331844px, -101.04731369269274px);
+      }
+      .star52 {
+        animation-duration: 8.213592244616558s;
+        animation-delay: 3.52875451134405s;
+        top: 19.87780137521451%;
+        left: 71.15565309129383%;
+        --transform: translate(-133.28061447515114px, 189.7698513361486px);
+      }
+      .star53 {
+        animation-duration: 13.505190841507142s;
+        animation-delay: 1.7059162477576517s;
+        top: 20.243774387498803%;
+        left: 59.7501956450309%;
+        --transform: translate(-61.42623256369468px, 187.46422135875756px);
+      }
+      .star54 {
+        animation-duration: 9.812903271044252s;
+        animation-delay: 2.7311557684542196s;
+        top: 92.03943295804487%;
+        left: 67.59307003049449%;
+        --transform: translate(-110.83634119211526px, -264.84842763568264px);
+      }
+      .star55 {
+        animation-duration: 13.96005836158099s;
+        animation-delay: 1.0519431790715572s;
+        top: 0.1778887557522424%;
+        left: 96.7859736472555%;
+        --transform: translate(-294.7516339777096px, 313.87930083876086px);
+      }
+      .star56 {
+        animation-duration: 13.891896910475337s;
+        animation-delay: 3.0564425834002162s;
+        top: 86.59866285819369%;
+        left: 9.870636743053218%;
+        --transform: translate(252.81498851876475px, -230.57157600662023px);
+      }
+      .star57 {
+        animation-duration: 13.734076785778154s;
+        animation-delay: 3.866714268019601s;
+        top: 24.93675285990198%;
+        left: 12.660491246907203%;
+        --transform: translate(235.23890514448468px, 157.89845698261755px);
+      }
+      .star58 {
+        animation-duration: 13.543527879722971s;
+        animation-delay: 3.536796476187357s;
+        top: 55.30344836564118%;
+        left: 21.10093858704698%;
+        --transform: translate(182.06408690160404px, -33.41172470353947px);
+      }
+      .star59 {
+        animation-duration: 9.773991821314805s;
+        animation-delay: 1.8314678110936788s;
+        top: 13.886742579135248%;
+        left: 94.03377375034219%;
+        --transform: translate(-277.4127746271558px, 227.51352175144794px);
+      }
+      .star60 {
+        animation-duration: 12.007499157641075s;
+        animation-delay: 0.03539127930946351s;
+        top: 0.13176569427140183%;
+        left: 7.494928482709362%;
+        --transform: translate(267.78195055893104px, 314.1698761260902px);
+      }
+      .star61 {
+        animation-duration: 10.468690673751462s;
+        animation-delay: 4.158593865925635s;
+        top: 41.831978971124364%;
+        left: 83.91515464695343%;
+        --transform: translate(-213.66547427580662px, 51.45853248191653px);
+      }
+      .star62 {
+        animation-duration: 13.183666189506697s;
+        animation-delay: 2.5249991103212457s;
+        top: 93.46110546039037%;
+        left: 99.47704470692535%;
+        --transform: translate(-311.7053816536298px, -273.8049644004593px);
+      }
+      .star63 {
+        animation-duration: 11.568642151679693s;
+        animation-delay: 2.289192060190338s;
+        top: 14.610907191506662%;
+        left: 94.93926595746613%;
+        --transform: translate(-283.1173755320367px, 222.95128469350803px);
+      }
+      .star64 {
+        animation-duration: 13.377889020439937s;
+        animation-delay: 0.8387183998164505s;
+        top: 22.668467092218194%;
+        left: 59.06117284070442%;
+        --transform: translate(-57.08538889643784px, 172.1886573190254px);
+      }
+      .star65 {
+        animation-duration: 11.725418577344573s;
+        animation-delay: 2.897941507168329s;
+        top: 21.64565943408241%;
+        left: 59.86570541560221%;
+        --transform: translate(-62.15394411829393px, 178.63234556528084px);
+      }
+      .star66 {
+        animation-duration: 8.620603102275142s;
+        animation-delay: 0.05617930393570947s;
+        top: 1.13991680601766%;
+        left: 46.57630227646512%;
+        --transform: translate(21.569295658269745px, 307.8185241220888px);
+      }
+      .star67 {
+        animation-duration: 7.525791662518187s;
+        animation-delay: 0.7974359439676593s;
+        top: 72.68225398637462%;
+        left: 90.49652656813656%;
+        --transform: translate(-255.12811737926032px, -142.89820011416015px);
+      }
+      .star68 {
+        animation-duration: 7.020502435181401s;
+        animation-delay: 4.852688104593117s;
+        top: 36.907873703191996%;
+        left: 81.48155069279545%;
+        --transform: translate(-198.3337693646114px, 82.4803956698904px);
+      }
+      .star69 {
+        animation-duration: 12.187248857761134s;
+        animation-delay: 4.661980815294279s;
+        top: 72.90874590751952%;
+        left: 77.93960273743419%;
+        --transform: translate(-176.01949724583542px, -144.325099217373px);
+      }
+      .star70 {
+        animation-duration: 12.719917740974783s;
+        animation-delay: 2.3175291206236635s;
+        top: 5.285998784851831%;
+        left: 33.08124578125833%;
+        --transform: translate(106.58815157807254px, 281.69820765543346px);
+      }
+      .star71 {
+        animation-duration: 11.93416341459697s;
+        animation-delay: 3.7698347798236345s;
+        top: 28.273795336150197%;
+        left: 89.56735445196891%;
+        --transform: translate(-249.27433304740407px, 136.87508938225375px);
+      }
+      .star72 {
+        animation-duration: 12.936564848559282s;
+        animation-delay: 0.035615501320523935s;
+        top: 24.069845676872003%;
+        left: 62.162501416573065%;
+        --transform: translate(-76.62375892441034px, 163.35997223570638px);
+      }
+      .star73 {
+        animation-duration: 13.175306155331278s;
+        animation-delay: 3.220230067476061s;
+        top: 81.1473773915567%;
+        left: 66.4756947613453%;
+        --transform: translate(-103.79687699647533px, -196.22847756680724px);
+      }
+      .star74 {
+        animation-duration: 9.458814215322644s;
+        animation-delay: 1.17985570297101s;
+        top: 0.1340448161098573%;
+        left: 85.23876215348989%;
+        --transform: translate(-222.00420156698627px, 314.1555176585079px);
+      }
+      .star75 {
+        animation-duration: 12.493734468767197s;
+        animation-delay: 1.4470046709802886s;
+        top: 49.648248676454166%;
+        left: 1.676988412611724%;
+        --transform: translate(304.43497300054617px, 2.2160333383387467px);
+      }
+      .star76 {
+        animation-duration: 10.271759555460342s;
+        animation-delay: 4.981970610148654s;
+        top: 23.707602402630854%;
+        left: 63.39521560388852%;
+        --transform: translate(-84.38985830449771px, 165.6421048634256px);
+      }
+      .star77 {
+        animation-duration: 7.40533997504218s;
+        animation-delay: 0.9720584240635632s;
+        top: 33.22105105705491%;
+        left: 8.29578179554451%;
+        --transform: translate(262.7365746880696px, 105.7073783405541px);
+      }
+      .star78 {
+        animation-duration: 11.299418112481527s;
+        animation-delay: 4.331489471984544s;
+        top: 19.71763504305215%;
+        left: 7.208141593861472%;
+        --transform: translate(269.5887079586727px, 190.77889922877145px);
+      }
+      .star79 {
+        animation-duration: 13.23151073135509s;
+        animation-delay: 4.499315911608589s;
+        top: 47.16961047923762%;
+        left: 7.362607965634593%;
+        --transform: translate(268.61556981650205px, 17.831453980802962px);
+      }
+      .star80 {
+        animation-duration: 10.632463765410408s;
+        animation-delay: 4.520006549153636s;
+        top: 98.86090252379174%;
+        left: 53.4157937870646%;
+        --transform: translate(-21.519500858506973px, -307.82368589988795px);
+      }
+      .star81 {
+        animation-duration: 7.783158415377512s;
+        animation-delay: 1.5168367022610318s;
+        top: 89.05098939713395%;
+        left: 43.44953357061678%;
+        --transform: translate(41.267938505114294px, -246.02123320194383px);
+      }
+      .star82 {
+        animation-duration: 9.307450902562238s;
+        animation-delay: 3.543295109684803s;
+        top: 36.16894217405%;
+        left: 84.34025677348689%;
+        --transform: translate(-216.34361767296738px, 87.135664303485px);
+      }
+      .star83 {
+        animation-duration: 12.56168793890847s;
+        animation-delay: 0.1333737707060778s;
+        top: 76.52451064533199%;
+        left: 30.614896832794038%;
+        --transform: translate(122.12614995339757px, -167.10441706559158px);
+      }
+      .star84 {
+        animation-duration: 10.264301530578113s;
+        animation-delay: 3.925299855613895s;
+        top: 89.53831845345515%;
+        left: 97.31108964955504%;
+        --transform: translate(-298.0598647921967px, -249.09140625676739px);
+      }
+      .star85 {
+        animation-duration: 11.345961191673583s;
+        animation-delay: 4.495909566294753s;
+        top: 93.57583403148007%;
+        left: 75.47960871068922%;
+        --transform: translate(-160.52153487734205px, -274.5277543983244px);
+      }
+      .star86 {
+        animation-duration: 11.156395537044746s;
+        animation-delay: 3.568097250777674s;
+        top: 97.93127879552198%;
+        left: 4.269021105832094%;
+        --transform: translate(288.1051670332578px, -301.96705641178835px);
+      }
+      .star87 {
+        animation-duration: 13.653459599171336s;
+        animation-delay: 4.357195448041774s;
+        top: 77.89969709181204%;
+        left: 28.565244728461025%;
+        --transform: translate(135.03895821069554px, -175.76809167841586px);
+      }
+      .star88 {
+        animation-duration: 8.974924864293104s;
+        animation-delay: 3.8030626657532176s;
+        top: 92.15352286884286%;
+        left: 41.56840728625304%;
+        --transform: translate(53.11903409660584px, -265.56719407371px);
+      }
+      .star89 {
+        animation-duration: 7.528880408636027s;
+        animation-delay: 1.1862492230624955s;
+        top: 86.76791300976787%;
+        left: 4.320758651315604%;
+        --transform: translate(287.77922049671173px, -231.63785196153756px);
+      }
+      .star90 {
+        animation-duration: 12.714526347935257s;
+        animation-delay: 1.8342016199897715s;
+        top: 12.552157699960652%;
+        left: 32.24727499298681%;
+        --transform: translate(111.84216754418311px, 235.9214064902479px);
+      }
+      .star91 {
+        animation-duration: 8.963876675504128s;
+        animation-delay: 3.7485237895490275s;
+        top: 67.30788849366441%;
+        left: 10.377247236587305%;
+        --transform: translate(249.62334240949997px, -109.03969751008573px);
+      }
+      .star92 {
+        animation-duration: 7.4105451710888985s;
+        animation-delay: 4.443969783800727s;
+        top: 95.35933297187198%;
+        left: 91.25300727993657%;
+        --transform: translate(-259.8939458636004px, -285.7637977227935px);
+      }
+      .star93 {
+        animation-duration: 10.396191497374225s;
+        animation-delay: 2.5970590149455495s;
+        top: 97.53911743593737%;
+        left: 22.402779920163486%;
+        --transform: translate(173.86248650297003px, -299.4964398464055px);
+      }
+      .star94 {
+        animation-duration: 9.645141153548964s;
+        animation-delay: 3.2164998257513133s;
+        top: 99.9891221240157%;
+        left: 1.7164944046546893%;
+        --transform: translate(304.18608525067543px, -314.9314693812989px);
+      }
+      .star95 {
+        animation-duration: 11.124449571241069s;
+        animation-delay: 4.8637429464883075s;
+        top: 96.46266770758952%;
+        left: 36.40000341631997%;
+        --transform: translate(85.67997847718418px, -292.71480655781386px);
+      }
+      .star96 {
+        animation-duration: 8.217492417816402s;
+        animation-delay: 1.6442996748958894s;
+        top: 42.35711477109765%;
+        left: 76.58754194855375%;
+        --transform: translate(-167.50151427588864px, 48.15017694208482px);
+      }
+      .star97 {
+        animation-duration: 9.537928626071919s;
+        animation-delay: 3.3760825504980985s;
+        top: 43.076098204250755%;
+        left: 24.743250379317683%;
+        --transform: translate(159.1175226102986px, 43.620581313220235px);
+      }
+      .star98 {
+        animation-duration: 7.3808534232092065s;
+        animation-delay: 0.3364751161360813s;
+        top: 55.15015243079444%;
+        left: 79.32049249363268%;
+        --transform: translate(-184.71910270988596px, -32.44596031400499px);
+      }
+      .star99 {
+        animation-duration: 13.896211893826141s;
+        animation-delay: 4.011706129357128s;
+        top: 21.87309758586764%;
+        left: 89.80040794940408%;
+        --transform: translate(-250.74257008124567px, 177.19948520903387px);
+      }
+    }
+  }
+  .heroVideo {
+    margin: 232px auto 0;
+    position: relative;
+    width: 1216px;
+    height: 330px;
+    // &:before {
+    //   background: linear-gradient(
+    //     180deg,
+    //     rgba(4, 1, 21, 0) 0%,
+    //     rgba(4, 1, 21, 0.7) 34.48%,
+    //     #030014 82.36%
+    //   );
+    //   content: "";
+    //   display: block;
+    //   height: calc(100% + 1px);
+    //   left: 0;
+    //   position: absolute;
+    //   top: 0;
+    //   width: 100%;
+    //   z-index: 1;
+    // }
+    .content {
+      height: 100%;
+      .preview {
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        box-shadow: inset 0 0 0 8px #ffffff08;
+        padding: 30px;
+        height: 100%;
+        .element {
+          display: grid;
+          grid-gap: 20px 14px;
+          align-content: start;
+          justify-content: center;
+          align-items: start;
+          padding-bottom: 32px;
+          grid-template-columns: repeat(auto-fill, minmax(274px, 1fr));
+          #container {
+            // background: linear-gradient(
+            //   180deg,
+            //   rgba(4, 1, 21, 0) 0%,
+            //   rgba(4, 1, 21, 0.7) 34.48%,
+            //   #030014 82.36%
+            // );
+            background: linear-gradient(
+              180deg,
+              #0300144f 0%,
+              #030014b2 34.48%,
+              #030014 82.36%
+            );
+            border-radius: 12px;
+          }
+        }
+      }
+    }
+  }
+}
+@keyframes heroBlackHoleCirclesRotate {
+  0% {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes heroBlackHoleCirclesRotateReverse {
+  0% {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes heroBlackHoleStarsRotate {
+  0% {
+    transform: translateZ(0) translate(-50%, -50%) rotate(0);
+  }
+  to {
+    transform: translateZ(0) translate(-50%, -50%) rotate(-360deg);
+  }
+}
+@keyframes heroBlackHoleStarsRotateReverse {
+  0% {
+    transform: translateZ(0) translate(-50%, -50%) rotate(0);
+  }
+  to {
+    transform: translateZ(0) translate(-50%, -50%) rotate(360deg);
+  }
+}
+@keyframes heroBlackHoleStarsTwinkle {
+  0% {
+    background: rgba(255, 255, 255, 0);
+    transform: translateZ(0) translate(0) scale(1);
+  }
+  10% {
+    background: rgb(255, 255, 255);
+  }
+  to {
+    background: rgb(255, 255, 255);
+    transform: translateZ(0) var(--transform) scale(0.5);
+  }
+}

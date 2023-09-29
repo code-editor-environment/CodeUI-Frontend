@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 
 function Menu({ handleLogout, user }) {
-  const { dropdownRef, onClick, isActive } = useDetectOutsideClick();
+  const { ref, isComponentVisible, onClick } = useDetectOutsideClick();
   return (
     <div className="dropdown-container header-dropdown-menu">
       <button
@@ -30,8 +30,8 @@ function Menu({ handleLogout, user }) {
         />
       </button>
       <nav
-        ref={dropdownRef}
-        className={`dropdown-menu ${isActive ? "open" : "closed"}`}
+        ref={ref}
+        className={`dropdown-menu ${isComponentVisible ? "open" : "closed"}`}
       >
         <ul>
           <li className="list-item">

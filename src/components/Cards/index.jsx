@@ -14,7 +14,7 @@ function Cards({ category, elements, favoriteElement }) {
                 key={index}
               >
                 <div className="card-content">
-                  <Link className="get-html-css" to="/">
+                  <Link className="get-html-css" to={`/detail/${post._id}`}>
                     Get <span className="html">HTML</span> &amp;{" "}
                     <span className="css">CSS</span>
                   </Link>

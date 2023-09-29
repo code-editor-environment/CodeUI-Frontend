@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import AppButton from "../../../../components/Button";
 function Cards() {
   return (
     <section className="posts-preview" style={{ width: "100%" }}>
@@ -251,12 +252,12 @@ function Cards() {
           </div>
         </article>
       </div>
-      <Link
-        className="button button--secondary see-more-button"
-        to="/elements?category=card"
-      >
-        See all cards
-      </Link>
+      <AppButton
+        children="See all cards"
+        btnType="button_2"
+        htmlType="link"
+        url="/elements?category=card"
+      />
     </section>
   );
 }

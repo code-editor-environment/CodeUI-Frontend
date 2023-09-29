@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import AppButton from "../../../../components/Button";
 function Loaders() {
   return (
     <section className="posts-preview" style={{ width: "100%" }}>
@@ -206,12 +207,12 @@ function Loaders() {
           </div>
         </article>
       </div>
-      <Link
-        className="button button--secondary see-more-button"
-        to="/elements?category=spinner"
-      >
-        See all loaders
-      </Link>
+      <AppButton
+        children="See all loaders"
+        btnType="button_2"
+        htmlType="link"
+        url="/elements?category=spinner"
+      />
     </section>
   );
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 
 function Notification() {
-  const { dropdownRef, onClick, isActive } = useDetectOutsideClick();
+  const { ref, isComponentVisible, onClick } = useDetectOutsideClick();
   return (
     <div className="dropdown-container header-dropdown-menu dropdown-notifications">
       <button
@@ -23,10 +23,8 @@ function Notification() {
         </svg>
       </button>
       <div
-        ref={dropdownRef}
-        className={`dropdown-menu notifications ${
-          isActive ? "open" : "closed"
-        }`}
+        ref={ref}
+        className={`dropdown-menu ${isComponentVisible ? "open" : "closed"}`}
       >
         <span className="notifications__heading">Notifications</span>
         <div className="notifications__content">

@@ -1,6 +1,7 @@
 import React from "react";
 // import points from "../../../../assets/images/logoCover.png";
 import { Link } from "react-router-dom";
+import AppButton from "../../../../components/Button";
 function Supporters() {
   return (
     <div className="supporters-section creators-section">
@@ -60,9 +61,12 @@ function Supporters() {
           </div>
         </Link>
       </section>
-      <Link className="button sup-button" to="/creators">
-        Become a supporter
-      </Link>
+      <AppButton
+        children="Become a supporter"
+        btnType="button_1"
+        htmlType="link"
+        url="/creators"
+      />
     </div>
   );
 }

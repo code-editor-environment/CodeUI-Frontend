@@ -2,8 +2,7 @@ import React from "react";
 import { useDetectOutsideClick } from "../../../../hooks/useOutsideClick";
 
 function Randomized() {
-  const { dropdownRef, onClick, isActive } = useDetectOutsideClick();
-  console.log("🚀 ~ file: index.jsx:6 ~ Randomized ~ isActive:", isActive)
+  const { ref, isComponentVisible, onClick } = useDetectOutsideClick();
   return (
     <div className="dropdown-container dropdown-orderBy">
       <button className="dropdown-trigger" onClick={onClick}>
@@ -36,8 +35,8 @@ function Randomized() {
         </svg>
       </button>
       <nav
-        ref={dropdownRef}
-        className={`dropdown-menu ${isActive ? "open" : "closed"}`}
+        ref={ref}
+        className={`dropdown-menu ${isComponentVisible ? "open" : "closed"}`}
       >
         <ul>
           <li className="list-item">

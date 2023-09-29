@@ -11,7 +11,7 @@ const MainLayout = () => {
     <div className="main-container dark">
       <Header />
       <div className="root-container">
-        {!["", "creators"].includes(pathname) && <Sidebar />}
+        {!["", "creators", "subscription"].includes(pathname) && <Sidebar />}
         <div className="outlet-wrapper">
           <Outlet />
         </div>

@@ -1,24 +1,28 @@
 import { useState, useEffect, useRef } from "react";
 
 export const useDetectOutsideClick = () => {
-  const dropdownRef = useRef(null);
-  const [isActive, setIsActive] = useState(false);
-  useEffect(() => {
-    const onClick = (e) => {
-      if (
-        dropdownRef.current !== null &&
-        !dropdownRef.current.contains(e.target)
-      ) {
-        setIsActive(!isActive);
-      }
-    };
-    if (isActive) {
-      window.addEventListener("click", onClick);
+  const [isComponentVisible, setIsComponentVisible] = useState(false);
+  const ref = useRef(null);
+  const handleHideDropdown = (event) => {
+    if (event.key === "Escape") {
+      setIsComponentVisible(false);
     }
+  };
+
+  const handleClickOutside = (event) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setIsComponentVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleHideDropdown, true);
+    document.addEventListener("click", handleClickOutside, true);
     return () => {
-      window.removeEventListener("click", onClick);
+      document.removeEventListener("keydown", handleHideDropdown, true);
+      document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [isActive, dropdownRef]);
-  const onClick = () => setIsActive(!isActive);
-  return { dropdownRef, onClick, isActive };
+  }, [isComponentVisible, ref]);
+  const onClick = () => setIsComponentVisible(true);
+  return { ref, isComponentVisible, onClick };
 };

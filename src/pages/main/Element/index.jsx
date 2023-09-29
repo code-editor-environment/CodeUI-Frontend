@@ -6,16 +6,15 @@ import { getElements } from "../../../store/element/elements-slice";
 import { getListElements } from "../../../api/element";
 import { useDispatch, useSelector } from "react-redux";
 import Pagination from "../../../components/Pagination";
-import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 import Randomized from "./randomized";
+import SkeletonElement from "./../../../components/Skeleton/skeletonElement";
 function Element() {
   const dispatch = useDispatch();
   const { search } = useParseUrl();
-  const { setLoading } = useIsLoading();
+  const { loading, setLoading } = useIsLoading();
   const [totalPages, setTotalPages] = useState(10);
   const [page, setPage] = useState(4);
   const { elements, favoriteElement } = useSelector((state) => state.element);
-  const { dropdownRef, onClick, isActive } = useDetectOutsideClick();
   useEffect(() => {
     window.scrollTo({ top: 0 });
     setLoading(true);
@@ -32,20 +31,20 @@ function Element() {
   return (
     <main className="category-page">
       <div className="category-hero">
-        <h1 className="category-title">Elements {search.category}</h1>
-        <p className="category-description">
-          Open-Source {search.category} made with{" "}
-          <span className="bgTextRed">HTML</span> and{" "}
-          <span className="bgTextBlue">CSS</span>
-        </p>
+        {/* <h1 className="category-title">Elements {search.category}</h1> */}
       </div>
       <div className="filters-container">
         <div className="filters">
-          <span className="page">
-            tag - #elements, #open-source , #{search.category}
-          </span>
+          <p className="category-description">
+            Open-Source {search.category} made with{" "}
+            <span className="bgTextRed">HTML</span> and{" "}
+            <span className="bgTextBlue">CSS</span>
+          </p>
           <div className="filters-controls false">
-            <Randomized/>
+            <span className="page">
+              tag - #elements, #open-source , #{search.category}
+            </span>
+            <Randomized />
             <div className="dropdown-container dropdown-theme">
               <button className="dropdown-trigger">
                 <span className="icon" />
@@ -120,11 +119,15 @@ function Element() {
         </div>
       </div>
       {/* <Loading />  */}
-      <Cards
-        category={search.category}
-        elements={elements}
-        favoriteElement={favoriteElement}
-      />
+      {loading ? (
+        <SkeletonElement total={10} />
+      ) : (
+        <Cards
+          category={search.category}
+          elements={elements}
+          favoriteElement={favoriteElement}
+        />
+      )}
       {elements?.length > 0 && (
         <Pagination value={page} range={totalPages} onChange={setPage} />
       )}

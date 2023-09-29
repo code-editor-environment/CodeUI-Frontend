@@ -6,6 +6,11 @@ export const getListElements = handleApi(async (category) => {
   return result.data;
 });
 
+export const getListElementById = handleApi(async (elementId) => {
+  const result = await API().get(`/post/${elementId}`);
+  return result.data;
+});
+
 export const getListElementByCreator = handleApi(async (data) => {
   const result = await API().get(
     `/postApproved/by/${data.login}?page=${data.page}&perPage=4`

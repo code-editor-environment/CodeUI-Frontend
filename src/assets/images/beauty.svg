@@ -1,0 +1,57 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+version="1.1"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+width="24"
+height="24"
+x="0"
+y="0"
+viewBox="0 0 24 24"
+style="enable-background:new 0 0 512 512"
+xml:space="preserve"
+class=""
+>
+<g>
+<linearGradient
+id="a"
+x1="6.375"
+x2="22.375"
+y1="12"
+y2="12"
+gradientUnits="userSpaceOnUse"
+>
+<stop
+stop-opacity="1"
+stop-color="#a855f7"
+offset="0.009652509652509652"
+></stop>
+<stop stop-opacity="1" stop-color="#ec4899" offset="1"></stop>
+</linearGradient>
+<g data-name="1">
+<path
+fill="url(#a)"
+d="m15.762 5.207 1.41 2.819a1.75 1.75 0 0 0 1.132.836l2.548.425c1.635.272 2.014 1.454.842 2.626L19.708 13.9a1.73 1.73 0 0 0-.415 1.446l.568 2.459c.447 1.94-.588 2.698-2.302 1.683l-2.394-1.418a1.714 1.714 0 0 0-1.58 0l-2.394 1.418c-1.714 1.015-2.75.257-2.302-1.683l.568-2.46a1.73 1.73 0 0 0-.415-1.445l-1.986-1.986c-1.172-1.172-.793-2.354.842-2.626l2.548-.425a1.75 1.75 0 0 0 1.132-.836l1.41-2.82c.763-1.525 2.011-1.525 2.774 0z"
+opacity="1"
+data-original="url(#a)"
+></path>
+<path
+fill="url(#a)"
+d="M8.375 5.75h-6a.75.75 0 0 1 0-1.5h6a.75.75 0 0 1 0 1.5z"
+opacity="1"
+data-original="url(#a)"
+></path>
+<path
+fill="url(#a)"
+d="M5.375 19.75h-3a.75.75 0 0 1 0-1.5h3a.75.75 0 0 1 0 1.5z"
+opacity="1"
+data-original="url(#a)"
+></path>
+<path
+fill="url(#a)"
+d="M3.375 12.75h-1a.75.75 0 0 1 0-1.5h1a.75.75 0 0 1 0 1.5z"
+opacity="1"
+data-original="url(#a)"
+></path>
+</g>
+</g>
+</svg>

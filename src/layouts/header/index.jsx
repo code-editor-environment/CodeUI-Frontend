@@ -79,7 +79,11 @@ function Header() {
           </Link>
           <Link
             className={`hover-underline-animation browse-link ${
-              history !== "/" && history !== "/creators" ? "active" : "false"
+              history !== "/" &&
+              history !== "/subscription" &&
+              history !== "/creators"
+                ? "active"
+                : "false"
             }`}
             to="/elements?category=all"
           >
@@ -92,6 +96,14 @@ function Header() {
             to="/creators"
           >
             Creators
+          </Link>
+          <Link
+            className={`hover-underline-animation ${
+              history === "/subscription" ? "active" : "false"
+            }`}
+            to="/subscription"
+          >
+            Subscription
           </Link>
           <div className="category-links">
             <Link className="hover-underline-animation null" to="/all">

@@ -10,6 +10,7 @@ import Profile from "./pages/main/Profile";
 import Detail from "./pages/main/Detail";
 import Err from "./pages/main/Err";
 import "./assets/css/styles.scss";
+import Subscription from './pages/main/Subscription';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="elements" element={<Element />} />
             <Route path="detail/:postId" element={<Detail />} />
             <Route path="creators" element={<Creators />} />
+            <Route path="subscription" element={<Subscription />} />
             <Route path="profile/:login" element={<Profile />} />
           </Route>
           <Route path="*" element={<Err />} />
