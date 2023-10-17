@@ -32,7 +32,7 @@ function AppButton({
           onClick={onClick}
           disabled={disabled}
         >
-          {Icon && <Icon />} {img && <img src={img} alt="" />}
+          {Icon && Icon} {img && <img src={img} alt="" />}
           {children}
         </a>
       </>
@@ -42,15 +42,20 @@ function AppButton({
   if (htmlType === "link") {
     return (
       <Link to={url} className={classes} {...restProps}>
-        {Icon && <Icon />}
+        {Icon && Icon}
         {img && <img src={img} alt="" />} {children}
       </Link>
     );
   }
 
   return (
-    <button className={classes} {...restProps}>
-      {Icon && <Icon />} {children}
+    <button
+      className={classes}
+      {...restProps}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {Icon && Icon} {children}
     </button>
   );
 }

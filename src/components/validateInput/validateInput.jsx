@@ -96,3 +96,18 @@ export function validateChangePassword(values) {
   }
   return errors;
 }
+
+export function validateUpdateProfile(values) {
+  let errors = {};
+  if (!values.username) {
+    errors.username = "Username is required";
+  } else if (values.username.length < 5) {
+    errors.username = "Username must be 5 or more characters";
+  }
+  if (!values.firstName) {
+    errors.firstName = "firstName is required";
+  } else if (values.firstName.length < 5) {
+    errors.firstName = "fullName must be 5 or more characters";
+  }
+  return errors;
+}

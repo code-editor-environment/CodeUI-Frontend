@@ -1,21 +1,27 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import htmlIcon from "../../../assets/images/html.svg";
 import beauty from "../../../assets/images/beauty.svg";
 import cssIcon from "../../../assets/images/css.svg";
 import scssIcon from "../../../assets/images/scss.svg";
 import copyIcon from "../../../assets/images/copy.svg";
 import DropdownNav from "../../../components/DropdownNav";
+import { onConvert, onBeautify } from "../../../core/tools";
+import DropdownMore from "../../../components/DropdownNav/dropdownMore";
+import { open } from "../../../store/modal/modal-slice";
+import IntegrationModal from "../../../components/Modal/integrationModal";
 
 function EditorHeader({
   changeEditor,
   setChangeEditor,
   htmlText,
   cssText,
+  setCssText,
+  setHtmlText,
   convert,
-  onConvert,
-  onBeautify,
+  setConvert,
 }) {
+  const dispatch = useDispatch();
   const { elementById } = useSelector((state) => state.element);
   const [copyCss, setCopyCss] = useState(false);
   const [copyHtml, setCopyHtml] = useState(false);
@@ -36,10 +42,10 @@ function EditorHeader({
     }, 1000);
   };
   const onConvertCss = () => {
-    onConvert(false);
+    onConvert(false, cssText, elementById.css, setConvert, setCssText);
   };
   const onConvertScss = () => {
-    onConvert(true);
+    onConvert(true, cssText, elementById.css, setConvert, setCssText);
   };
   const item = [
     {
@@ -58,7 +64,33 @@ function EditorHeader({
       label: "SCSS",
       onClick: onConvertScss,
     },
-  ];
+  ]; 
+    const onIntegration = () => {
+      dispatch(open(<IntegrationModal postId={elementById._id} />));
+  };
+    const itemMore = [
+      {
+        icon: (
+          <img
+            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
+            alt="cssIcon"
+            style={{ width: "30px", marginRight: "5px" }}
+          />
+        ),
+        label: "Test integration",
+        onClick: onIntegration,
+      },
+      {
+        icon: (
+          <img
+            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
+            alt="scssIcon"
+            style={{ width: "30px", marginRight: "5px" }}
+          />
+        ),
+        label: "Comming soon",
+      },
+    ];
   return (
     <span className="editor-label editor-label--css">
       <div className="editor-change">
@@ -102,19 +134,32 @@ function EditorHeader({
         <button
           className="copy-all CSS"
           style={{ background: "#444" }}
-          onClick={onBeautify}
+          onClick={() =>
+            onBeautify(
+              changeEditor,
+              cssText,
+              elementById?.css,
+              htmlText,
+              elementById?.html,
+              setCssText,
+              setHtmlText
+            )
+          }
         >
           <img src={beauty} alt="" />
         </button>
         <button
           className="copy-all CSS"
-          style={{ background: "#444"}}
+          style={{ background: "#444" }}
           onClick={changeEditor ? onCopyCss : onCopyHtml}
         >
-          <span className="copy-all__text" >
+          <span className="copy-all__text">
             {copyCss || copyHtml ? "✔" : <img src={copyIcon} alt="copyIcon" />}
           </span>
         </button>
+        <div style={{ position: "relative" }}>
+          <DropdownMore item={itemMore} />
+        </div>
       </div>
     </span>
   );

@@ -53,11 +53,11 @@ export const handleApi = (fnc) => async (data) => {
       duration: 5,
     };
     toast.error(args);
-    if (error.response.status === 401) {
-      setTimeout(() => {
-        ticketLogoutHp();
-      }, 3000);
-    }
+    // if (error.response.status === 401) {
+    //   setTimeout(() => {
+    //     ticketLogoutHp();
+    //   }, 3000);
+    // }
     return false;
   }
 };

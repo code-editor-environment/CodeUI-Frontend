@@ -1,8 +1,12 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import {
+  configureStore,
+  createSlice,
+} from "@reduxjs/toolkit";
 import modalReducer from "./modal/modal-slice"; 
 import elementReducer from "./element/elements-slice"; 
 import profileReducer from "./profile/profile-slice"; 
-import creatorReducer from "./creator/creator-slice"; 
+import creatorReducer from "./creator/creator-slice";
+
 const userDetailSlice = createSlice({
   name: "userDetail",
   initialState: {},
@@ -28,6 +32,10 @@ const store = configureStore({
     profile: profileReducer,
     creator: creatorReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 const {

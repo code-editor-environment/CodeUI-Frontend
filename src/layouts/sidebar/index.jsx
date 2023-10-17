@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { collection, getDocs } from "firebase/firestore";
 import { useIsLogin } from "../../hooks/useIsLogin";
 import { useParseUrl } from "../../hooks/useParseUrl";
+import styles from "./sidebar.module.scss";
+import { db } from "../../configs/firebase.configs";
 function Sidebar() {
   const { search } = useParseUrl();
   const { isLogin } = useIsLogin();
@@ -9,7 +12,19 @@ function Sidebar() {
     if (search.category === path) return "active";
     else return "false";
   };
-
+  const [todos, setTodos] = useState([]);
+  const fetchPost = async () => {
+    await getDocs(collection(db, "categories")).then((querySnapshot) => {
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setTodos(newData);
+    });
+  };
+  useEffect(() => {
+    fetchPost();
+  }, []);
   return (
     <div className="navigation-section">
       <div className="sticky-wrapper">
@@ -20,42 +35,15 @@ function Sidebar() {
           >
             <div className="tab-content">All</div>
           </Link>
-          <Link
-            className={`tab tab--button ${isActive("button")}`}
-            to="/elements?category=button"
-          >
-            <div className="tab-content">Buttons</div>
-          </Link>
-          <Link
-            className={`tab tab--checkbox ${isActive("checkbox")}`}
-            to="/elements?category=checkbox"
-          >
-            <div className="tab-content">Checkboxes</div>
-          </Link>
-          <Link
-            className={`tab tab--switch ${isActive("switch")}`}
-            to="/elements?category=switch"
-          >
-            <div className="tab-content">Toggle switches</div>
-          </Link>
-          <Link
-            className={`tab tab--card ${isActive("card")}`}
-            to="/elements?category=card"
-          >
-            <div className="tab-content">Cards</div>
-          </Link>
-          <Link
-            className={`tab tab--spinner ${isActive("spinner")}`}
-            to="/elements?category=spinner"
-          >
-            <div className="tab-content">Loaders</div>
-          </Link>
-          <Link
-            className={`tab tab--input ${isActive("input")}`}
-            to="/elements?category=input"
-          >
-            <div className="tab-content">Inputs</div>
-          </Link>
+          {todos?.map((category, i) => (
+            <Link
+              className={`tab tab--button ${isActive(category.name)}`}
+              to={`/elements?category=${category.name}`}
+              key={i}
+            >
+              <div className="tab-content">{category.description}</div>
+            </Link>
+          ))}
           {isLogin && (
             <Link
               className={`tab tab--favorites ${isActive("favorites")}`}
@@ -79,6 +67,20 @@ function Sidebar() {
             </Link>
           )}
         </nav>
+        <div className={styles.ads}>
+          <div className={styles.adsContent}>
+            <a>
+              <img
+                alt="ads via Carbon"
+                className="block "
+                border={0}
+                height={100}
+                width={150}
+              />
+            </a>
+          </div>
+          <span>ads via Carbon</span>
+        </div>
       </div>
     </div>
   );

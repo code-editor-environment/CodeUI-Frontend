@@ -113,12 +113,6 @@ function HeroTest() {
                     </div>
                   </Link>
                 </div>
-                <div className="card__footer">
-                  <a href="/profile">
-                    <span className="card__nickname text-color">Creator</span>
-                  </a>
-                  <div className="card__views">1000K views</div>
-                </div>
               </article>
               <article className="card card--button">
                 <div style={{ height: "250px", position: "relative" }}>
@@ -142,12 +136,6 @@ function HeroTest() {
                       </button>
                     </div>
                   </Link>
-                </div>
-                <div className="card__footer">
-                  <a href="/profile">
-                    <span className="card__nickname text-color">Creator</span>
-                  </a>
-                  <div className="card__views">1000K views</div>
                 </div>
               </article>
               <article className="card card--button">
@@ -189,12 +177,6 @@ function HeroTest() {
                     </div>
                   </Link>
                 </div>
-                <div className="card__footer">
-                  <a href="/profile">
-                    <span className="card__nickname text-color">Creator</span>
-                  </a>
-                  <div className="card__views">1000K views</div>
-                </div>
               </article>
               <article className="card card--button">
                 <div style={{ height: "250px", position: "relative" }}>
@@ -229,12 +211,6 @@ function HeroTest() {
                       </button>
                     </div>
                   </Link>
-                </div>
-                <div className="card__footer">
-                  <a href="/profile">
-                    <span className="card__nickname text-color">Creator</span>
-                  </a>
-                  <div className="card__views">1000K views</div>
                 </div>
               </article>
             </div>

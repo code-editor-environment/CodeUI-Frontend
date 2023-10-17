@@ -1,7 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ref, set, onValue, update } from "firebase/database";
+import { database } from "../../configs/firebase.configs";
 
 function Cards({ category, elements, favoriteElement }) {
+  const [state, setState] = useState(false);
+  const [test, setTest] = useState(null);
+  var dataReal 
+  // const data = {
+  //   stateId: state,
+  // };
+  // set(ref(database, "state/" + state), data)
+  //   .then(() => {
+  //     console.log("Success");
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+  const testUp = () => {
+    setState(!state);
+    const updates = {};
+    updates["state/" + 1] = {
+      check: !state,
+    };
+    update(ref(database), updates)
+      .then(() => {
+        // Success
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const getUserData = () => {
+    const cartRef = ref(database, "/state/" + 1);
+    onValue(cartRef, (snapshot) => {
+      const data = snapshot.val();
+      if (!!data) {
+        console.log("data", data);
+        dataReal = data.check;
+        setTest(data.check);
+      } else {
+        console.log("Data not found");
+      }
+    });
+  };
+  const writeUserData = () => {
+      set(ref(database, "state/" + 1), {
+        check: true,
+      });
+  };
+        // set(ref(database, "state/" + 1), {
+        //   check: true,
+        // });
+  useEffect(
+    () => {
+      //  writeUserData();
+      getUserData();
+    },
+    // eslint-disable-next-line
+    []
+  );
   return (
     <section className="cards-container cards-container--all">
       {(category === "favorites"
@@ -15,8 +73,8 @@ function Cards({ category, elements, favoriteElement }) {
               >
                 <div className="card-content">
                   <Link className="get-html-css" to={`/detail/${post._id}`}>
-                    Get <span className="html">HTML</span> &amp;{" "}
-                    <span className="css">CSS</span>
+                    {test ? "t" : "f"} Get <span className="html">HTML</span>{" "}
+                    &amp; <span className="css">CSS</span>
                   </Link>
                   <style
                     dangerouslySetInnerHTML={{
@@ -29,7 +87,11 @@ function Cards({ category, elements, favoriteElement }) {
                     dangerouslySetInnerHTML={{ __html: post.html }}
                   ></div>
                 </div>
-                <button type="submit" className="card__bookmark false">
+                <button
+                  type="submit"
+                  className="card__bookmark false"
+                  onClick={testUp}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"

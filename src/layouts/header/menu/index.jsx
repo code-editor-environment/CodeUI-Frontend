@@ -22,9 +22,9 @@ function Menu({ handleLogout, user }) {
             d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z"
           />
         </svg>
-        <span className="profile-name">{user.login}</span>
+        <span className="profile-name">{user.username}</span>
         <img
-          src={user.avatar_url}
+          src={user.imageUrl}
           alt="User profile"
           className="profile-picture"
         />
@@ -35,7 +35,7 @@ function Menu({ handleLogout, user }) {
       >
         <ul>
           <li className="list-item">
-            <Link className="item" to={`/profile/${user.login}`}>
+            <Link className="item" to={`/profile/${user.username}`}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -50,6 +50,26 @@ function Menu({ handleLogout, user }) {
               </svg>
               <span>Profile</span>
             </Link>
+          </li>
+          <li className="list-item">
+            <a
+              href="#"
+              className="item item--help"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width={24}
+                height={24}
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                  fill="currentColor"
+                  d="M3.161 4.469a6.5 6.5 0 0 1 8.84-.328 6.5 6.5 0 0 1 9.178 9.154l-7.765 7.79a2 2 0 0 1-2.719.102l-.11-.101-7.764-7.791a6.5 6.5 0 0 1 .34-8.826zm1.414 1.414a4.5 4.5 0 0 0-.146 6.21l.146.154L12 19.672l5.303-5.304-3.535-3.535-1.06 1.06a3 3 0 1 1-4.244-4.242l2.102-2.103a4.501 4.501 0 0 0-5.837.189l-.154.146zm8.486 2.828a1 1 0 0 1 1.414 0l4.242 4.242.708-.706a4.5 4.5 0 0 0-6.211-6.51l-.153.146-3.182 3.182a1 1 0 0 0-.078 1.327l.078.087a1 1 0 0 0 1.327.078l.087-.078 1.768-1.768z"
+                />
+              </svg>
+              <span>We need your help</span>
+            </a>
           </li>
           <li className="list-item list-item--separator" />
           <li className="list-item">

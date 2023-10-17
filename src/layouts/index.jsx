@@ -8,15 +8,18 @@ import { useParseUrl } from "../hooks/useParseUrl";
 const MainLayout = () => {
   const { pathname } = useParseUrl();
   return (
-    <div className="main-container dark" style={{ backgroundColor: pathname=== ""?"#030014":"#171717" }}>
+    <div
+      className="main-container dark"
+      style={{ backgroundColor: pathname === "" ? "#030014" : "#171717" }}
+    >
       <Header />
       <div className="root-container">
-        {!["", "creators", "subscription"].includes(pathname) && <Sidebar />}
+        {(/element/.test(pathname) || /profile/.test(pathname)) && <Sidebar />}
         <div className="outlet-wrapper">
           <Outlet />
         </div>
       </div>
-      <Footer />
+      {!/chat/.test(pathname) && <Footer />}
       <ModalContainer />
       <ToastContainer />
     </div>

@@ -11,6 +11,10 @@ import Detail from "./pages/main/Detail";
 import Err from "./pages/main/Err";
 import "./assets/css/styles.scss";
 import Subscription from './pages/main/Subscription';
+import Create from "./pages/main/Create";
+import ChatBox from "./pages/main/Chat";
+import VideoCall from "./pages/main/Chat/videoCall";
+import Integration from "./core/integration";
 
 function App() {
   return (
@@ -19,13 +23,17 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route path="" element={<Home />} />
+            <Route path="create" element={<Create />} />
             <Route path="elements" element={<Element />} />
             <Route path="detail/:postId" element={<Detail />} />
             <Route path="creators" element={<Creators />} />
             <Route path="subscription" element={<Subscription />} />
-            <Route path="profile/:login" element={<Profile />} />
+            <Route path="profile/:username" element={<Profile />} />
+            <Route path="chat" element={<ChatBox />} />
+            <Route path="chat/:chatId" element={<VideoCall />} />
           </Route>
           <Route path="*" element={<Err />} />
+          <Route path="/integration/:postId" element={<Integration />} />
         </Routes>
       </BrowserRouter>
     </Provider>

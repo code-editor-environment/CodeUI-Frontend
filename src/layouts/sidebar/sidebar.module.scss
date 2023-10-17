@@ -1,0 +1,36 @@
+.ads {
+  color: rgb(229 231 235 / 1);
+  font-size: 12px;
+  padding-bottom: 1rem;
+  background-color: rgb(33 33 33 / 1);
+  border-radius: 0.25rem;
+  overflow: hidden;
+  max-width: 150px;
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  .adsContent {
+    display: block;
+    a {
+      display: block;
+      img {
+        max-width: 150px;
+        display: block;
+        height: auto;
+      }
+    }
+  }
+  span {
+    color: rgb(209 213 219 / 1);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 8px;
+    font-weight: 600;
+    padding: 7px;
+    background-color: rgb(41 41 41 / 1);
+    right: 0;
+    bottom: 0;
+    position: absolute;
+  }
+}

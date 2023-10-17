@@ -1,8 +1,12 @@
+svg{
+    margin-right: 6px;
+    // margin-left: 10px;
+  }
 .button {
   all: unset;
   cursor: pointer;
   user-select: none;
-  padding: 0 20px;
+  padding: 0 24px;
   height: 42px;
   font-size: 16px;
   display: flex;
@@ -12,12 +16,14 @@
   border: none;
   border-radius: var(--button-border-radius);
   transition: all 0.3s;
+  &:has(svg) {
+    padding: 0 30px 0 20px;
+  }
 }
 
 .button_0 {
   width: fit-content;
   margin: auto;
-  padding: 0 30px;
   background: linear-gradient(90deg, #ec4899, #a855f7, #ec4899);
   background-size: 200% 200%;
   color: var(--lightgray);
@@ -32,7 +38,6 @@
 .button_1 {
   width: max-content;
   margin: auto;
-  padding: 0 30px;
   background: linear-gradient(90deg, #06b6d4, #3b82f6, #06b6d4);
   background-size: 200% 200%;
   color: var(--lightgray);
@@ -47,7 +52,6 @@
 .button_2{
   width: max-content;
   margin: auto;
-  padding: 0 30px;
   background: #2c2c2c;
   color: var(--lightgray);
   font-weight: var(--semibold);

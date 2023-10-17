@@ -25,10 +25,10 @@ function Footer() {
         <a href="https://www.instagram.com/_codeui_/" target="blank">
           <img src={social1} alt="social" />
         </a>
-        <a href="https://www.instagram.com/_codeui_/" target="blank">
+        <a href="https://www.facebook.com/codeui111/" target="blank">
           <img src={social2} alt="social" />
         </a>
-        <a href="https://www.instagram.com/_codeui_/" target="blank">
+        <a href="https://www.tiktok.com/@_codeui_/" target="blank">
           <img src={social3} alt="social" />
         </a>
       </div>

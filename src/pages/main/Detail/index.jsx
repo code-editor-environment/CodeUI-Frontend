@@ -5,9 +5,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useIsLogin } from "../../../hooks/useIsLogin";
-import axios from "axios";
+// import axios from "axios";
 import ColorPicker from "react-pick-color";
-import { ResizableBox } from "react-resizable";
+// import { ResizableBox } from "react-resizable";
 import { getElementById } from "../../../store/element/elements-slice";
 import { getListElementById } from "../../../api/element";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
@@ -20,7 +20,7 @@ function Detail() {
   const { elementById } = useSelector((state) => state.element);
   const { isLogin } = useIsLogin();
   const { hidden, handleClick } = useIsHidden();
-  const [check, setCheck] = useState(false);
+  // const [check, setCheck] = useState(false);
   const [convert, setConvert] = useState(false);
   const [findFavorite, setFindFavorite] = useState(null);
   const [cssText, setCssText] = useState("");
@@ -41,30 +41,30 @@ function Detail() {
     // eslint-disable-next-line
     [postId]
   );
-  useEffect(
-    () => {
-      isLogin &&
-        axios({
-          method: "POST",
-          url: `${import.meta.env.VITE_DOMAIN}/user/findFavorite/${
-            isLogin.user.login
-          }`,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${isLogin.token}`,
-          },
-          data: { postId },
-        })
-          .then((res) => {
-            setFindFavorite(res.data);
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-    },
-    // eslint-disable-next-line
-    [postId, check]
-  );
+  // useEffect(
+  //   () => {
+  //     isLogin &&
+  //       axios({
+  //         method: "POST",
+  //         url: `${import.meta.env.VITE_DOMAIN}/user/findFavorite/${
+  //           isLogin.user.login
+  //         }`,
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${isLogin.token}`,
+  //         },
+  //         data: { postId },
+  //       })
+  //         .then((res) => {
+  //           setFindFavorite(res.data);
+  //         })
+  //         .catch((err) => {
+  //           console.error(err);
+  //         });
+  //   },
+  //   // eslint-disable-next-line
+  //   [postId, check]
+  // );
   function handleEditorChangeCss(value, event) {
     setCssText(value);
   }
@@ -81,72 +81,26 @@ function Detail() {
   const onFavorite = () => {
     // dispatch(favorite(findFavorite, postId,check,setCheck));
   };
-  const onConvert = (status) => {
-    axios({
-      method: "POST",
-      url: `${import.meta.env.VITE_DOMAIN}/tool/convert`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: {
-        css: cssText === "" ? elementById.css : cssText,
-        scss: cssText === "" ? elementById.css : cssText,
-        type: status ? "scss" : "css",
-      },
-    })
-      .then((res) => {
-        setConvert(status);
-        setCssText(res.data.result);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+
+  const options = {
+    fontSize: 17,
+    emptySelectionClipboard: true,
   };
-  const onBeautify = () => {
-    var bodyFormData = new FormData();
-    bodyFormData.append(
-      "apikey",
-      "Xo3hid7LnTem4DwaEsciOB8mWY41NnjmIzq0ni7rgnvS9"
-    );
-    changeEditor
-      ? bodyFormData.append("css", cssText === "" ? elementById.css : cssText)
-      : bodyFormData.append(
-          "html",
-          htmlText === "" ? elementById.html : htmlText
-        );
 
-    axios({
-      method: "POST",
-      url: `https://api.dotmaui.com/client/1.0/${
-        changeEditor ? "cssbeautify" : "htmlbeautify"
-      }/`,
-      data: bodyFormData,
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-      .then((res) => {
-        changeEditor ? setCssText(res.data) : setHtmlText(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-  const options = { fontSize: 17, emptySelectionClipboard: true };
-
-const CoolDiv = (props) => {
+// const CoolDiv = (props) => {
+//   return (
+//     <ResizableBox
+//       className="box"
+//       width={900}
+//       axis="x"
+//       handle={<span className="custom-handle" />}
+//     >
+//       {props.children}
+//     </ResizableBox>
+//   );
+// };
   return (
-    <ResizableBox
-      className="box"
-      width={900}
-      axis="x"
-      handle={<span className="custom-handle" />}
-    >
-      {props.children}
-    </ResizableBox>
-  );
-};
-
-  return (
-    <main className="wrapper">
+    <main className="wrapper" style={{ padding: "10px" }}>
       <button
         className="button button--secondary button--icon button--back"
         onClick={() => navigate(-1)}
@@ -169,48 +123,47 @@ const CoolDiv = (props) => {
       </button>
       {elementById && (
         <>
-          <div className="detail-page detail-page--button flexer">
-            <CoolDiv>
-              <section className="css-editor">
-                <EditorHeader
-                  changeEditor={changeEditor}
-                  setChangeEditor={setChangeEditor}
-                  htmlText={htmlText}
-                  cssText={cssText}
-                  convert={convert}
-                  onConvert={onConvert}
-                  onBeautify={onBeautify}
+          <div className="detail-page detail-page--button">
+            <section className="css-editor">
+              <EditorHeader
+                changeEditor={changeEditor}
+                setChangeEditor={setChangeEditor}
+                htmlText={htmlText}
+                cssText={cssText}
+                convert={convert}
+                setConvert={setConvert}
+                setCssText={setCssText}
+                setHtmlText={setHtmlText}
+              />
+              <div
+                className={`editor-wrapper ${
+                  changeEditor ? "editor-wrapper_html" : ""
+                }`}
+              >
+                <Editor
+                  height="100%"
+                  options={options}
+                  theme="vs-dark"
+                  language="html"
+                  value={htmlText === "" ? elementById.html : htmlText}
+                  onChange={handleEditorChangeHtml}
                 />
-                <div
-                  className={`editor-wrapper ${
-                    changeEditor ? "editor-wrapper_html" : ""
-                  }`}
-                >
-                  <Editor
-                    height="100%"
-                    options={options}
-                    theme="vs-dark"
-                    language="html"
-                    value={htmlText === "" ? elementById.html : htmlText}
-                    onChange={handleEditorChangeHtml}
-                  />
-                </div>
-                <div
-                  className={`editor-wrapper ${
-                    !changeEditor ? "editor-wrapper_css" : ""
-                  }`}
-                >
-                  <Editor
-                    height="100%"
-                    options={options}
-                    theme="vs-dark"
-                    language={convert ? "scss" : "css"}
-                    value={cssText === "" ? elementById.css : cssText}
-                    onChange={handleEditorChangeCss}
-                  />
-                </div>
-              </section>
-            </CoolDiv>
+              </div>
+              <div
+                className={`editor-wrapper ${
+                  !changeEditor ? "editor-wrapper_css" : ""
+                }`}
+              >
+                <Editor
+                  height="100%"
+                  options={options}
+                  theme="vs-dark"
+                  language={convert ? "scss" : "css"}
+                  value={cssText === "" ? elementById.css : cssText}
+                  onChange={handleEditorChangeCss}
+                />
+              </div>
+            </section>
             <div className="preview-section second">
               <div
                 className={`preview-container ${

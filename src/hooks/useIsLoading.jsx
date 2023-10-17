@@ -20,10 +20,10 @@ export function useIsLoading() {
                 gradientUnits="userSpaceOnUse"
                 className="s-xJBuHA073rTt"
               >
-                <stop stop-color="#a855f7" className="s-xJBuHA073rTt"></stop>
+                <stop stopColor="#a855f7" className="s-xJBuHA073rTt"></stop>
                 <stop
                   offset="1"
-                  stop-color="#ec4899"
+                  stopColor="#ec4899"
                   className="s-xJBuHA073rTt"
                 ></stop>
                 <animateTransform
@@ -45,10 +45,10 @@ export function useIsLoading() {
                 gradientUnits="userSpaceOnUse"
                 className="s-xJBuHA073rTt"
               >
-                <stop stop-color="#973BED" className="s-xJBuHA073rTt"></stop>
+                <stop stopColor="#973BED" className="s-xJBuHA073rTt"></stop>
                 <stop
                   offset="1"
-                  stop-color="#007CFF"
+                  stopColor="#007CFF"
                   className="s-xJBuHA073rTt"
                 ></stop>
                 <animateTransform
