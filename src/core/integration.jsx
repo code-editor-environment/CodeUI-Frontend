@@ -1,22 +1,18 @@
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getListElementById } from "../api/element";
-import { getElementById } from "../store/element/elements-slice";
+import { useState, useEffect } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../configs/firebase.configs";
 function Integration() {
   const { postId } = useParams();
-  const dispatch = useDispatch();
-  const { elementById } = useSelector((state) => state.element);
+  const [elementById, setElementById] = useState(false);
+  const fetchPost = async () => {
+    await getDoc(doc(db, `elements`, postId)).then((querySnapshot) => {
+      setElementById(querySnapshot.data());
+    });
+  };
   useEffect(
     () => {
-      window.scrollTo({ top: 0 });
-      getListElementById(postId).then((data) => {
-        if (data.error) {
-          console.log(data.error);
-        } else {
-          dispatch(getElementById(data));
-        }
-      });
+      fetchPost();
     },
     // eslint-disable-next-line
     [postId]

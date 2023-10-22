@@ -10,6 +10,7 @@ import Profile from "./pages/main/Profile";
 import Detail from "./pages/main/Detail";
 import Err from "./pages/main/Err";
 import "./assets/css/styles.scss";
+import "./assets/css/tailwind.scss";
 import Subscription from './pages/main/Subscription';
 import Create from "./pages/main/Create";
 import ChatBox from "./pages/main/Chat";

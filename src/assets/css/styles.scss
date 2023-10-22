@@ -102,9 +102,9 @@
   margin: 0;
   box-sizing: border-box;
 }
-iframe {
-  pointer-events: none;
-}
+// iframe {
+//   pointer-events: none;
+// }
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
@@ -732,7 +732,9 @@ kbd {
 .card > .card-content {
   position: relative;
   overflow: hidden;
-  height: 250px;
+  height: 350px;
+  min-height: 250px;
+  max-height: 520px;
   background: var(--lightgray);
   border-radius: 8px;
   font-family: Arial, Helvetica, sans-serif;
@@ -3049,7 +3051,7 @@ input:focus-visible {
   font-size: 25px;
 }
 .profile .buttons {
-  width: 1%;
+  // width: 1%;
   margin-top: 10px;
   display: flex;
   gap: 10px;
@@ -4225,7 +4227,7 @@ input:focus-visible {
   background: var(--red);
 }
 .info-bar {
-  padding: 10px 0 0;
+  // padding: 10px 0 0;
   text-align: right;
   display: flex;
   align-items: center;

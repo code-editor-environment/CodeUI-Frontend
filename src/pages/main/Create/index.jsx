@@ -22,8 +22,8 @@ import {
   defaultSpinnerCSS,
   defaultSwitchCSS,
 } from "./defaultCSS";
-import { open } from "../../../store/modal/modal-slice";
-import { database, db } from "../../../configs/firebase.configs";
+import { open, postElementID } from "../../../store/modal/modal-slice";
+import { db } from "../../../configs/firebase.configs";
 import { toast } from "react-toastify";
 import EditorHeader from "../Detail/editorHeader";
 import ColorPicker from "react-pick-color";
@@ -44,7 +44,7 @@ function Create() {
   const [theme, setTheme] = useState("dark");
   const [convert, setConvert] = useState(false);
   const [color, setColor] = useState("#212121");
-  const { category } = useSelector((state) => state.modal);
+  const { elementID, category } = useSelector((state) => state.modal);
   useEffect(
     () => {
       dispatch(open(<PostStatusModal />));
@@ -93,17 +93,17 @@ function Create() {
   }
   function handleEditorChangeHtml(value, event) {
     setHtmlText(value);
-        // const updates = {};
-        // updates["collaborations/" + 1] = {
-        //   test: value,
-        // };
-        // update(ref(database), updates)
-        //   .then(() => {
-        //     // Success
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
+    // const updates = {};
+    // updates["collaborations/" + 1] = {
+    //   test: value,
+    // };
+    // update(ref(database), updates)
+    //   .then(() => {
+    //     // Success
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   }
   // function handleEditorChangeJs(value, event) {
   //   setJsText(value);
@@ -122,53 +122,20 @@ function Create() {
       }
     });
   };
-  const addElementFirebase = async (e, id) => {
-    e.preventDefault();
-    try {
-      console.log("ok");
-      await setDoc(doc(db, `elements+${category}`, "6"), {
-        background: color,
-        category: category,
-        css: cssText,
-        html: htmlText,
-        theme: theme,
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  const clickSubmitDraft = (e) => {
-    e.preventDefault();
-    createElement({
-      title: category,
-      description: category,
-      categoryName: category,
+  const clickSubmitDraft = () => {
+    setDoc(doc(db, "elements", elementID.toString()), {
+      background: color,
+      category: category,
+      css: cssText,
+      html: htmlText,
+      status: "draft",
+      theme: theme,
+      usernameCreator: profileRes.username,
     }).then((data) => {
       if (data.error) {
-        toast.error("error!");
+        console.log(data.error);
       } else {
-        navigate(`/profile/${profileRes.username}?element=draft`);
-        toast.success("successfully!");
-        setDoc(
-          doc(
-            db,
-            `elements_${profileRes.username}_draft`,
-            data.data.id.toString()
-          ),
-          {
-            background: color,
-            category: category,
-            css: cssText,
-            html: htmlText,
-            theme: theme,
-          }
-        ).then((data) => {
-          if (data.error) {
-            console.log(data.error);
-          } else {
-            console.log(data);
-          }
-        });
+        console.log(data);
       }
     });
   };
@@ -183,18 +150,15 @@ function Create() {
   //   // body.html(`${htmlText} <script async >${jsText}</script>`);
   //   styleTag.html(`<style>${cssText}</style>`);
   // }, [htmlText]);
-  // useEffect(() => {
-  //   const timeout = setTimeout(() => {
-  //     setSrcDoc(`
-  //     <html>
-  //       <body>${htmlText}</body>
-  //       <style>${cssText}</style>
-  //       <script>${jsText}</script>
-  //     </html>
-  //  `);
-  //   }, 250);
-  //   return () => clearTimeout(timeout);
-  // }, [htmlText, cssText, jsText]);
+  useEffect(
+    () => {
+      const autoSave = setTimeout(() => {
+        elementID && clickSubmitDraft();
+      }, 3000);
+      return () => clearTimeout(autoSave);
+    }, // eslint-disable-next-line
+    [htmlText, cssText]
+  );
 
   const [state, setState] = useState(false);
   const [test, setTest] = useState(null);
@@ -232,7 +196,7 @@ function Create() {
   //     // eslint-disable-next-line
   //     []
   //   )
-    
+
   return (
     <main className="wrapper" style={{ padding: "10px" }}>
       <div className="detail-page detail-page--button">
@@ -378,7 +342,11 @@ function Create() {
                     />
                   </svg>
                 }
-                onClick={(e) => clickSubmitDraft(e)}
+                onClick={() => {
+                  navigate(`/profile/${profileRes.username}?element=draft`);
+                  toast.success("successfully!");
+                  dispatch(postElementID(null));
+                }}
               />
               <AppButton
                 children="Submit for review"

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import htmlIcon from "../../../assets/images/html.svg";
 import beauty from "../../../assets/images/beauty.svg";
 import cssIcon from "../../../assets/images/css.svg";
@@ -12,6 +12,8 @@ import { open } from "../../../store/modal/modal-slice";
 import IntegrationModal from "../../../components/Modal/integrationModal";
 
 function EditorHeader({
+  postId,
+  elementById,
   changeEditor,
   setChangeEditor,
   htmlText,
@@ -22,7 +24,7 @@ function EditorHeader({
   setConvert,
 }) {
   const dispatch = useDispatch();
-  const { elementById } = useSelector((state) => state.element);
+  // const { elementById } = useSelector((state) => state.element);
   const [copyCss, setCopyCss] = useState(false);
   const [copyHtml, setCopyHtml] = useState(false);
   const onCopyCss = () => {
@@ -66,7 +68,7 @@ function EditorHeader({
     },
   ]; 
     const onIntegration = () => {
-      dispatch(open(<IntegrationModal postId={elementById._id} />));
+      dispatch(open(<IntegrationModal postId={postId} />));
   };
     const itemMore = [
       {

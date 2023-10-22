@@ -1,40 +1,59 @@
 import { useState } from "react";
 import Editor from "@monaco-editor/react";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useIsHidden } from "../../../hooks/useIsHidden";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 // import axios from "axios";
+import { toast } from "react-toastify";
 import ColorPicker from "react-pick-color";
 // import { ResizableBox } from "react-resizable";
-import { getElementById } from "../../../store/element/elements-slice";
-import { getListElementById } from "../../../api/element";
+// import { getElementById } from "../../../store/element/elements-slice";
+import { getListElementById, saveFavorite, like } from "../../../api/element";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 import EditorHeader from "./editorHeader";
+import { db } from "../../../configs/firebase.configs";
+import { useParseUrl } from "../../../hooks/useParseUrl";
+import AppButton from "../../../components/Button";
+import Comment from "./comment";
+// import styles from "./detail.module.scss";
 function Detail() {
   const { postId } = useParams();
+  const { search } = useParseUrl();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { ref, isComponentVisible, onClick } = useDetectOutsideClick();
-  const { elementById } = useSelector((state) => state.element);
-  const { isLogin } = useIsLogin();
+  // const { elementById } = useSelector((state) => state.element);
+  const { isLogin, profileRes } = useIsLogin();
   const { hidden, handleClick } = useIsHidden();
   // const [check, setCheck] = useState(false);
   const [convert, setConvert] = useState(false);
-  const [findFavorite, setFindFavorite] = useState(null);
+  const [findFavorite, setFindFavorite] = useState(false);
+  const [isLike, setIsLike] = useState(false);
+  const [elementById, setElementById] = useState(false);
   const [cssText, setCssText] = useState("");
   const [htmlText, setHtmlText] = useState("");
   const [changeEditor, setChangeEditor] = useState(false);
   const [color, setColor] = useState("#e8e8e8");
+  const fetchPost = async () => {
+    await getDoc(doc(db, `elements`, postId)).then((querySnapshot) => {
+      setElementById(querySnapshot.data());
+      setColor(querySnapshot.data().background);
+    });
+  };
   useEffect(
     () => {
       window.scrollTo({ top: 0 });
+      fetchPost();
       getListElementById(postId).then((data) => {
         if (data.error) {
           console.log(data.error);
         } else {
-          dispatch(getElementById(data));
+          console.log(data.data);
+          setFindFavorite(data.data.isFavorite);
+          setIsLike(data.data.isLiked);
         }
       });
     },
@@ -79,26 +98,84 @@ function Detail() {
     // updatePost(postId, elementById, htmlText, cssText, hidden, navigate)
   };
   const onFavorite = () => {
-    // dispatch(favorite(findFavorite, postId,check,setCheck));
+    setFindFavorite(!findFavorite);
+    const timeout = setTimeout(() => {
+      saveFavorite({ accountId: isLogin.id, postId });
+    }, 1000);
+    return () => clearTimeout(timeout);
   };
-
+  const onLike = () => {
+    setIsLike(!isLike);
+    const timeout = setTimeout(() => {
+      like({ accountId: isLogin.id, postId });
+    }, 1000);
+    return () => clearTimeout(timeout);
+  };
   const options = {
     fontSize: 17,
     emptySelectionClipboard: true,
   };
 
-// const CoolDiv = (props) => {
-//   return (
-//     <ResizableBox
-//       className="box"
-//       width={900}
-//       axis="x"
-//       handle={<span className="custom-handle" />}
-//     >
-//       {props.children}
-//     </ResizableBox>
-//   );
-// };
+  // const CoolDiv = (props) => {
+  //   return (
+  //     <ResizableBox
+  //       className="box"
+  //       width={900}
+  //       axis="x"
+  //       handle={<span className="custom-handle" />}
+  //     >
+  //       {props.children}
+  //     </ResizableBox>
+  //   );
+  // };
+  const clickSubmitDraft = () => {
+    setDoc(doc(db, "elements", postId.toString()), {
+      background: color,
+      category: elementById.category,
+      css: cssText === "" ? elementById.css : cssText,
+      html: htmlText === "" ? elementById.html : htmlText,
+      status: "draft",
+      theme: elementById.theme,
+      usernameCreator: profileRes.username,
+    }).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        console.log(data);
+      }
+    });
+  };
+  useEffect(
+    () => {
+      const autoSave = setTimeout(() => {
+        search?.status === "draft" && clickSubmitDraft();
+      }, 3000);
+      return () => clearTimeout(autoSave);
+    }, // eslint-disable-next-line
+    [htmlText, cssText]
+  );
+  const LikeIcons = ({ color, cover }) => {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32px"
+        height="32px"
+        viewBox="0,0,256,256"
+        style={{ margin: 0 }}
+      >
+        <g transform="scale(16,16)">
+          <path
+            d="M7.521,13.382c-2.199,-1.738 -7.021,-6.047 -7.021,-8.425c0,-1.906 1.587,-3.457 3.539,-3.457c1.253,0 2.388,0.631 3.035,1.688l0.426,0.695l0.426,-0.696c0.648,-1.056 1.782,-1.687 3.035,-1.687c1.951,0 3.539,1.551 3.539,3.457c0,3.388 -5.619,7.483 -6.979,8.425z"
+            fill={color}
+          />
+          <path
+            d="M10.962,2c1.675,0 3.038,1.326 3.038,2.957c0,2.693 -4.225,6.229 -6.457,7.805c-2.889,-2.324 -6.543,-6.006 -6.543,-7.805c0,-1.631 1.363,-2.957 3.038,-2.957c1.078,0 2.053,0.542 2.609,1.449l0.853,1.392l0.853,-1.392c0.555,-0.907 1.531,-1.449 2.609,-1.449M10.962,1c-1.472,0 -2.756,0.774 -3.462,1.926c-0.706,-1.152 -1.99,-1.926 -3.462,-1.926c-2.23,0 -4.038,1.771 -4.038,3.957c0,3.28 7.5,9.043 7.5,9.043c0,0 7.5,-4.893 7.5,-9.043c0,-2.186 -1.808,-3.957 -4.038,-3.957z"
+            fill={cover}
+          />
+        </g>
+      </svg>
+    );
+  };
   return (
     <main className="wrapper" style={{ padding: "10px" }}>
       <button
@@ -126,6 +203,8 @@ function Detail() {
           <div className="detail-page detail-page--button">
             <section className="css-editor">
               <EditorHeader
+                postId={postId}
+                elementById={elementById}
                 changeEditor={changeEditor}
                 setChangeEditor={setChangeEditor}
                 htmlText={htmlText}
@@ -253,150 +332,59 @@ function Detail() {
                 </span>
               </div>
             </div>
-            {/* <section className="html-editor">
-            <span className="editor-label editor-label--html">
-              HTML
-              <button
-                className="copy-all CSS false"
-                style={{ background: "#444" }}
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    htmlText === "" ? elementById.html : htmlText
-                  );
-                  setCopyHtml(true);
-                  setTimeout(function () {
-                    setCopyHtml(false);
-                  }, 1000);
-                }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={24}
-                  height={24}
-                >
-                  <path fill="none" d="M0 0h24v24H0z" />
-                  <path
-                    fill="currentColor"
-                    d="M7 6V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1.001 1.001 0 0 1 3 21l.003-14c0-.552.45-1 1.007-1H7zM5.003 8L5 20h10V8H5.003zM9 6h8v10h2V4H9v2z"
-                  />
-                </svg>
-                <span className="copy-all__text" style={{ minWidth: "60px" }}>
-                  {copyHtml ? "✔" : "Copy HTML"}
-                </span>
-              </button>
-            </span>
-            <div className="editor-wrapper editor-wrapper--html">
-              <Editor
-                height="400px"
-                options={options}
-                theme="vs-dark"
-                language="html"
-                value={elementById.html || htmlText}
-                onChange={handleEditorChangeHtml}
-              />
-            </div>
-          </section> */}
           </div>
           <div className="detail-action">
-            {" "}
-            {elementById.postedBy._id === isLogin?.user?._id && (
-              <div className="controls">
-                <div className="user-controls">
-                  <div className="errors" />
-                  <div className="buttons">
-                    <button
-                      className="button button--notifications button--icon"
-                      onClick={onDeletePost}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width="24"
-                        height="24"
-                        class="h-5 w-5"
-                      >
-                        <path fill="none" d="M0 0h24v24H0z"></path>
-                        <path
-                          fill="currentColor"
-                          d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z"
-                        ></path>
-                      </svg>
-                      Delete
-                    </button>
-                    <button
-                      className="button button--primary button--icon button--rotated"
-                      onClick={onUpdatePost}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width="24"
-                        height="24"
-                        class="h-5 w-5 false"
-                      >
-                        <path fill="none" d="M0 0h24v24H0z"></path>
-                        <path
-                          fill="currentColor"
-                          d="M5.463 4.433A9.961 9.961 0 0 1 12 2c5.523 0 10 4.477 10 10 0 2.136-.67 4.116-1.81 5.74L17 12h3A8 8 0 0 0 6.46 6.228l-.997-1.795zm13.074 15.134A9.961 9.961 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.136.67-4.116 1.81-5.74L7 12H4a8 8 0 0 0 13.54 5.772l.997 1.795z"
-                        ></path>
-                      </svg>
-                      Update
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
             <div className="info-bar">
               <div className="left">
-                {/* <Link
-                  to={`/${elementById && elementById.status}s`}
-                  className="twitter-share-button"
-                  target="_blank"
-                  data-size="large"
-                  rel="noreferrer"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    height={24}
-                  >
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path
-                      fill="currentColor"
-                      d="M22.162 5.656a8.384 8.384 0 0 1-2.402.658A4.196 4.196 0 0 0 21.6 4c-.82.488-1.719.83-2.656 1.015a4.182 4.182 0 0 0-7.126 3.814 11.874 11.874 0 0 1-8.62-4.37 4.168 4.168 0 0 0-.566 2.103c0 1.45.738 2.731 1.86 3.481a4.168 4.168 0 0 1-1.894-.523v.052a4.185 4.185 0 0 0 3.355 4.101 4.21 4.21 0 0 1-1.89.072A4.185 4.185 0 0 0 7.97 16.65a8.394 8.394 0 0 1-6.191 1.732 11.83 11.83 0 0 0 6.41 1.88c7.693 0 11.9-6.373 11.9-11.9 0-.18-.005-.362-.013-.54a8.496 8.496 0 0 0 2.087-2.165z"
-                    />
-                  </svg>
-                  Tweet
-                </Link> */}
-                {findFavorite && (
-                  <button
-                    type="submit"
-                    className="add-to-favorites"
-                    onClick={onFavorite}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
+                {!search?.status && (
+                  <>
+                    <button
+                      type="submit"
+                      className="add-to-favorites"
+                      onClick={onFavorite}
                     >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1zm13 2H6v15.432l6-3.761 6 3.761V4z"
-                      />
-                    </svg>{" "}
-                    <span> {findFavorite ? "Delete" : "Add"} to favorites</span>
-                  </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        height={24}
+                      >
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path
+                          fill="currentColor"
+                          d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1zm13 2H6v15.432l6-3.761 6 3.761V4z"
+                        />
+                      </svg>{" "}
+                      <span>
+                        {findFavorite ? "Delete" : "Add"} to favorites
+                      </span>
+                    </button>
+                    <button
+                      className="copy-all CSS"
+                      style={{
+                        background: "#444",
+                        height: "43px",
+                        width: "45px",
+                      }}
+                      onClick={onLike}
+                    >
+                      {isLike ? (
+                        <LikeIcons color="#f78f8f" cover="#ec4141" />
+                      ) : (
+                        <LikeIcons color="#AEAEAE" cover="#DADADA" />
+                      )}
+                    </button>
+                  </>
                 )}
               </div>
               <div className="right">
-                <span className="date">
+                <div className="info-bar">
+                  Category | {elementById.category}
+                </div>
+                {/* <span className="date">
                   on {new Date(elementById.created).toDateString()}
-                </span>
-                <span
+                </span> */}
+                {/* <span
                   className="favorite-count"
                   title="Number of people who have added this post to favorites"
                 >
@@ -419,10 +407,154 @@ function Detail() {
                     />
                   </svg>{" "}
                   {elementById.favoriteCount.length}
-                </span>
+                </span> */}
               </div>
             </div>
+            {elementById.usernameCreator === profileRes.username && (
+              <div className="controls">
+                <div className="user-controls">
+                  <div className="errors" />
+                  <div className="buttons">
+                    {search?.status ? (
+                      search?.status === "pending" ? (
+                        <>
+                          <button
+                            className="button button--notifications button--icon"
+                            onClick={onDeletePost}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              class="h-5 w-5"
+                            >
+                              <path fill="none" d="M0 0h24v24H0z"></path>
+                              <path
+                                fill="currentColor"
+                                d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z"
+                              ></path>
+                            </svg>
+                            Delete
+                          </button>
+                        </>
+                      ) : search?.status === "rejected" ? (
+                        <>
+                          <button
+                            className="button button--notifications button--icon"
+                            onClick={onDeletePost}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              class="h-5 w-5"
+                            >
+                              <path fill="none" d="M0 0h24v24H0z"></path>
+                              <path
+                                fill="currentColor"
+                                d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z"
+                              ></path>
+                            </svg>
+                            Delete
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <AppButton
+                            children="Save as a draft"
+                            btnType="button_2"
+                            Icon={
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                height={24}
+                              >
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path
+                                  fill="currentColor"
+                                  d="M4 3h16l2 4v13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.004L4 3zm16 6H4v10h16V9zm-.236-2l-1-2H5.237l-1 2h15.527zM13 14h3l-4 4-4-4h3v-4h2v4z"
+                                />
+                              </svg>
+                            }
+                            onClick={() => {
+                              navigate(
+                                `/profile/${profileRes.username}?element=draft`
+                              );
+                              toast.success("successfully!");
+                            }}
+                          />
+                          <AppButton
+                            children="Submit for review"
+                            btnType="button_0"
+                            Icon={
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                height={24}
+                              >
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path
+                                  fill="currentColor"
+                                  d="M5 13c0-5.088 2.903-9.436 7-11.182C16.097 3.564 19 7.912 19 13c0 .823-.076 1.626-.22 2.403l1.94 1.832a.5.5 0 0 1 .095.603l-2.495 4.575a.5.5 0 0 1-.793.114l-2.234-2.234a1 1 0 0 0-.707-.293H9.414a1 1 0 0 0-.707.293l-2.234 2.234a.5.5 0 0 1-.793-.114l-2.495-4.575a.5.5 0 0 1 .095-.603l1.94-1.832C5.077 14.626 5 13.823 5 13zm1.476 6.696l.817-.817A3 3 0 0 1 9.414 18h5.172a3 3 0 0 1 2.121.879l.817.817.982-1.8-1.1-1.04a2 2 0 0 1-.593-1.82c.124-.664.187-1.345.187-2.036 0-3.87-1.995-7.3-5-8.96C8.995 5.7 7 9.13 7 13c0 .691.063 1.372.187 2.037a2 2 0 0 1-.593 1.82l-1.1 1.039.982 1.8zM12 13a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
+                                />
+                              </svg>
+                            }
+                            // onClick={(e) => addElementFirebase(e)}
+                          />
+                        </>
+                      )
+                    ) : (
+                      <>
+                        <button
+                          className="button button--notifications button--icon"
+                          onClick={onDeletePost}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            height="24"
+                            class="h-5 w-5"
+                          >
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path
+                              fill="currentColor"
+                              d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z"
+                            ></path>
+                          </svg>
+                          Delete
+                        </button>
+                        <button
+                          className="button button--primary button--icon button--rotated"
+                          onClick={onUpdatePost}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            height="24"
+                            class="h-5 w-5 false"
+                          >
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path
+                              fill="currentColor"
+                              d="M5.463 4.433A9.961 9.961 0 0 1 12 2c5.523 0 10 4.477 10 10 0 2.136-.67 4.116-1.81 5.74L17 12h3A8 8 0 0 0 6.46 6.228l-.997-1.795zm13.074 15.134A9.961 9.961 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.136.67-4.116 1.81-5.74L7 12H4a8 8 0 0 0 13.54 5.772l.997 1.795z"
+                            ></path>
+                          </svg>
+                          Update
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
+          <Comment/>
         </>
       )}
     </main>

@@ -1,13 +1,18 @@
-import { NODE, NET } from "../../utils/define";
+import { NET } from "../../utils/define";
 import { handleApi } from "../../utils/helper";
 
 export const getListElements = handleApi(async (category) => {
-  const result = await NODE().get(`/posts?type=${category}`);
+  const url =
+    category === "favorites"
+      ? "/element/getFavoriteElements"
+      : `/element/getRandomElements${
+          category === "all" ? "/" : "?CategoryName=" + category
+        }`;
+  const result = await NET().get(url);
   return result.data;
 });
-
 export const getListElementById = handleApi(async (elementId) => {
-  const result = await NODE().get(`/post/${elementId}`);
+  const result = await NET().get(`/element/getByID?id=${elementId}`);
   return result.data;
 });
 
@@ -20,5 +25,19 @@ export const getListElementByCreator = handleApi(async (data) => {
 
 export const createElement = handleApi(async (data) => {
   const result = await NET().post("/element/createElement", data);
+  return result.data;
+});
+
+export const saveFavorite = handleApi(async (data) => {
+  const result = await NET().post(
+    `/react-element/saveFavorite?AccountId=${data.accountId}&ElementId=${data.postId}`
+  );
+  return result.data;
+});
+
+export const like = handleApi(async (data) => {
+  const result = await NET().post(
+    `/react-element/likeElement?AccountId=${data.accountId}&ElementId=${data.postId}`
+  );
   return result.data;
 });

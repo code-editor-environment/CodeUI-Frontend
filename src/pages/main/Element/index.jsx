@@ -1,33 +1,50 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Cards from "../../../components/Cards";
 import { useParseUrl } from "../../../hooks/useParseUrl";
 // import { useIsLoading } from "../../../hooks/useIsLoading";
 import { getElements } from "../../../store/element/elements-slice";
 import { getListElements } from "../../../api/element";
-import { useDispatch, useSelector } from "react-redux";
-import Pagination from "../../../components/Pagination";
+import { useDispatch } from "react-redux";
 import Randomized from "./randomized";
-import SkeletonElement from "./../../../components/Skeleton/skeletonElement";
 function Element() {
   const dispatch = useDispatch();
   const { search } = useParseUrl();
-  const [loading, setLoading] = useState(false);
-  const [totalPages, setTotalPages] = useState(10);
-  const [page, setPage] = useState(4);
-  const { elements, favoriteElement } = useSelector((state) => state.element);
   useEffect(() => {
     window.scrollTo({ top: 0 });
-    setLoading(true);
     getListElements(search.category).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
-        dispatch(getElements(data.list));
+        dispatch(getElements(data.data));
       }
-      setLoading(false);
     });
     // eslint-disable-next-line
   }, [search.category]);
+      // const fetchPost = async () => {
+      //   await getDocs(
+      //     query(
+      //       collection(db, `elements`),
+      //       search.category === "all"
+      //         ? where("status", "==", "approved")
+      //         : (where("status", "==", "approved"),
+      //           where("category", "==", search.category))
+      //     )
+      //   ).then((querySnapshot) => {
+      //     const newData = querySnapshot.docs.map((doc) => ({
+      //       ...doc.data(),
+      //       id: doc.id,
+      //     }));
+      //     setElements(newData);
+      //     // setTotalPages(newData.length);
+      //   });
+      // };
+      // useEffect(
+      //   () => {
+      //     fetchPost();
+      //   },
+      //   // eslint-disable-next-line
+      //   [search.category]
+      // );
   return (
     <main className="category-page">
       <div className="category-hero">
@@ -119,18 +136,7 @@ function Element() {
         </div>
       </div>
       {/* <Loading />  */}
-      {!elements ? (
-        <SkeletonElement total={10} />
-      ) : (
-        <Cards
-          category={search.category}
-          elements={elements}
-          favoriteElement={favoriteElement}
-        />
-      )}
-      {elements?.length > 0 && (
-        <Pagination value={page} range={totalPages} onChange={setPage} />
-      )}
+      <Cards category={search.category} />
     </main>
   );
 }

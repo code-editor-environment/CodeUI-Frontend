@@ -166,7 +166,7 @@ function UpdateProfileModal() {
               alt=""
               style={{
                 marginRight: "20px",
-                width: "150px",
+                maxWidth: "150px",
                 height: "150px",
                 objectFit: "cover",
                 borderRadius: "8px",
@@ -202,6 +202,7 @@ function UpdateProfileModal() {
                     width={34}
                     height={34}
                     viewBox="0 0 512 512"
+                    className="inline"
                   >
                     <g>
                       <linearGradient
@@ -287,6 +288,7 @@ function UpdateProfileModal() {
         <div className="form-label grid-cols-6 relative">
           <label>Description</label>
           <textarea
+            className="block w-full border border-none rounded-md shadow-sm sm:text-sm bg-dark-500 text-offwhite"
             type="text"
             name="description"
             id="description"

@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { collection, getDocs } from "firebase/firestore";
-import { categories, close } from "../../store/modal/modal-slice";
+import {
+  postElementID,
+  categories,
+  close,
+} from "../../store/modal/modal-slice";
 import { db } from "../../configs/firebase.configs";
+import { createElement } from "../../api/element";
 
 function PostStatusModal() {
   const dispatch = useDispatch();
@@ -13,6 +18,17 @@ function PostStatusModal() {
   };
   const submit = () => {
     dispatch(categories(type));
+      createElement({
+        title: type,
+        description: type,
+        categoryName: type,
+      }).then((data) => {
+        if (data.error) {
+          console.log(data.error);
+        } else {
+            dispatch(postElementID(data.data.id));
+        }
+      });
     dispatch(close());
   };
   const fetchPost = async () => {
