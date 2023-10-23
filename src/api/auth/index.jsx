@@ -1,7 +1,7 @@
 import { NET } from "../../utils/define";
 import { handleApi } from "../../utils/helper";
 
-// const API_URL = import.meta.env.VITE_DOMAIN;
+// const API_URL = import.meta.env.NODE_DOMAIN;
 // const API_URL = "http://13.212.54.225:44360/api";
 
 

@@ -13,7 +13,7 @@ export default function ChatContainers({ currentChat, socket, isLogin }) {
   useEffect(() => {
       async function setMess() {
         const response = await axios.post(
-          `${import.meta.env.VITE_DOMAIN}/messages/getmsg`,
+          `${import.meta.env.NODE_DOMAIN}/messages/getmsg`,
           {
             from: isLogin._id,
             to: currentChat._id,
@@ -32,7 +32,7 @@ export default function ChatContainers({ currentChat, socket, isLogin }) {
       from: isLogin._id,
       msg,
     });
-    await axios.post(`${import.meta.env.VITE_DOMAIN}/messages/addmsg`, {
+    await axios.post(`${import.meta.env.NODE_DOMAIN}/messages/addmsg`, {
       from: isLogin._id,
       to: currentChat._id,
       message: msg,

@@ -65,7 +65,7 @@ function Detail() {
   //     isLogin &&
   //       axios({
   //         method: "POST",
-  //         url: `${import.meta.env.VITE_DOMAIN}/user/findFavorite/${
+  //         url: `${import.meta.env.NODE_DOMAIN}/user/findFavorite/${
   //           isLogin.user.login
   //         }`,
   //         headers: {
@@ -554,7 +554,7 @@ function Detail() {
               </div>
             )}
           </div>
-          <Comment/>
+          <Comment />
         </>
       )}
     </main>

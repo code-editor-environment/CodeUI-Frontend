@@ -38,7 +38,7 @@ function Header() {
         async function getAccessToken() {
           await axios({
             method: "GET",
-            url: `${import.meta.env.VITE_DOMAIN}/signIn?code=` + codeParams,
+            url: `${import.meta.env.NODE_DOMAIN}/signIn?code=` + codeParams,
           }).then((response) => {
             if (response.data) {
               dispatch(userProfile(response.data));

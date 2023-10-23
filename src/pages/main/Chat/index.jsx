@@ -24,7 +24,7 @@ function ChatBox() {
       if (isLogin.user) {
         if (isLogin.user.html_url) {
           const data = await axios.get(
-            `${import.meta.env.VITE_DOMAIN}/users?ne=${isLogin.user._id}`
+            `${import.meta.env.NODE_DOMAIN}/users?ne=${isLogin.user._id}`
           );
           setContacts(data.data.list);
         } else {

@@ -2,8 +2,8 @@ import axios from "axios";
 // import Cookies from "js-cookie";
 import { getStorage } from "./helper";
 
-const API_URL = import.meta.env.VITE_DOMAIN;
-const API_URLS = "http://13.212.54.225:44360/api";
+const API_URL = import.meta.env.NODE_DOMAIN;
+const API_URLS = import.meta.env.NET_DOMAIN;
 export const NODE = () =>
   axios.create({
     baseURL: API_URL,
