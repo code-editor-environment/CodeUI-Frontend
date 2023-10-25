@@ -37,7 +37,6 @@ function Detail() {
   const [htmlText, setHtmlText] = useState("");
   const [changeEditor, setChangeEditor] = useState(false);
   const [color, setColor] = useState("#e8e8e8");
-  console.log("🚀 ~ file: index.jsx:40 ~ Detail ~ color:", color)
   const fetchPost = async () => {
     await getDoc(doc(db, `elements`, postId)).then((querySnapshot) => {
       setElementById(querySnapshot.data());
