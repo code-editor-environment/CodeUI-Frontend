@@ -29,7 +29,7 @@ import EditorHeader from "../Detail/editorHeader";
 import ColorPicker from "react-pick-color";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 import AppButton from "../../../components/Button";
-import { createElement } from "../../../api/element";
+import { putElement } from "../../../api/element";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 function Create() {
   const dispatch = useDispatch();
@@ -110,15 +110,14 @@ function Create() {
   // }
   const options = { fontSize: 17 };
   const clickSubmitReview = () => {
-    createElement({
-      title: category,
-      description: category,
-      categoryName: category,
-    }).then((data) => {
+    putElement(elementID).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
         // dispatch(getTopCreator(data.list));
+        navigate(`/profile/${profileRes.username}?element=pending`);
+        toast.success("successfully!");
+        dispatch(postElementID(null));
       }
     });
   };
@@ -249,7 +248,7 @@ function Create() {
             }`}
             style={{ background: color }}
           >
-            <style
+            {/* <style
               dangerouslySetInnerHTML={{
                 __html: `.prefix123 ${cssText}`,
               }}
@@ -259,7 +258,20 @@ function Create() {
               dangerouslySetInnerHTML={{
                 __html: htmlText,
               }}
-            ></div>
+            ></div> */}
+            <iframe
+              srcDoc={`
+        <html style="height: 100%;">
+        <style>${cssText}</style>
+        <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center;">${htmlText}</body>
+        </html>
+      `}
+              title="output"
+              sandbox="allow-scripts"
+              frameBorder="0"
+              width="100%"
+              height="100%"
+            />
             <div className="preview-controls" />
             <label className="theme-switcher" style={{ left: "15px" }}>
               Background:
@@ -365,7 +377,7 @@ function Create() {
                     />
                   </svg>
                 }
-                // onClick={(e) => addElementFirebase(e)}
+                onClick={() => clickSubmitReview()}
               />
             </div>
           </div>

@@ -12,6 +12,8 @@ import { useIsLogin } from "../../../hooks/useIsLogin";
 import AppButton from "../../../components/Button";
 import { useParseUrl } from "../../../hooks/useParseUrl";
 import styles from "./profile.module.scss";
+import RenderElement from "../../../components/Cards/renderElement";
+import { getListElementByCreator } from "../../../api/element";
 function ElementView() {
   const { username } = useParams();
   const { search } = useParseUrl();
@@ -26,29 +28,38 @@ function ElementView() {
     if (search?.element === path) return styles.active;
     else return "false";
   };
-    const fetchPost = async () => {
-      await getDocs(
-        query(
-          collection(db, `elements`),
-          where("usernameCreator", "==", username),
-          where(
-            "status",
-            "==",
-            search?.element === undefined ? "approved" : search?.element
-          )
-        )
-      ).then((querySnapshot) => {
-        const newData = querySnapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setPostApproved(newData);
-        // setTotalPages(newData.length);
-      });
-    };
+    // const fetchPost = async () => {
+    //   await getDocs(
+    //     query(
+    //       collection(db, `elements`),
+    //       where("usernameCreator", "==", username),
+    //       where(
+    //         "status",
+    //         "==",
+    //         search?.element === undefined ? "approved" : search?.element
+    //       )
+    //     )
+    //   ).then((querySnapshot) => {
+    //     const newData = querySnapshot.docs.map((doc) => ({
+    //       ...doc.data(),
+    //       id: doc.id,
+    //     }));
+    //     setPostApproved(newData);
+    //     // setTotalPages(newData.length);
+    //   });
+    // };
     useEffect(
       () => {
-        fetchPost();
+            getListElementByCreator({
+              username,
+              handleStatus: search?.element,
+            }).then((data) => {
+              if (data.error) {
+                console.log(data.error);
+              } else {
+                setPostApproved(data.data);
+              }
+            });
       },
       // eslint-disable-next-line
       [username, search?.element]
@@ -149,7 +160,7 @@ function ElementView() {
           </div>
         </div>
       </div>
-      {postApproved.length > 0 ? (
+      {postApproved?.length > 0 ? (
         <section className="content">
           {/* <h3 className="posts-title">
             {search?.element ? (
@@ -177,59 +188,7 @@ function ElementView() {
           </h3> */}
           <div className="cards-container">
             {postApproved.map((post, index) => (
-              <article
-                className={`card card--button ${
-                  post.theme === "dark" && "dark-background"
-                } h-full`}
-                key={index}
-              >
-                <div className="card-content">
-                  <Link
-                    to={`/detail/${post.id}${
-                      search?.element ? "?status=" + search?.element : ""
-                    }`}
-                    className="get-html-css"
-                  >
-                    Get <span className="html">HTML</span> &amp;{" "}
-                    <span className="css">CSS</span>
-                  </Link>
-                  {/* <style
-                    // dangerouslySetInnerHTML={{
-                    //   __html: `.${"ui" + post.id} ` + post.css,
-                    // }}
-                    dangerouslySetInnerHTML={{
-                      __html: `.ui${post.id} ${post.css} `,
-                    }}
-                  />
-                  <div
-                    id="container"
-                    className={`card__button-container ${"ui" + post.id}`}
-                    dangerouslySetInnerHTML={{ __html: post.html }}
-                  ></div> */}
-                  <iframe
-                    srcDoc={`
-        <html style="height: 100%;">
-        <style>${post.css}</style>
-        <body    style= "width: 95%;
-    height: 95%;    
-    display: flex;
-    align-items: center;
-    justify-content: center;">${post.html}</body>
-        </html>
-      `}
-                    title="output"
-                    sandbox="allow-scripts"
-                    frameBorder="0"
-                    width="100%"
-                    height="100%"
-                  />
-                </div>
-                <div className="card__footer">
-                  <div className="card__views">
-                    {post.favoriteCount?.length} Favorites
-                  </div>
-                </div>
-              </article>
+              <RenderElement post={post} search={search?.element} key={index} />
             ))}
           </div>
           {/* {totalPages !== page && (

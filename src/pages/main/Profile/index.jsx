@@ -146,7 +146,7 @@ function Profile() {
                     <span>Following</span>
                   </div>
                   <div className="detailTag">
-                    <span>{profiles.totalApproveElement}</span>
+                    <span>{profiles.totalApprovedElement}</span>
                     <span>Total Elements</span>
                   </div>
                   {/* <div className="detailTag">

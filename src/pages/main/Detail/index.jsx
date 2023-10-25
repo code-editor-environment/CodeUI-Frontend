@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import ColorPicker from "react-pick-color";
 // import { ResizableBox } from "react-resizable";
 // import { getElementById } from "../../../store/element/elements-slice";
-import { getListElementById, saveFavorite, like } from "../../../api/element";
+import { getListElementById, saveFavorite, like, putElement } from "../../../api/element";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 import EditorHeader from "./editorHeader";
 import { db } from "../../../configs/firebase.configs";
@@ -37,6 +37,7 @@ function Detail() {
   const [htmlText, setHtmlText] = useState("");
   const [changeEditor, setChangeEditor] = useState(false);
   const [color, setColor] = useState("#e8e8e8");
+  console.log("🚀 ~ file: index.jsx:40 ~ Detail ~ color:", color)
   const fetchPost = async () => {
     await getDoc(doc(db, `elements`, postId)).then((querySnapshot) => {
       setElementById(querySnapshot.data());
@@ -128,6 +129,17 @@ function Detail() {
   //     </ResizableBox>
   //   );
   // };
+    const clickSubmitReview = () => {
+      putElement(postId).then((data) => {
+        if (data.error) {
+          console.log(data.error);
+        } else {
+          // dispatch(getTopCreator(data.list));
+          navigate(`/profile/${profileRes.username}?element=pending`);
+          toast.success("successfully!");
+        }
+      });
+    };
   const clickSubmitDraft = () => {
     setDoc(doc(db, "elements", postId.toString()), {
       background: color,
@@ -260,7 +272,7 @@ function Detail() {
                 }`}
                 style={{ background: color }}
               >
-                <style
+                {/* <style
                   dangerouslySetInnerHTML={{
                     __html: `.prefix123 ${
                       cssText === "" ? elementById.css : cssText
@@ -272,7 +284,22 @@ function Detail() {
                   dangerouslySetInnerHTML={{
                     __html: htmlText === "" ? elementById.html : htmlText,
                   }}
-                ></div>
+                ></div> */}
+                <iframe
+                  srcDoc={`
+        <html style="height: 100%;">
+        <style>${cssText === "" ? elementById.css : cssText}</style>
+        <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center;">${
+          htmlText === "" ? elementById.html : htmlText
+        }</body>
+        </html>
+      `}
+                  title="output"
+                  sandbox="allow-scripts"
+                  frameBorder="0"
+                  width="100%"
+                  height="100%"
+                />
                 <div className="preview-controls" />
                 <label className="theme-switcher" style={{ left: "15px" }}>
                   Background:
@@ -503,7 +530,7 @@ function Detail() {
                                 />
                               </svg>
                             }
-                            // onClick={(e) => addElementFirebase(e)}
+                            onClick={() => clickSubmitReview()}
                           />
                         </>
                       )
@@ -554,7 +581,7 @@ function Detail() {
               </div>
             )}
           </div>
-          <Comment />
+          {!search?.status && <Comment postId={postId} />}
         </>
       )}
     </main>

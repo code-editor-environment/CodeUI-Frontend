@@ -76,12 +76,7 @@ function Cards({ category }) {
       <section className="cards-container cards-container--all">
         {elements?.length > 0
           ? elements.map((post, index) => (
-              <article
-                className="card card--checkbox dark-background h-full"
-                key={index}
-              >
-                <RenderElement post={post} />
-              </article>
+              <RenderElement post={post} key={index} />
             ))
           : "not found"}
       </section>

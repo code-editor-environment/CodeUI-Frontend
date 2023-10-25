@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { saveFavorite } from "../../api/element";
 import { useIsLogin } from "../../hooks/useIsLogin";
 
-const RenderElement = ({ post }) => {
+const RenderElement = ({ post, search }) => {
   const { isLogin } = useIsLogin();
   const [elementItem, setElementItem] = useState(null);
   const [findFavorite, setFindFavorite] = useState(post?.isFavorite);
@@ -32,9 +32,17 @@ const RenderElement = ({ post }) => {
   };
   if (elementItem) {
     return (
-      <>
-        <div className="card-content">
-          <Link className="get-html-css" to={`/detail/${post.id}`}>
+      <article className="card card--checkbox dark-background h-full">
+        <div
+          className="card-content"
+          style={{ backgroundColor: elementItem.background }}
+        >
+          <Link
+            className="get-html-css"
+            to={`/detail/${post.id}${
+              search ? "?status=" + search : ""
+            }`}
+          >
             {/* {test ? "t" : "f"} */}
             Get <span className="html">HTML</span> &amp;{" "}
             <span className="css">CSS</span>
@@ -81,7 +89,7 @@ const RenderElement = ({ post }) => {
           </Link>
           <div className="card__views">{post.favorites} Favorites</div>
         </div>
-      </>
+      </article>
     );
   } else {
     return <div></div>;
