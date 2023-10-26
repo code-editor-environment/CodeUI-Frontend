@@ -13,7 +13,7 @@ function Creators() {
   const { topCreator } = useSelector((state) => state.creator);
   useEffect(() => {
     window.scrollTo({ top: 0 });
-    getTopCreators().then((data) => {
+    getTopCreators({ page: 1, pageSize: 8 }).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {

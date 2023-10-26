@@ -9,13 +9,12 @@ import { useIsLogin } from "../../../hooks/useIsLogin";
 import RenderComment from "./renderComment";
 // import styles from "./detail.module.scss";
 
-function Comment({ postId }) {
+function Comment({ postId, element }) {
+  console.log("🚀 ~ file: comment.jsx:13 ~ Comment ~ element:", element)
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
-  const [repComment, setRepComment] = useState("");
-  const [check, setCheck] = useState(false);
   const [total, setTotal] = useState(0);
-  const { profileRes } = useIsLogin();
+  const { isLogin, profileRes } = useIsLogin();
   useEffect(
     () => {
       getListComment(postId).then((data) => {
@@ -30,38 +29,27 @@ function Comment({ postId }) {
     // eslint-disable-next-line
     []
   );
-  const onComment = () => {      
+  const onComment = () => {
     postComment({ postId, commentContent: comment }).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
         setComment("");
         setComments([data.data, ...comments]);
-        setTotal(total+1);
+        setTotal(total + 1);
       }
-    })
-  }
-    const onRepComment = () => {
-      postComment({ postId, commentContent: repComment }).then((data) => {
-        if (data.error) {
-          console.log(data.error);
-        } else {
-          setRepComment("");
-          setComments([data.data, ...comments]);
-          setTotal(total + 1);
-        }
-      });
-    };
-    const onDelete = (id) => {
-      deleteComment(id).then((data) => {
-        if (data.error) {
-          console.log(data.error);
-        } else {
-          setComments(comments.filter((c) => c.id !== id));
-          setTotal(total - 1);
-        }
-      });
-    };
+    });
+  };
+  const onDelete = (id) => {
+    deleteComment(id).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setComments(comments.filter((c) => c.id !== id));
+        setTotal(total - 1);
+      }
+    });
+  };
   return (
     <div className="col-span-full grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 mt-10">
       <div className>
@@ -73,37 +61,38 @@ function Comment({ postId }) {
                 {total}
               </span>
             </div>
-            <div className="flex gap-4 mb-4">
-              <div className="relative p-4 [&:has(:focus-visible)]:ring-4 w-full bg-dark-600 flex items-start focus-visible:border-sky-400 gap-4 focus-visible:ring-sky-400  rounded-xl overflow-hidden false">
-                <img
-                  src={profileRes.imageUrl}
-                  alt=""
-                  className="w-[44px] h-[44px] hidden sm:block rounded-lg flex-shrink-0"
-                />
-                <textarea
-                  name="content"
-                  id="content"
-                  rows={1}
-                  className="false w-full min-h-[48px] resize-none rounded-lg text-base flex-1 border-solid border border-dark-300 block font-sans bg-dark-500 text-gray-200 placeholder:text-gray-400 outline-none focus:outline-none focus:ring-0 focus:border-gray-700 px-4 py-3 overflow-hidden"
-                  placeholder="Add a comment..."
-                  style={{ height: 48 }}
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                />
-                <div className="flex flex-col items-center ">
-                  <button
-                    onClick={onComment}
-                    className="relative z-30 px-8 py-3 h-12 font-sans  disabled:cursor-auto border-none cursor-pointer bg-blue-800 text-offwhite font-semibold rounded-lg transition disabled:bg-dark-400"
-                    
-                  >
-                    Send
-                  </button>
-                  <p className="text-xs text-dark-100 transition duration-300 pointer-events-none transform absolute opacity-0 translate-y-0">
-                    <span className="text-white">0</span>/256
-                  </p>
+            {isLogin && (
+              <div className="flex gap-4 mb-4">
+                <div className="relative p-4 [&:has(:focus-visible)]:ring-4 w-full bg-dark-600 flex items-start focus-visible:border-sky-400 gap-4 focus-visible:ring-sky-400  rounded-xl overflow-hidden false">
+                  <img
+                    src={profileRes?.imageUrl}
+                    alt=""
+                    className="w-[44px] h-[44px] hidden sm:block rounded-lg flex-shrink-0"
+                  />
+                  <textarea
+                    name="content"
+                    id="content"
+                    rows={1}
+                    className="false w-full min-h-[48px] resize-none rounded-lg text-base flex-1 border-solid border border-dark-300 block font-sans bg-dark-500 text-gray-200 placeholder:text-gray-400 outline-none focus:outline-none focus:ring-0 focus:border-gray-700 px-4 py-3 overflow-hidden"
+                    placeholder="Add a comment..."
+                    style={{ height: 48 }}
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                  <div className="flex flex-col items-center ">
+                    <button
+                      onClick={onComment}
+                      className="relative z-30 px-8 py-3 h-12 font-sans  disabled:cursor-auto border-none cursor-pointer bg-blue-800 text-offwhite font-semibold rounded-lg transition disabled:bg-dark-400"
+                    >
+                      Send
+                    </button>
+                    <p className="text-xs text-dark-100 transition duration-300 pointer-events-none transform absolute opacity-0 translate-y-0">
+                      <span className="text-white">0</span>/256
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
             <div className="grid grid-cols-1 gap-3">
               {comments?.length > 0 &&
                 comments.map((comment, index) => (
@@ -140,7 +129,7 @@ function Comment({ postId }) {
       <aside>
         <div className>
           <div className="mb-2 text-2xl font-bold text-gray-100 capitalize">
-            switch
+            {element?.categoryName}
           </div>
           <div
             className="flex flex-wrap gap-y-0 gap-x-2 text-gray-400 max-w-[300px]"
@@ -165,7 +154,7 @@ function Comment({ postId }) {
               >
                 <path d="M8 2v2.128M8 6V4.128M16 2v2.128M16 6V4.128M20.96 10c.04.788.04 1.755.04 3 0 2.796 0 4.194-.457 5.296a6 6 0 0 1-3.247 3.247C16.194 22 14.796 22 12 22c-2.796 0-4.193 0-5.296-.457a6 6 0 0 1-3.247-3.247C3 17.194 3 15.796 3 13c0-1.245 0-2.212.04-3m17.92 0c-.05-.982-.163-1.684-.417-2.296a6 6 0 0 0-3.247-3.247A5.136 5.136 0 0 0 16 4.127M20.96 10H3.04m0 0c.05-.982.163-1.684.417-2.296a6 6 0 0 1 3.247-3.247A5.135 5.135 0 0 1 8 4.127m0 0C8.941 4 10.172 4 12 4c1.828 0 3.059 0 4 .128" />
               </svg>{" "}
-              May 4, 2022
+              {new Date(element?.updateDate).toDateString()}
             </div>
             <button className="px-4 py-2.5 font-sans flex items-center gap-2 border-none rounded-lg text-base font-semibold transition-colors duration-200 bg-transparent hover:bg-dark-600 max-md:bg-dark-600 text-offwhite cursor-pointer group">
               <svg
@@ -193,17 +182,17 @@ function Comment({ postId }) {
           <div className="grid grid-cols-[48px_1fr] gap-4 content-start">
             <Link className to="/profile/longnlp14_NDixtn">
               <img
-                src="https://lh3.googleusercontent.com/a/ACg8ocLXyIFAX531FhXbdF9Zv46pjLu7wLvcH2VCtjF0_1nsBhw=s96-c"
+                src={element?.profileResponse?.imageUrl}
                 alt=""
                 className="w-12 h-12 rounded-lg"
               />
             </Link>
             <div className="max-w-full overflow-hidden">
               <Link
+                to={`/profile/${element?.ownerUsername}`}
                 className="block text-xl font-semibold text-gray-200 truncate overflow-hidden"
-                to="/profile/longnlp14_NDixtn"
               >
-                longnlp14_NDixtn
+                {element?.ownerUsername}
               </Link>
               <p className="block text-gray-400" />
             </div>

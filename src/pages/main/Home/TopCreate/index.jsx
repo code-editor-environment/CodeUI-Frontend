@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import points from "../../../../assets/images/logoCover.png";
 import { Link } from "react-router-dom";
 import AppButton from "../../../../components/Button";
-// import SkeletonCreator from "../../../../components/Skeleton/skeletonCreator";
+import SkeletonCreator from "../../../../components/Skeleton/skeletonCreator";
+import { getTopCreators } from './../../../../api/account';
 function TopCreate() {
+  const [topCreator, setTopCreator] = useState([]);
+  useEffect(() => {
+    getTopCreators({page:1,pageSize:6}).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setTopCreator(data.data);
+      }
+    });
+    // eslint-disable-next-line
+  }, []);
   return (
     <div className="creators-section">
       <div>
@@ -12,110 +24,36 @@ function TopCreate() {
         <div className="bg-grid-slate-900/[0.04] dark:bg-grid-slate-100/[0.03] absolute inset-x-0 top-0 h-[37.5rem] bg-top [mask-image:linear-gradient(0deg,transparent,black)] dark:bg-[center_top_-1px]"></div>
       </div>
       <h2 className="creators-section__heading">Top Creators</h2>
-      {/* <SkeletonCreator total ={6}/> */}
       <section className="creators">
-        <Link className="creator" to="/creators">
-          <span className="rank">1</span>
-          <img
-            className="avatar"
-            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
-            alt=""
-            loading="lazy"
-          />
-          <span className="username">username</span>
-          <div className="number-of-posts">
-            <span className="value">10</span>
-            <span className="label">posts</span>
-          </div>
-          <div className="points-tag">
-            <img src={points} alt="" /> 100
-          </div>
-        </Link>
-        <Link className="creator" to="/creators">
-          <span className="rank">2</span>
-          <img
-            className="avatar"
-            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
-            alt=""
-            loading="lazy"
-          />
-          <span className="username">username</span>
-          <div className="number-of-posts">
-            <span className="value">10</span>
-            <span className="label">posts</span>
-          </div>
-          <div className="points-tag">
-            <img src={points} alt="" /> 100
-          </div>
-        </Link>
-        <Link className="creator" to="/creators">
-          <span className="rank">3</span>
-          <img
-            className="avatar"
-            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
-            alt=""
-            loading="lazy"
-          />
-          <span className="username">username</span>
-          <div className="number-of-posts">
-            <span className="value">10</span>
-            <span className="label">posts</span>
-          </div>
-          <div className="points-tag">
-            <img src={points} alt="" /> 100
-          </div>
-        </Link>
-        <Link className="creator" to="/creators">
-          <span className="rank">4</span>
-          <img
-            className="avatar"
-            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
-            alt=""
-            loading="lazy"
-          />
-          <span className="username">username</span>
-          <div className="number-of-posts">
-            <span className="value">10</span>
-            <span className="label">posts</span>
-          </div>
-          <div className="points-tag">
-            <img src={points} alt="" /> 100
-          </div>
-        </Link>
-        <Link className="creator" to="/creators">
-          <span className="rank">5</span>
-          <img
-            className="avatar"
-            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
-            alt=""
-            loading="lazy"
-          />
-          <span className="username">username</span>
-          <div className="number-of-posts">
-            <span className="value">10</span>
-            <span className="label">posts</span>
-          </div>
-          <div className="points-tag">
-            <img src={points} alt="" /> 100
-          </div>
-        </Link>
-        <Link className="creator" to="/creators">
-          <span className="rank">6</span>
-          <img
-            className="avatar"
-            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
-            alt=""
-            loading="lazy"
-          />
-          <span className="username">username</span>
-          <div className="number-of-posts">
-            <span className="value">10</span>
-            <span className="label">posts</span>
-          </div>
-          <div className="points-tag">
-            <img src={points} alt="" /> 100
-          </div>
-        </Link>
+        {topCreator.length > 0 ? (
+          topCreator.map((user, index) => (
+            <Link
+              to={`/profile/${user.username}`}
+              className="creator"
+              key={index}
+            >
+              <span className="rank">{index + 1}</span>
+              <img
+                className="avatar"
+                src={user.profileResponse.imageUrl}
+                alt=""
+                loading="lazy"
+              />
+              <span className="username">{user.username}</span>
+              <div className="number-of-posts">
+                <span className="value">
+                  {user.profileResponse.totalApprovedElement}
+                </span>
+                <span className="label">posts</span>
+              </div>
+              <div className="points-tag">
+                <img src={points} alt="" /> {user.profileResponse.wallet}
+              </div>
+            </Link>
+          ))
+        ) : (
+          <SkeletonCreator total={6} />
+        )}
       </section>
       <AppButton
         children="See all Creators"

@@ -85,7 +85,7 @@ function RepComment({
                     {inverseComment.commentContent}
                   </p>
                   <div className="lg:absolute top-3 right-4 mt-6 lg:mt-0 font-semibold flex items-center gap-2 -ml-2 lg:ml-0">
-                    {profileRes.username ===
+                    {profileRes?.username ===
                       inverseComment.account.username && (
                       <button
                         className="flex items-center gap-2 text-gray-400 font-sans cursor-pointer bg-transparent hover:bg-dark-400 px-2 py-2 rounded border-none"

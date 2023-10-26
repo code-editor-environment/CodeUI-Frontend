@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Cards from "../../../components/Cards";
 import { useParseUrl } from "../../../hooks/useParseUrl";
 // import { useIsLoading } from "../../../hooks/useIsLoading";
@@ -9,17 +9,23 @@ import Randomized from "./randomized";
 function Element() {
   const dispatch = useDispatch();
   const { search } = useParseUrl();
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+   const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     window.scrollTo({ top: 0 });
-    getListElements(search.category).then((data) => {
+    setLoading(true);
+    getListElements({ category: search.category, page }).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
         dispatch(getElements(data.data));
+        setLoading(false);
+        setTotalPages(Math.ceil(data.metadata.total / 10));
       }
     });
     // eslint-disable-next-line
-  }, [search.category]);
+  }, [search.category, page]);
       // const fetchPost = async () => {
       //   await getDocs(
       //     query(
@@ -136,7 +142,12 @@ function Element() {
         </div>
       </div>
       {/* <Loading />  */}
-      <Cards category={search.category} />
+      <Cards
+        totalPages={totalPages}
+        page={page}
+        setPage={setPage}
+        loading={loading}
+      />
     </main>
   );
 }

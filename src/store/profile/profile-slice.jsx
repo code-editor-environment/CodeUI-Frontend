@@ -26,6 +26,7 @@ export const ProfileSlice = createSlice({
       removeStorage("codeUiLog");
       removeStorage("profileResponse");
       state.user = null;
+      state.profileRes = null;
     },
   },
 });

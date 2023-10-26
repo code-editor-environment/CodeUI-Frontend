@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import { useIsHidden } from "../../../hooks/useIsHidden";
 import { useDispatch, useSelector } from "react-redux";
-// import { ref, set, onValue, update } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
 import PostStatusModal from "../../../components/Modal/postStatusModal";
@@ -26,16 +25,14 @@ import { open, postElementID } from "../../../store/modal/modal-slice";
 import { db } from "../../../configs/firebase.configs";
 import { toast } from "react-toastify";
 import EditorHeader from "../Detail/editorHeader";
-import ColorPicker from "react-pick-color";
-import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 import AppButton from "../../../components/Button";
 import { putElement } from "../../../api/element";
 import { useIsLogin } from "../../../hooks/useIsLogin";
+import BackgroundColor from "./backgroundColor";
 function Create() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { profileRes } = useIsLogin();
-  const { ref, isComponentVisible, onClick } = useDetectOutsideClick();
   const { hidden, handleClick } = useIsHidden();
   const [cssText, setCssText] = useState("");
   const [htmlText, setHtmlText] = useState("");
@@ -93,28 +90,13 @@ function Create() {
   }
   function handleEditorChangeHtml(value, event) {
     setHtmlText(value);
-    // const updates = {};
-    // updates["collaborations/" + 1] = {
-    //   test: value,
-    // };
-    // update(ref(database), updates)
-    //   .then(() => {
-    //     // Success
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   }
-  // function handleEditorChangeJs(value, event) {
-  //   setJsText(value);
-  // }
   const options = { fontSize: 17 };
   const clickSubmitReview = () => {
     putElement(elementID).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
-        // dispatch(getTopCreator(data.list));
         navigate(`/profile/${profileRes.username}?element=pending`);
         toast.success("successfully!");
         dispatch(postElementID(null));
@@ -130,25 +112,8 @@ function Create() {
       status: "draft",
       theme: theme,
       usernameCreator: profileRes.username,
-    }).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        console.log(data);
-      }
-    });
+    })
   };
-  // useEffect(() => {
-  //   var contents = $("iframe").contents(),
-  //     body = contents.find("body"),
-  //     styleTag = contents.find("head");
-  //   $("#html").keyup(function () {
-  //     var $this = $(this);
-  //     body.html(htmlText);
-  //   });
-  //   // body.html(`${htmlText} <script async >${jsText}</script>`);
-  //   styleTag.html(`<style>${cssText}</style>`);
-  // }, [htmlText]);
   useEffect(
     () => {
       const autoSave = setTimeout(() => {
@@ -158,43 +123,6 @@ function Create() {
     }, // eslint-disable-next-line
     [htmlText, cssText]
   );
-
-  const [state, setState] = useState(false);
-  const [test, setTest] = useState(null);
-  // const testUp = () => {
-  //   setState(!state);
-  //   const updates = {};
-  //   updates["collaborations/" + 1] = {
-  //     check: !state,
-  //   };
-  //   update(ref(database), updates)
-  //     .then(() => {
-  //       // Success
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-  // const getUserData = () => {
-  //   const cartRef = ref(database, "/collaborations/" + 1);
-  //   onValue(cartRef, (snapshot) => {
-  //     const data = snapshot.val();
-  //     if (!!data) {
-  //       console.log("data", data);
-  //       setTest(data.test);
-  //     } else {
-  //       console.log("Data not found");
-  //     }
-  //   });
-  // };
-  //   useEffect(
-  //     () => {
-  //       //  writeUserData();
-  //       getUserData();
-  //     },
-  //     // eslint-disable-next-line
-  //     []
-  //   )
 
   return (
     <main className="wrapper" style={{ padding: "10px" }}>
@@ -220,7 +148,7 @@ function Create() {
               options={options}
               theme="vs-dark"
               language="html"
-              value={test || htmlText}
+              value={htmlText}
               onChange={handleEditorChangeHtml}
             />
           </div>
@@ -248,17 +176,6 @@ function Create() {
             }`}
             style={{ background: color }}
           >
-            {/* <style
-              dangerouslySetInnerHTML={{
-                __html: `.prefix123 ${cssText}`,
-              }}
-            />
-            <div
-              className="preview prefix123"
-              dangerouslySetInnerHTML={{
-                __html: htmlText,
-              }}
-            ></div> */}
             <iframe
               srcDoc={`
         <html style="height: 100%;">
@@ -273,39 +190,7 @@ function Create() {
               height="100%"
             />
             <div className="preview-controls" />
-            <label className="theme-switcher" style={{ left: "15px" }}>
-              Background:
-              <label
-                className="switch-color"
-                onClick={onClick}
-                style={{ backgroundColor: color }}
-              ></label>
-              <label className="switch-label" htmlFor="preview-theme">
-                {color}
-              </label>
-              <div
-                ref={ref}
-                className={`dropdown-menu ${
-                  isComponentVisible ? "open" : "closed"
-                }`}
-                style={{ left: "3px", right: "auto", background: "none" }}
-              >
-                <ColorPicker
-                  color={color}
-                  onChange={(color) => setColor(color.hex)}
-                  hideInputs
-                  theme={{
-                    background: "#fff",
-                    borderColor: "#fff",
-                    borderRadius: "5px",
-                    boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.1)",
-                    color: "#262626",
-                    inputBackground: "#f4f4f4",
-                    width: "280px",
-                  }}
-                />
-              </div>
-            </label>
+            <BackgroundColor color={color} setColor={setColor} />
             <label className="theme-switcher">
               Theme:
               <label className="switch">

@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useIsLogin } from "../../../hooks/useIsLogin";
-// import axios from "axios";
 import { toast } from "react-toastify";
 import ColorPicker from "react-pick-color";
 // import { ResizableBox } from "react-resizable";
@@ -33,6 +32,7 @@ function Detail() {
   const [findFavorite, setFindFavorite] = useState(false);
   const [isLike, setIsLike] = useState(false);
   const [elementById, setElementById] = useState(false);
+  const [element, setElement] = useState(false);
   const [cssText, setCssText] = useState("");
   const [htmlText, setHtmlText] = useState("");
   const [changeEditor, setChangeEditor] = useState(false);
@@ -52,6 +52,7 @@ function Detail() {
           console.log(data.error);
         } else {
           console.log(data.data);
+          setElement(data.data);
           setFindFavorite(data.data.isFavorite);
           setIsLike(data.data.isLiked);
         }
@@ -60,30 +61,6 @@ function Detail() {
     // eslint-disable-next-line
     [postId]
   );
-  // useEffect(
-  //   () => {
-  //     isLogin &&
-  //       axios({
-  //         method: "POST",
-  //         url: `${import.meta.env.NODE_DOMAIN}/user/findFavorite/${
-  //           isLogin.user.login
-  //         }`,
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${isLogin.token}`,
-  //         },
-  //         data: { postId },
-  //       })
-  //         .then((res) => {
-  //           setFindFavorite(res.data);
-  //         })
-  //         .catch((err) => {
-  //           console.error(err);
-  //         });
-  //   },
-  //   // eslint-disable-next-line
-  //   [postId, check]
-  // );
   function handleEditorChangeCss(value, event) {
     setCssText(value);
   }
@@ -116,24 +93,11 @@ function Detail() {
     emptySelectionClipboard: true,
   };
 
-  // const CoolDiv = (props) => {
-  //   return (
-  //     <ResizableBox
-  //       className="box"
-  //       width={900}
-  //       axis="x"
-  //       handle={<span className="custom-handle" />}
-  //     >
-  //       {props.children}
-  //     </ResizableBox>
-  //   );
-  // };
     const clickSubmitReview = () => {
       putElement(postId).then((data) => {
         if (data.error) {
           console.log(data.error);
         } else {
-          // dispatch(getTopCreator(data.list));
           navigate(`/profile/${profileRes.username}?element=pending`);
           toast.success("successfully!");
         }
@@ -148,13 +112,7 @@ function Detail() {
       status: "draft",
       theme: elementById.theme,
       usernameCreator: profileRes.username,
-    }).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        console.log(data);
-      }
-    });
+    })
   };
   useEffect(
     () => {
@@ -271,19 +229,6 @@ function Detail() {
                 }`}
                 style={{ background: color }}
               >
-                {/* <style
-                  dangerouslySetInnerHTML={{
-                    __html: `.prefix123 ${
-                      cssText === "" ? elementById.css : cssText
-                    }`,
-                  }}
-                />
-                <div
-                  className="preview prefix123"
-                  dangerouslySetInnerHTML={{
-                    __html: htmlText === "" ? elementById.html : htmlText,
-                  }}
-                ></div> */}
                 <iframe
                   srcDoc={`
         <html style="height: 100%;">
@@ -362,7 +307,7 @@ function Detail() {
           <div className="detail-action">
             <div className="info-bar">
               <div className="left">
-                {!search?.status && (
+                {isLogin && !search?.status && (
                   <>
                     <button
                       type="submit"
@@ -436,7 +381,7 @@ function Detail() {
                 </span> */}
               </div>
             </div>
-            {elementById.usernameCreator === profileRes.username && (
+            {elementById.usernameCreator === profileRes?.username && (
               <div className="controls">
                 <div className="user-controls">
                   <div className="errors" />
@@ -580,7 +525,7 @@ function Detail() {
               </div>
             )}
           </div>
-          {!search?.status && <Comment postId={postId} />}
+          {!search?.status && <Comment postId={postId} element={element} />}
         </>
       )}
     </main>
