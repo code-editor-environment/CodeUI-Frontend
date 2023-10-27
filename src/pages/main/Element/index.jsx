@@ -11,7 +11,7 @@ function Element() {
   const { search } = useParseUrl();
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-   const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     window.scrollTo({ top: 0 });
     setLoading(true);

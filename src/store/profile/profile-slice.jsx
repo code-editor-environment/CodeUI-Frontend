@@ -5,6 +5,9 @@ const initialState = {
   user: JSON.parse(getStorage("codeUiLog"))
     ? JSON.parse(getStorage("codeUiLog"))
     : null,
+  settingEditor: JSON.parse(getStorage("settingEditor"))
+    ? JSON.parse(getStorage("settingEditor"))
+    : null,
   profileRes: JSON.parse(getStorage("profileResponse"))
     ? JSON.parse(getStorage("profileResponse"))
     : null,
@@ -15,6 +18,9 @@ export const ProfileSlice = createSlice({
   reducers: {
     getProfile: (state, { payload }) => {
       state.profiles = payload;
+    },
+    getSettingEditor: (state, { payload }) => {
+      state.settingEditor = payload;
     },
     userProfile: (state, { payload }) => {
       state.user = payload;
@@ -31,6 +37,6 @@ export const ProfileSlice = createSlice({
   },
 });
 
-export const { getProfile, userProfile, userProfileRes, actLogout } =
+export const { getProfile, getSettingEditor, userProfile, userProfileRes, actLogout } =
   ProfileSlice.actions;
 export default ProfileSlice.reducer;

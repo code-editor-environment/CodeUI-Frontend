@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import points from "../../../assets/images/logoCover.png";
 // import useQuery from "../../../hooks/useQuery";
@@ -11,9 +11,10 @@ function Creators() {
   // const query = useQuery();
   // const text = query.get("text");
   const { topCreator } = useSelector((state) => state.creator);
+  const [pageSize, setPageSize] = useState(8);
   useEffect(() => {
     window.scrollTo({ top: 0 });
-    getTopCreators({ page: 1, pageSize: 8 }).then((data) => {
+    getTopCreators({ page: 1, pageSize: pageSize }).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
@@ -21,7 +22,7 @@ function Creators() {
       }
     });
     // eslint-disable-next-line
-  }, []);
+  }, [pageSize]);
   return (
     <div className="creators-page">
       <div>
@@ -68,7 +69,13 @@ function Creators() {
           "not found"
         )}
       </section>
-      <AppButton children="See more Creators" btnType="button_0" htmlType="a" />
+      {pageSize === 8 && (
+        <AppButton
+          children="See more Creators"
+          btnType="button_0"
+          onClick={() => setPageSize(40)}
+        />
+      )}
     </div>
   );
 }

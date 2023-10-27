@@ -4,7 +4,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useIsHidden } from "../../../hooks/useIsHidden";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import { toast } from "react-toastify";
 import ColorPicker from "react-pick-color";
@@ -37,6 +37,7 @@ function Detail() {
   const [htmlText, setHtmlText] = useState("");
   const [changeEditor, setChangeEditor] = useState(false);
   const [color, setColor] = useState("#e8e8e8");
+  const { settingEditor } = useSelector((state) => state.profile);
   const fetchPost = async () => {
     await getDoc(doc(db, `elements`, postId)).then((querySnapshot) => {
       setElementById(querySnapshot.data());
@@ -89,8 +90,10 @@ function Detail() {
     return () => clearTimeout(timeout);
   };
   const options = {
-    fontSize: 17,
-    emptySelectionClipboard: true,
+    fontSize: settingEditor?.fontSize || 17,
+    minimap: {
+      enabled: settingEditor?.miniMap === "enabled" ? true : false,
+    },
   };
 
     const clickSubmitReview = () => {
@@ -118,7 +121,7 @@ function Detail() {
     () => {
       const autoSave = setTimeout(() => {
         search?.status === "draft" && clickSubmitDraft();
-      }, 3000);
+      }, settingEditor?.autoSave || 3000);
       return () => clearTimeout(autoSave);
     }, // eslint-disable-next-line
     [htmlText, cssText, color]
@@ -191,7 +194,7 @@ function Detail() {
                 <Editor
                   height="100%"
                   options={options}
-                  theme="vs-dark"
+                  theme={settingEditor?.theme || "vs-dark"}
                   language="html"
                   value={htmlText === "" ? elementById.html : htmlText}
                   onChange={handleEditorChangeHtml}
@@ -205,7 +208,7 @@ function Detail() {
                 <Editor
                   height="100%"
                   options={options}
-                  theme="vs-dark"
+                  theme={settingEditor?.theme || "vs-dark"}
                   language={convert ? "scss" : "css"}
                   value={cssText === "" ? elementById.css : cssText}
                   onChange={handleEditorChangeCss}

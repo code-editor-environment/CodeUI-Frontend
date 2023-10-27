@@ -11,9 +11,6 @@ import { useIsLogin } from "../../hooks/useIsLogin";
 import Menu from "./menu";
 import logo from "../../assets/images/logo.png";
 import Notification from "./notifications/index";
-// import { open } from "../../store/modal/modal-slice";
-// import LoginModal from "../../components/Modal/loginModal";
-// import RegisterModal from "../../components/Modal/registerModal";
 import { auth } from "../../configs/firebase.configs";
 import { signInMail } from "../../api/auth";
 import {
@@ -24,7 +21,6 @@ import {
 import AppButton from "../../components/Button";
 import { setStorage } from "../../utils/helper";
 import Point from "./point";
-// import Element from './../../pages/main/Element/index';
 
 function Header() {
   const history = window.location.pathname;
@@ -61,12 +57,6 @@ function Header() {
       "https://github.com/login/oauth/authorize?client_id=058e13ea18e2678c39aa"
     );
   };
-  // const onLoginModal = () => {
-  //   dispatch(open(<LoginModal />));
-  // };
-  // const onRegisterModal = () => {
-  //   dispatch(open(<RegisterModal />));
-  // };
   const SignInMail = (type) => {
     const providerGoogle = new GoogleAuthProvider();
     const providerGithub = new GithubAuthProvider();
@@ -115,19 +105,6 @@ function Header() {
         console.error(errorCode, errorMessage);
       });
   };
-  // const gitHubSignIn = () => {
-  //   const provider = new GithubAuthProvider();
-  //   signInWithPopup(auth, provider)
-  //     .then(function (result) {
-  //       var user = result.user;
-  //       console.log("accessToken: ", user);
-  //     })
-  //     .catch(function (error) {
-  //       var errorCode = error.code;
-  //       var errorMessage = error.message;
-  //       console.error(errorCode, errorMessage);
-  //     });
-  // };
   function handleLogout(e) {
     e.preventDefault();
     dispatch(actLogout());

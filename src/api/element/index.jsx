@@ -20,7 +20,7 @@ export const getListElementByCreator = handleApi(async (data) => {
   const result = await NET().get(
     `/element/getAll?Status=${
       data.handleStatus ? data.handleStatus : "APPROVED"
-    }&OwnerUsername=${data.username}`
+    }&OwnerUsername=${data.username}&Page=${data.page}&PageSize=${data.pageSize}`
   );
   return result.data;
 });

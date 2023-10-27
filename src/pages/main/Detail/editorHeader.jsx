@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import JSZip from "jszip";
 import htmlIcon from "../../../assets/images/html.svg";
 import beauty from "../../../assets/images/beauty.svg";
 import cssIcon from "../../../assets/images/css.svg";
 import scssIcon from "../../../assets/images/scss.svg";
 import copyIcon from "../../../assets/images/copy.svg";
+// import zipIcon from "../../../assets/images/zip.svg";
+// import codeIcon from "../../../assets/images/code.svg";
 import DropdownNav from "../../../components/DropdownNav";
 import { onConvert, onBeautify } from "../../../core/tools";
 import DropdownMore from "../../../components/DropdownNav/dropdownMore";
 import { open } from "../../../store/modal/modal-slice";
 import IntegrationModal from "../../../components/Modal/integrationModal";
+import SettingEditor from "../../../components/Modal/settingEditor";
 
 function EditorHeader({
   postId,
@@ -70,27 +74,34 @@ function EditorHeader({
     const onIntegration = () => {
       dispatch(open(<IntegrationModal postId={postId} />));
   };
+      const onSettingEditor = () => {
+        dispatch(open(<SettingEditor />));
+      };
+    const handleDownload = async () => {
+      const zip = new JSZip();
+      zip.file("index.html", htmlText === "" ? elementById.html : htmlText);
+      zip.file("style.css", cssText === "" ? elementById.css : cssText);
+      const blob = await zip.generateAsync({ type: "blob" });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "codeui.zip";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
     const itemMore = [
       {
-        icon: (
-          <img
-            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
-            alt="cssIcon"
-            style={{ width: "30px", marginRight: "5px" }}
-          />
-        ),
-        label: "Test integration",
+        label: "Integration",
         onClick: onIntegration,
       },
       {
-        icon: (
-          <img
-            src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
-            alt="scssIcon"
-            style={{ width: "30px", marginRight: "5px" }}
-          />
-        ),
-        label: "Comming soon",
+        label: "Export .zip",
+        onClick: handleDownload,
+      },
+      {
+        label: "Setting",
+        onClick: onSettingEditor,
       },
     ];
   return (

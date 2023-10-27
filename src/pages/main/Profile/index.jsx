@@ -19,12 +19,11 @@ function Profile() {
   const { profiles } = useSelector((state) => state.profile);
   // const [postReview, setPostReview] = useState([]);
   const [follow, setFollow] = useState(false);
-  const [loading, setLoading] = useState(false);
-  console.log("🚀 ~ file: index.jsx:29 ~ Profile ~ loading:", loading)
+  // const [loading, setLoading] = useState(false);
   useEffect(
     () => {
       window.scrollTo({ top: 0 });
-      setLoading(true);
+      // setLoading(true);
       getProfiles(username).then((data) => {
         if (data.error) {
           console.log(data.error);
@@ -32,7 +31,7 @@ function Profile() {
           dispatch(getProfile(data.data));
           setFollow(data.data.isFollow);
         }
-        setLoading(false);
+        // setLoading(false);
       });
       // getFollower(username).then((data) => {
       //   if (data.error) {

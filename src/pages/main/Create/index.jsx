@@ -42,6 +42,7 @@ function Create() {
   const [convert, setConvert] = useState(false);
   const [color, setColor] = useState("#212121");
   const { elementID, category } = useSelector((state) => state.modal);
+  const { settingEditor } = useSelector((state) => state.profile);
   useEffect(
     () => {
       dispatch(open(<PostStatusModal />));
@@ -91,7 +92,12 @@ function Create() {
   function handleEditorChangeHtml(value, event) {
     setHtmlText(value);
   }
-  const options = { fontSize: 17 };
+    const options = {
+      fontSize: settingEditor?.fontSize || 17,
+      minimap: {
+        enabled: settingEditor?.miniMap === "enabled" ? true : false,
+      },
+    };
   const clickSubmitReview = () => {
     putElement(elementID).then((data) => {
       if (data.error) {
@@ -118,7 +124,7 @@ function Create() {
     () => {
       const autoSave = setTimeout(() => {
         elementID && clickSubmitDraft();
-      }, 3000);
+      }, settingEditor?.autoSave || 3000);
       return () => clearTimeout(autoSave);
     }, // eslint-disable-next-line
     [htmlText, cssText, color]
@@ -146,7 +152,7 @@ function Create() {
             <Editor
               height="100%"
               options={options}
-              theme="vs-dark"
+              theme={settingEditor?.theme || "vs-dark"}
               language="html"
               value={htmlText}
               onChange={handleEditorChangeHtml}
@@ -160,7 +166,7 @@ function Create() {
             <Editor
               height="100%"
               options={options}
-              theme="vs-dark"
+              theme={settingEditor?.theme || "vs-dark"}
               language={convert ? "scss" : "css"}
               value={cssText}
               onChange={handleEditorChangeCss}

@@ -2725,6 +2725,7 @@ input:focus-visible {
   display: block;
   margin-bottom: 30px;
   font-size: 27px;
+  font-weight: 600;
 }
 .options-modal .options {
   align-self: stretch;
@@ -2991,6 +2992,7 @@ input:focus-visible {
 }
 .profile-page .content {
   margin-top: 40px;
+  padding-right: 10px;
 }
 .profile-page .content > .posts-title {
   display: flex;
@@ -4118,6 +4120,8 @@ input:focus-visible {
 .creators-page .heading {
   display: block;
   text-align: center;
+  font-size: 36px;
+  font-weight:600;
   margin-top: 50px;
   margin-bottom: 50px;
 }

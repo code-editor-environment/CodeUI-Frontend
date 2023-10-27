@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 // import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "../../../configs/firebase.configs";
 import planet from "../../../assets/images/planet.png";
 import timeLineYellow from "../../../assets/images/time-line-yellow.svg";
+import timeLineVa from "../../../assets/images/time-line-va.svg";
 import timeLineGreen from "../../../assets/images/time-line-green.svg";
 import timeLineRed from "../../../assets/images/time-line-red.svg";
 import timeLineBlue from "../../../assets/images/time-line-blue.svg";
@@ -14,55 +13,36 @@ import { useParseUrl } from "../../../hooks/useParseUrl";
 import styles from "./profile.module.scss";
 import RenderElement from "../../../components/Cards/renderElement";
 import { getListElementByCreator } from "../../../api/element";
+import Pagination from "../../../components/Pagination";
 function ElementView() {
   const { username } = useParams();
   const { search } = useParseUrl();
   const { isLogin, profileRes } = useIsLogin();
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [postApproved, setPostApproved] = useState([]);
-//   const [postReview, setPostReview] = useState([]);
-//   const [postRejected, setPostRejected] = useState([]);
-  // const [totalPages, setTotalPages] = useState(0);
-  // const [page, setPage] = useState(1);
-  // const [loading, setLoading] = useState(false);
   const isActive = (path) => {
     if (search?.element === path) return styles.active;
     else return "false";
   };
-    // const fetchPost = async () => {
-    //   await getDocs(
-    //     query(
-    //       collection(db, `elements`),
-    //       where("usernameCreator", "==", username),
-    //       where(
-    //         "status",
-    //         "==",
-    //         search?.element === undefined ? "approved" : search?.element
-    //       )
-    //     )
-    //   ).then((querySnapshot) => {
-    //     const newData = querySnapshot.docs.map((doc) => ({
-    //       ...doc.data(),
-    //       id: doc.id,
-    //     }));
-    //     setPostApproved(newData);
-    //     // setTotalPages(newData.length);
-    //   });
-    // };
     useEffect(
       () => {
-            getListElementByCreator({
-              username,
-              handleStatus: search?.element,
-            }).then((data) => {
-              if (data.error) {
-                console.log(data.error);
-              } else {
-                setPostApproved(data.data);
-              }
-            });
+        getListElementByCreator({
+          username,
+          handleStatus: search?.element,
+          page,
+          pageSize: 10,
+        }).then((data) => {
+          if (data.error) {
+            console.log(data.error);
+          } else {
+            setPostApproved(data.data);
+            setTotalPages(Math.ceil(data.metadata.total / 10));
+          }
+        });
       },
       // eslint-disable-next-line
-      [username, search?.element]
+      [username, search?.element, page]
     );
   return (
     <>
@@ -81,6 +61,15 @@ function ElementView() {
               </Link>
               {isLogin && profileRes.username === username && (
                 <>
+                  <Link
+                    className={`${styles.timeLineGreen} ${isActive(
+                      "variations"
+                    )}`}
+                    to="?element=variations"
+                  >
+                    <img className="tag-icon" src={timeLineVa} alt="" />
+                    Variations
+                  </Link>
                   <Link
                     className={`${styles.timeLineYellow} ${isActive(
                       "pending"
@@ -162,35 +151,14 @@ function ElementView() {
       </div>
       {postApproved?.length > 0 ? (
         <section className="content">
-          {/* <h3 className="posts-title">
-            {search?.element ? (
-              <>
-                <img className="tag-icon" src={timeLineGreen} alt="" />
-                <span className="title">Approved</span>
-                <span className="subtitle">public</span>
-              </>
-            ) : search?.element === "pending" ? (
-              <>
-                <img className="tag-icon" src={timeLineYellow} alt="" />
-                <span className="title">Review</span>
-              </>
-            ) : search?.element === "rejected" ? (
-              <>
-                <img className="tag-icon" src={timeLineRed} alt="" />
-                <span className="title">Rejected</span>
-              </>
-            ) : (
-              <>
-                <img className="tag-icon" src={timeLineBlue} alt="" />
-                <span className="title">Draft</span>
-              </>
-            )}
-          </h3> */}
           <div className="cards-container">
             {postApproved.map((post, index) => (
               <RenderElement post={post} search={search?.element} key={index} />
             ))}
           </div>
+          {totalPages > 1 && (
+            <Pagination value={page} range={totalPages} onChange={setPage} />
+          )}
           {/* {totalPages !== page && (
             <div style={{ display: "flex", justifyContent: "center" }}>
               <button

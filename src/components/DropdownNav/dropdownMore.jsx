@@ -25,7 +25,7 @@ function DropdownMore(props) {
           {props.item.map((item, index) => (
             <li key={index}>
               <div className={styles.item} onClick={item.onClick}>
-                {item.icon}
+                {/* {item.icon} */}
                 <div>{item.label}</div>
               </div>
             </li>
