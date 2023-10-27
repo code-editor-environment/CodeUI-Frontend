@@ -1,20 +1,22 @@
 import React from "react";
-import Hero from "./Hero";
+// import Hero from "./Hero";
 import Stat from "./Stat";
 import TopCreate from "./TopCreate";
 import TopElement from './TopElement/index';
 import Supporters from './Supporters/index';
 import HeroTest from "./Hero/test";
+import AdsViaCarbon from "./AdsViaCarbon";
 
 function Home() {
   return (
     <div className="home-page">
       {/* <Hero /> */}
-      <HeroTest/>
+      <HeroTest />
       <Stat />
       <TopCreate />
       <TopElement />
       <Supporters />
+      <AdsViaCarbon />
     </div>
   );
 }

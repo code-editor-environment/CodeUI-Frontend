@@ -23,6 +23,7 @@ import {
 } from "../../store/profile/profile-slice";
 import AppButton from "../../components/Button";
 import { setStorage } from "../../utils/helper";
+import Point from "./point";
 // import Element from './../../pages/main/Element/index';
 
 function Header() {
@@ -30,26 +31,26 @@ function Header() {
   const dispatch = useDispatch();
   const { isLogin, profileRes } = useIsLogin();
   const [loading, setLoading] = useState(false);
-    useEffect(() => {
-      const queryString = window.location.search;
-      const ulrParams = new URLSearchParams(queryString);
-      const codeParams = ulrParams.get("code");
-      if (codeParams && localStorage.getItem("userLogin") === null) {
-        async function getAccessToken() {
-          await axios({
-            method: "GET",
-            url: `${import.meta.env.NODE_DOMAIN}/signIn?code=` + codeParams,
-          }).then((response) => {
-            if (response.data) {
-              dispatch(userProfile(response.data));
-              localStorage.setItem("userLogin", JSON.stringify(response.data));
-            }
-          });
-        }
-        getAccessToken();
+  useEffect(() => {
+    const queryString = window.location.search;
+    const ulrParams = new URLSearchParams(queryString);
+    const codeParams = ulrParams.get("code");
+    if (codeParams && localStorage.getItem("userLogin") === null) {
+      async function getAccessToken() {
+        await axios({
+          method: "GET",
+          url: `${import.meta.env.NODE_DOMAIN}/signIn?code=` + codeParams,
+        }).then((response) => {
+          if (response.data) {
+            dispatch(userProfile(response.data));
+            localStorage.setItem("userLogin", JSON.stringify(response.data));
+          }
+        });
       }
-      // eslint-disable-next-line
-    }, []);
+      getAccessToken();
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const loginWithGithub = () => {
     // window.location.assign(
@@ -210,6 +211,7 @@ function Header() {
         <div className="buttons">
           {isLogin ? (
             <>
+              <Point/>
               <AppButton
                 children="Create"
                 btnType="button_1"

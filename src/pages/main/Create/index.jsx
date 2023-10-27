@@ -121,7 +121,7 @@ function Create() {
       }, 3000);
       return () => clearTimeout(autoSave);
     }, // eslint-disable-next-line
-    [htmlText, cssText]
+    [htmlText, cssText, color]
   );
 
   return (

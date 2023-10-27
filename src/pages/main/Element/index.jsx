@@ -15,15 +15,17 @@ function Element() {
   useEffect(() => {
     window.scrollTo({ top: 0 });
     setLoading(true);
-    getListElements({ category: search.category, page }).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        dispatch(getElements(data.data));
-        setLoading(false);
-        setTotalPages(Math.ceil(data.metadata.total / 10));
+    getListElements({ category: search.category, page, pageSize: 10 }).then(
+      (data) => {
+        if (data.error) {
+          console.log(data.error);
+        } else {
+          dispatch(getElements(data.data));
+          setLoading(false);
+          setTotalPages(Math.ceil(data.metadata.total / 10));
+        }
       }
-    });
+    );
     // eslint-disable-next-line
   }, [search.category, page]);
       // const fetchPost = async () => {

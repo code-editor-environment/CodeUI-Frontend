@@ -1,11 +1,6 @@
 import React from "react";
 import Buttons from "./../Buttons";
-import Cards from "./../Cards";
-import Checkboxes from "./../Checkboxes";
-import Inputs from "./../Inputs";
-import Loaders from "./../Loaders";
 import Tabs from "./Tab/tabs";
-import Toggle from "./../Toggle";
 
 function TopElement() {
   return (
@@ -17,22 +12,22 @@ function TopElement() {
       <div></div>
       <Tabs>
         <div label="Buttons">
-          <Buttons />
+          <Buttons category="button" />
         </div>
         <div label="Checkboxes">
-          <Checkboxes />
+          <Buttons category="checkbox" />
         </div>
         <div label="Toggle">
-          <Toggle />
+          <Buttons category="switch" />
         </div>
         <div label="Cards">
-          <Cards />
+          <Buttons category="card" />
         </div>
         <div label="Loaders">
-          <Loaders />
+          <Buttons category="spinner" />
         </div>
         <div label="Inputs">
-          <Inputs />
+          <Buttons category="input" />
         </div>
       </Tabs>
     </div>

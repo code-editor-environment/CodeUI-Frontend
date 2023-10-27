@@ -1,0 +1,11 @@
+.point {
+  position: relative;
+  .info {
+    display: none;
+  }
+  &:hover {
+    .info {
+      display: flex;
+    }
+  }
+}

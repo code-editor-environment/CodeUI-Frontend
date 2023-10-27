@@ -1,12 +1,13 @@
 import { NET } from "../../utils/define";
 import { handleApi } from "../../utils/helper";
 
-export const getListElements = handleApi(async ({category, page}) => {
+export const getListElements = handleApi(async ({ category, page, pageSize }) => {
   const url =
     category === "favorites"
-      ? `/element/getFavoriteElements?Page=${page}`
+      ? `/element/getFavoriteElements?Page=${page}&PageSize=${pageSize}`
       : `/element/getRandomElements${
-          category === "all" ? "?" : "?CategoryName=" + category+ "&"}Page=${page}`;
+          category === "all" ? "?" : "?CategoryName=" + category + "&"
+        }Page=${page}&PageSize=${pageSize}`;
   const result = await NET().get(url);
   return result.data;
 });
