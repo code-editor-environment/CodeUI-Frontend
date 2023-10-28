@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -27,36 +26,7 @@ function Header() {
   const dispatch = useDispatch();
   const { isLogin, profileRes } = useIsLogin();
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    const queryString = window.location.search;
-    const ulrParams = new URLSearchParams(queryString);
-    const codeParams = ulrParams.get("code");
-    if (codeParams && localStorage.getItem("userLogin") === null) {
-      async function getAccessToken() {
-        await axios({
-          method: "GET",
-          url: `${import.meta.env.NODE_DOMAIN}/signIn?code=` + codeParams,
-        }).then((response) => {
-          if (response.data) {
-            dispatch(userProfile(response.data));
-            localStorage.setItem("userLogin", JSON.stringify(response.data));
-          }
-        });
-      }
-      getAccessToken();
-    }
-    // eslint-disable-next-line
-  }, []);
 
-  const loginWithGithub = () => {
-    // window.location.assign(
-    //   "https://github.com/login/oauth/authorize?client_id=" +
-    //     process.env.CLIENT_ID
-    // );
-    window.location.assign(
-      "https://github.com/login/oauth/authorize?client_id=058e13ea18e2678c39aa"
-    );
-  };
   const SignInMail = (type) => {
     const providerGoogle = new GoogleAuthProvider();
     const providerGithub = new GithubAuthProvider();
@@ -293,8 +263,7 @@ function Header() {
               </button>
               <button
                 className="button button--secondary button--sign-in"
-                // onClick={() => SignInMail(false)}
-                onClick={loginWithGithub}
+                onClick={() => SignInMail(false)}
                 disabled={loading}
               >
                 <svg

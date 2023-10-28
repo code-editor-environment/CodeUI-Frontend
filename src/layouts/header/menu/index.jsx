@@ -53,9 +53,28 @@ function Menu({ handleLogout, user }) {
           </li>
           <li className="list-item">
             <a
-              href="#"
-              className="item item--help"
+              className="item"
+              href="https://forms.gle/UdfYXahJ6v8G77L29"
+              target="_blank"
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width={24}
+                height={24}
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                  fill="currentColor"
+                  d="M10 3h4a8 8 0 1 1 0 16v3.5c-5-2-12-5-12-11.5a8 8 0 0 1 8-8zm2 14h2a6 6 0 1 0 0-12h-4a6 6 0 0 0-6 6c0 3.61 2.462 5.966 8 8.48V17z"
+                />
+              </svg>
+
+              <span>Send feedback</span>
+            </a>
+          </li>
+          <li className="list-item">
+            <a href="#" className="item item--help">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

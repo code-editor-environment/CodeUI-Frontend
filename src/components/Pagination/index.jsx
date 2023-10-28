@@ -33,9 +33,10 @@ function Pagination({ value, onChange, range }) {
         {pattern.map((label, index) => (
           <li
             className={value === label ? `${styles.active}` : `${styles.numb}`}
+            onClick={() => changeNumber(label)}
             key={index}
           >
-            <span onClick={() => changeNumber(label)}>{label}</span>
+            <span>{label}</span>
           </li>
         ))}
         <li
