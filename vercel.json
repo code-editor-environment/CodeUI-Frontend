@@ -5,6 +5,10 @@
       "headers": { "content-type": "application/javascript" }
     },
     { "src": "^/assets/.*\\.css$", "headers": { "content-type": "text/css" } },
+    {
+      "src": "^/assets/.*\\.(jpg|jpeg|png|gif|svg|webm|webp)$",
+      "headers": { "cache-control": "public, max-age=604800, immutable" }
+    },
     { "src": "/(.*).html", "dest": "/index.html" },
     { "src": "/.*", "dest": "/index.html" }
   ]
