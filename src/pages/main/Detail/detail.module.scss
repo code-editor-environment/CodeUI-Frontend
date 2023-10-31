@@ -1,3 +1,71 @@
+.consoleContainer {
+  padding: 5px 20px;
+  font-size: 18px;
+  width: 100%;
+  display: block;
+  color: #fff;
+  background: #292929;
+  font-weight: var(--semibold);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .label {
+    display: flex;
+    .title {
+      margin-right: 6px;
+      background: #1e1e1e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      width: 100px;
+      height: 30px;
+      border-radius: 8px;
+      padding: 0 6px;
+      // background: rgb(63, 63, 63);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .action {
+      background: rgb(68, 68, 68);
+      margin-left: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      font-size: 14px;
+      font-weight: var(--semibold);
+      color: var(--offwhite);
+      border-radius: var(--border-radius);
+      border: none;
+      transition: all 0.3s;
+      height: 30px;
+      padding: 0 0.7em;
+      svg{
+        margin: 0 auto;
+        transform: rotate(180deg);
+        transition: all 0.3s ease-in-out;
+      }
+      .rotate{
+        transform: rotate(0deg)!important;
+      }
+    }
+  }
+}
+.consolePreview{
+  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 0px;
+  background: #212121;
+  transition: all 0.2s ease-in-out;
+}
+.consolePreviewShow{
+  height: 250px;
+}
 .commentContainer {
   gap: 2rem;
   grid-template-columns: repeat(1, minmax(0, 1fr));

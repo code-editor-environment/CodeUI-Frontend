@@ -47,9 +47,9 @@ const RenderElement = ({ post, search }) => {
           </Link>
           <iframe
             srcDoc={`
-        <html style="height: 100%;">
+        <html style="height: 100%;overflow: hidden;">
         <style>${elementItem.css}</style>
-        <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center;">${elementItem.html}</body>
+        <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center; font-family: Montserrat, sans-serif;">${elementItem.html}</body>
         </html>
       `}
             title="output"

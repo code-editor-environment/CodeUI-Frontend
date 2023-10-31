@@ -3,7 +3,7 @@ import axios from "axios";
 export const onConvert = (status, cssText, css, setConvert, setCssText) => {
   axios({
     method: "POST",
-    url: `${import.meta.env.NODE_DOMAIN}/tool/convert`,
+    url: `${import.meta.env.VITE_NODE_DOMAIN}/tool/convert`,
     headers: {
       "Content-Type": "application/json",
     },

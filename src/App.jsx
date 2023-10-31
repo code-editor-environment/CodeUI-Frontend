@@ -16,6 +16,8 @@ import Create from "./pages/main/Create";
 import ChatBox from "./pages/main/Chat";
 import VideoCall from "./pages/main/Chat/videoCall";
 import Integration from "./core/integration";
+import Challenges from "./pages/main/Challenges";
+import DetailChallenges from "./pages/main/Challenges/detailChallenges";
 
 function App() {
   return (
@@ -27,6 +29,11 @@ function App() {
             <Route path="create" element={<Create />} />
             <Route path="elements" element={<Element />} />
             <Route path="detail/:postId" element={<Detail />} />
+            <Route path="challenges" element={<Challenges />} />
+            <Route
+              path="challenges/:challengesId"
+              element={<DetailChallenges />}
+            />
             <Route path="creators" element={<Creators />} />
             <Route path="subscription" element={<Subscription />} />
             <Route path="profile/:username" element={<Profile />} />

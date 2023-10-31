@@ -184,9 +184,9 @@ function Create() {
           >
             <iframe
               srcDoc={`
-        <html style="height: 100%;">
+        <html style="height: 100%;overflow: hidden;">
         <style>${cssText}</style>
-        <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center;">${htmlText}</body>
+        <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center; font-family: Montserrat, sans-serif;">${htmlText}</body>
         </html>
       `}
               title="output"
@@ -246,6 +246,7 @@ function Create() {
                   </svg>
                 }
                 onClick={() => {
+                  clickSubmitDraft();
                   navigate(`/profile/${profileRes.username}?element=draft`);
                   toast.success("successfully!");
                   dispatch(postElementID(null));

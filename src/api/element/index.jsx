@@ -76,3 +76,8 @@ export const deleteComment = handleApi(async (id) => {
   );
   return result.data;
 });
+
+export const deleteElement = handleApi(async (id) => {
+  const result = await NET().delete(`/element/deleteElement?id=${id}`);
+  return result.data;
+});

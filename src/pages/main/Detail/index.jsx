@@ -10,13 +10,14 @@ import { toast } from "react-toastify";
 import ColorPicker from "react-pick-color";
 // import { ResizableBox } from "react-resizable";
 // import { getElementById } from "../../../store/element/elements-slice";
-import { getListElementById, saveFavorite, like, putElement } from "../../../api/element";
+import { getListElementById, saveFavorite, like, putElement, deleteElement } from "../../../api/element";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 import EditorHeader from "./editorHeader";
 import { db } from "../../../configs/firebase.configs";
 import { useParseUrl } from "../../../hooks/useParseUrl";
 import AppButton from "../../../components/Button";
 import Comment from "./comment";
+// import Console from "./console";
 // import styles from "./detail.module.scss";
 function Detail() {
   const { postId } = useParams();
@@ -69,7 +70,14 @@ function Detail() {
     setHtmlText(value);
   }
   const onDeletePost = () => {
-    // dispatch(deletePost(postId, navigate));
+          deleteElement(postId).then((data) => {
+            if (data.error) {
+              console.log(data.error);
+            } else {
+              console.log(data.data);
+              navigate(`/profile/${profileRes.username}`);
+            }
+          });;
   };
   const onUpdatePost = () => {
     dispatch();
@@ -234,9 +242,9 @@ function Detail() {
               >
                 <iframe
                   srcDoc={`
-        <html style="height: 100%;">
+        <html style="height: 100%;overflow: hidden;">
         <style>${cssText === "" ? elementById.css : cssText}</style>
-        <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center;">${
+        <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center; font-family: Montserrat, sans-serif;">${
           htmlText === "" ? elementById.html : htmlText
         }</body>
         </html>
@@ -247,7 +255,6 @@ function Detail() {
                   width="100%"
                   height="100%"
                 />
-                <div className="preview-controls" />
                 <label className="theme-switcher" style={{ left: "15px" }}>
                   Background:
                   <label
@@ -305,6 +312,7 @@ function Detail() {
                     : `${elementById.theme !== "dark" ? "#e8e8e8" : "#212121"}`}
                 </span>
               </div>
+              {/* <Console /> */}
             </div>
           </div>
           <div className="detail-action">
@@ -401,7 +409,7 @@ function Detail() {
                               viewBox="0 0 24 24"
                               width="24"
                               height="24"
-                              class="h-5 w-5"
+                              className="h-5 w-5"
                             >
                               <path fill="none" d="M0 0h24v24H0z"></path>
                               <path
@@ -423,7 +431,7 @@ function Detail() {
                               viewBox="0 0 24 24"
                               width="24"
                               height="24"
-                              class="h-5 w-5"
+                              className="h-5 w-5"
                             >
                               <path fill="none" d="M0 0h24v24H0z"></path>
                               <path
@@ -454,6 +462,7 @@ function Detail() {
                               </svg>
                             }
                             onClick={() => {
+                              clickSubmitDraft();
                               navigate(
                                 `/profile/${profileRes.username}?element=draft`
                               );
@@ -492,7 +501,7 @@ function Detail() {
                             viewBox="0 0 24 24"
                             width="24"
                             height="24"
-                            class="h-5 w-5"
+                            className="h-5 w-5"
                           >
                             <path fill="none" d="M0 0h24v24H0z"></path>
                             <path
@@ -511,7 +520,7 @@ function Detail() {
                             viewBox="0 0 24 24"
                             width="24"
                             height="24"
-                            class="h-5 w-5 false"
+                            className="h-5 w-5 false"
                           >
                             <path fill="none" d="M0 0h24v24H0z"></path>
                             <path

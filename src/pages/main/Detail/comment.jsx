@@ -10,7 +10,6 @@ import RenderComment from "./renderComment";
 // import styles from "./detail.module.scss";
 
 function Comment({ postId, element }) {
-  console.log("🚀 ~ file: comment.jsx:13 ~ Comment ~ element:", element)
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [total, setTotal] = useState(0);

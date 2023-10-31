@@ -104,6 +104,7 @@ function Header() {
             className={`hover-underline-animation browse-link ${
               history !== "/" &&
               history !== "/subscription" &&
+              history !== "/challenges" &&
               history !== "/creators"
                 ? "active"
                 : "false"
@@ -111,6 +112,14 @@ function Header() {
             to="/elements?category=all"
           >
             Elements
+          </Link>
+          <Link
+            className={`hover-underline-animation ${
+              history === "/challenges" ? "active" : "false"
+            }`}
+            to="/challenges"
+          >
+            Challenges
           </Link>
           <Link
             className={`hover-underline-animation ${
@@ -158,7 +167,7 @@ function Header() {
         <div className="buttons">
           {isLogin ? (
             <>
-              <Point/>
+              <Point />
               <AppButton
                 children="Create"
                 btnType="button_1"

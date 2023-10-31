@@ -14,6 +14,8 @@ import DropdownMore from "../../../components/DropdownNav/dropdownMore";
 import { open } from "../../../store/modal/modal-slice";
 import IntegrationModal from "../../../components/Modal/integrationModal";
 import SettingEditor from "../../../components/Modal/settingEditor";
+import ImageHost from "../../../components/Modal/imageHost";
+import { useIsLogin } from "../../../hooks/useIsLogin";
 
 function EditorHeader({
   postId,
@@ -28,6 +30,7 @@ function EditorHeader({
   setConvert,
 }) {
   const dispatch = useDispatch();
+  const { isLogin, profileRes } = useIsLogin();
   // const { elementById } = useSelector((state) => state.element);
   const [copyCss, setCopyCss] = useState(false);
   const [copyHtml, setCopyHtml] = useState(false);
@@ -74,6 +77,9 @@ function EditorHeader({
     const onIntegration = () => {
       dispatch(open(<IntegrationModal postId={postId} />));
   };
+      const onImageHost = () => {
+        dispatch(open(<ImageHost elementById={elementById} />));
+      };
       const onSettingEditor = () => {
         dispatch(open(<SettingEditor />));
       };
@@ -94,6 +100,11 @@ function EditorHeader({
       {
         label: "Integration",
         onClick: onIntegration,
+      },
+      {
+        label: "Image",
+        onClick: onImageHost,
+        check: elementById?.usernameCreator === profileRes?.username,
       },
       {
         label: "Export .zip",

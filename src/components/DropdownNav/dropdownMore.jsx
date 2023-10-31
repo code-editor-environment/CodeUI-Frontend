@@ -22,14 +22,19 @@ function DropdownMore(props) {
         }`}
       >
         <ul>
-          {props.item.map((item, index) => (
-            <li key={index}>
-              <div className={styles.item} onClick={item.onClick}>
-                {/* {item.icon} */}
-                <div>{item.label}</div>
-              </div>
-            </li>
-          ))}
+          {props.item.map((item, index) => {
+            if (item?.check === false) {
+              return null;
+            }
+            return (
+              <li key={index}>
+                <div className={styles.item} onClick={item.onClick}>
+                  {/* {item.icon} */}
+                  <div>{item.label}</div>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </>
