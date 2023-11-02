@@ -7,9 +7,13 @@ import {
 } from "../../../api/element";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import RenderComment from "./renderComment";
+import { useDispatch } from "react-redux";
+import { open } from "../../../store/modal/modal-slice";
+import ReportPostModal from "../../../components/Modal/reportPostModal";
 // import styles from "./detail.module.scss";
 
 function Comment({ postId, element }) {
+  const dispatch = useDispatch();
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [total, setTotal] = useState(0);
@@ -48,6 +52,9 @@ function Comment({ postId, element }) {
         setTotal(total - 1);
       }
     });
+  };
+  const onReportPostModal = () => {
+    dispatch(open(<ReportPostModal />));
   };
   return (
     <div className="col-span-full grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 mt-10">
@@ -155,7 +162,9 @@ function Comment({ postId, element }) {
               </svg>{" "}
               {new Date(element?.updateDate).toDateString()}
             </div>
-            <button className="px-4 py-2.5 font-sans flex items-center gap-2 border-none rounded-lg text-base font-semibold transition-colors duration-200 bg-transparent hover:bg-dark-600 max-md:bg-dark-600 text-offwhite cursor-pointer group">
+            <button className="px-4 py-2.5 font-sans flex items-center gap-2 border-none rounded-lg text-base font-semibold transition-colors duration-200 bg-transparent hover:bg-dark-600 max-md:bg-dark-600 text-offwhite cursor-pointer group"
+            onClick={onReportPostModal}
+            >
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -169,7 +178,7 @@ function Comment({ postId, element }) {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-              </svg>{" "}
+              </svg>
               <span className="text-gray-400 group-hover:text-gray-200">
                 Report
               </span>
