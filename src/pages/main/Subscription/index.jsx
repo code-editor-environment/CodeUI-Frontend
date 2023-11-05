@@ -4,6 +4,7 @@ import styles from "./subscription.module.scss";
 import AppButton from "../../../components/Button";
 import rocket from "../../../assets/images/rocket.svg";
 import subscription2 from "../../../assets/images/subscription2.png";
+import subscription1 from "../../../assets/images/pro1.png";
 // import Element from './../Element/index';
 function Subscription() {
   return (
@@ -315,11 +316,12 @@ function Subscription() {
       <section className="relative mb-44 mt-10 pb-32  lg:pb-10">
         <div className="absolute w-full h-4/5 bottom-0 left-0 bg-gradient-to-t from-dark-700 from-0% via-[99%] to-100% via-transparent to-transparent z-20" />
         <img
-          src={subscription2}
+          src={subscription1}
           alt=""
           className="w-full block mx-auto max-w-[1400px] relative z-10 rounded-3xl"
+          style={{ padding: "35px", background: " #0B0B0B" }}
         />
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 z-30 max-w-[700px] w-full">
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 z-30 max-w-[900px] w-full">
           <h3 className="flex items-center gap-4 text-2xl lg:text-5xl justify-center font-semibold">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -336,19 +338,19 @@ function Subscription() {
                 strokeLinejoin="round"
                 fill="none"
               />
-            </svg>{" "}
-            AI
+            </svg>
+            Asset Management & Hosting
           </h3>
           <p className="text-lg text-center text-gray-400 pt-5 max-w-md mx-auto">
-            Generate new variations and alternatives of existing UI elements
+            Easily Upload Files with Asset Hosting
           </p>
         </div>
         <div className="max-w-[1600px] w-full rounded-full h-3/6 bg-gradient-to-b z-0 from-transparent from-0% via-90% to-100% via-gray-700 to-transparent absolute bg-opacity-50 left-1/2 -translate-x-1/2 top-0 blur-[100px]" />
       </section>
-      {/* <section className="relative mb-44  pb-32  lg:pb-10">
+      <section className="relative mb-44  pb-32  lg:pb-10">
         <div className="absolute w-full h-4/5 bottom-0 left-0 bg-gradient-to-t from-dark-700 from-0% via-[99%] to-100% via-transparent to-transparent z-20" />
         <img
-          src="https://uiverse.io/build/_assets/edits-CMGB2FL4.png"
+          src={subscription2}
           alt=""
           className="w-full block  max-w-[1300px] mx-auto rounded-3xl relative z-10"
         />
@@ -370,14 +372,14 @@ function Subscription() {
                 fill="none"
               />
             </svg>
-            AI Edits
+            Collab Mode
           </h3>
           <p className="text-lg text-center text-gray-400 pt-5 max-w-md mx-auto">
-            Create new UI elements or modify existing ones with just a prompt
+            Pair Program Across the World
           </p>
         </div>
         <div className="max-w-[1600px] w-full rounded-full h-h-3/6 bg-gradient-to-b z-0 from-transparent from-0% via-90% to-100% via-gray-700 to-transparent absolute bg-opacity-50 left-1/2 -translate-x-1/2 top-0 blur-[100px]" />
-      </section> */}
+      </section>
       <section className="relative mb-24 mt-10 pb-32  lg:pb-10">
         <div className="absolute w-full h-[600px] bottom-0 left-0 bg-gradient-to-t from-dark-700 from-0% via-[99%] to-100% via-transparent to-transparent z-10" />
         <img

@@ -40,7 +40,9 @@ function Element() {
       } else {
         dispatch(getElements(data.data));
         setLoading(false);
-        setTotalPages(Math.ceil(data.metadata.total / 10));
+        setTotalPages(
+          Math.ceil(data.metadata.total / windowSize.width > 1600 ? 15 : 12)
+        );
       }
     });
     // eslint-disable-next-line

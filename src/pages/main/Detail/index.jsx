@@ -105,6 +105,7 @@ function Detail() {
   };
 
     const clickSubmitReview = () => {
+      clickSubmitDraft();
       putElement(postId).then((data) => {
         if (data.error) {
           console.log(data.error);

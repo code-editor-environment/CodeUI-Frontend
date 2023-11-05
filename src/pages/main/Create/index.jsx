@@ -99,6 +99,7 @@ function Create() {
       },
     };
   const clickSubmitReview = () => {
+    clickSubmitDraft();
     putElement(elementID).then((data) => {
       if (data.error) {
         console.log(data.error);

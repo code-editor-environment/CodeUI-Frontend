@@ -1,5 +1,4 @@
 import React from "react";
-
 import "./err.scss";
 
 function Err() {
