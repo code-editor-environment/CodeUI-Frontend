@@ -341,8 +341,10 @@ function Subscription() {
             </svg>
             Asset Management & Hosting
           </h3>
-          <p className="text-lg text-center text-gray-400 pt-5 max-w-md mx-auto">
-            Easily Upload Files with Asset Hosting
+          <p className="text-lg text-center text-gray-400 pt-5 max-w-xl mx-auto">
+            Need to use an image in a Element? No more awkwardly finding
+            alternate hosting for it, you can drag-and-drop it right onto codeui
+            and we’ll host it for you.
           </p>
         </div>
         <div className="max-w-[1600px] w-full rounded-full h-3/6 bg-gradient-to-b z-0 from-transparent from-0% via-90% to-100% via-gray-700 to-transparent absolute bg-opacity-50 left-1/2 -translate-x-1/2 top-0 blur-[100px]" />
@@ -374,8 +376,10 @@ function Subscription() {
             </svg>
             Collab Mode
           </h3>
-          <p className="text-lg text-center text-gray-400 pt-5 max-w-md mx-auto">
-            Pair Program Across the World
+          <p className="text-lg text-center text-gray-400 pt-5 max-w-xl mx-auto">
+            Live collaboration on code. Multiple people can type and edit code
+            in a Element at the same time, all while still seeing the live preview.
+            Great for long-distance pair programming!
           </p>
         </div>
         <div className="max-w-[1600px] w-full rounded-full h-h-3/6 bg-gradient-to-b z-0 from-transparent from-0% via-90% to-100% via-gray-700 to-transparent absolute bg-opacity-50 left-1/2 -translate-x-1/2 top-0 blur-[100px]" />
@@ -407,7 +411,7 @@ function Subscription() {
             </svg>{" "}
             Custom Backgrounds
           </h3>
-          <p className="text-lg mx-auto text-center text-gray-400 pt-5 max-w-md mx-auto">
+          <p className="text-lg mx-auto text-center text-gray-400 pt-5 max-w-xl mx-auto">
             Use custom color backgrounds for you posts
           </p>
         </div>

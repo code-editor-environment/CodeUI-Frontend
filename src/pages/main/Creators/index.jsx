@@ -59,8 +59,12 @@ function Creators() {
                     gap: "10px",
                   }}
                 >
-                  <div className="points-tag">Element: 0</div>
-                  <div className="points-tag">Follow: 0</div>
+                  <div className="points-tag">
+                    Element: {user.profileResponse.totalApprovedElement}
+                  </div>
+                  <div className="points-tag">
+                    Follow: {user.profileResponse.totalFollower}
+                  </div>
                 </div>
               </Link>
             ))}

@@ -33,6 +33,7 @@ function Detail() {
   const [findFavorite, setFindFavorite] = useState(false);
   const [isLike, setIsLike] = useState(false);
   const [elementById, setElementById] = useState(false);
+  console.log("🚀 ~ file: index.jsx:36 ~ Detail ~ elementById:", elementById)
   const [element, setElement] = useState(false);
   const [cssText, setCssText] = useState("");
   const [htmlText, setHtmlText] = useState("");
@@ -401,6 +402,7 @@ function Detail() {
                     {search?.status ? (
                       search?.status === "pending" ? (
                         <>
+                          <div />
                           <button
                             className="button button--notifications button--icon"
                             onClick={onDeletePost}
@@ -423,6 +425,7 @@ function Detail() {
                         </>
                       ) : search?.status === "rejected" ? (
                         <>
+                          <div />
                           <button
                             className="button button--notifications button--icon"
                             onClick={onDeletePost}

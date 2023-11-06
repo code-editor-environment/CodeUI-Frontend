@@ -24,20 +24,38 @@ function ElementView() {
   const isActive = (path) => {
     if (search?.element === path) return styles.active;
     else return "false";
-  };
+  };  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
     useEffect(
       () => {
         getListElementByCreator({
           username,
           handleStatus: search?.element,
           page,
-          pageSize: 10,
+          pageSize: windowSize.width > 1600 ? 15 : 12,
         }).then((data) => {
           if (data.error) {
             console.log(data.error);
           } else {
             setPostApproved(data.data);
-            setTotalPages(Math.ceil(data.metadata.total / 10));
+            setTotalPages(
+              Math.ceil(
+                data.metadata.total / (windowSize.width > 1600 ? 15 : 12)
+              )
+            );
           }
         });
       },

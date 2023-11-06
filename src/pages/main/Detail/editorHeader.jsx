@@ -78,7 +78,7 @@ function EditorHeader({
       dispatch(open(<IntegrationModal postId={postId} />));
   };
       const onImageHost = () => {
-        dispatch(open(<ImageHost elementById={elementById} />));
+        dispatch(open(<ImageHost elementById={elementById} postId={postId} />));
       };
       const onSettingEditor = () => {
         dispatch(open(<SettingEditor />));

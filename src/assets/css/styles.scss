@@ -2243,6 +2243,7 @@ kbd {
   transition: all 0.3s;
 }
 .profile-name {
+  font-weight: var(--semibold);
   display: inline-block;
   // padding-top: 5px;
   color: var(--offwhite);

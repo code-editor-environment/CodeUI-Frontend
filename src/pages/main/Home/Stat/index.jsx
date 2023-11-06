@@ -1,10 +1,10 @@
 import React from "react";
 
-function Stat() {
+function Stat({ elements, users }) {
   return (
     <div className="home-page__stats">
       <div className="stat">
-        <span className="stat__heading">100</span>
+        <span className="stat__heading">{elements}</span>
         <p className="stat__text">UI elements, ready for you to use</p>
       </div>
       <div className="stat">
@@ -12,7 +12,7 @@ function Stat() {
         <p className="stat__text">Free for personal and commercial use</p>
       </div>
       <div className="stat">
-        <span className="stat__heading">100</span>
+        <span className="stat__heading">{users}</span>
         <p className="stat__text">
           Contributors to the community and users of codeui
         </p>

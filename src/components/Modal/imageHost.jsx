@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import { storeImageToFireBase } from "../../utils/storeImageToFirebase.";
-function ImageHost({elementById}) {
+import { db, storage } from "../../configs/firebase.configs";
+import { doc, updateDoc } from "firebase/firestore";
+import { ref, deleteObject } from "firebase/storage";
+function ImageHost({ elementById, postId }) {
   const [selectedFile, setSelectedFile] = useState();
-  const [image, setImage] = useState([]);
+  const [image, setImage] = useState(
+    elementById?.image ? elementById?.image : []
+  );
   const [isLoading, setIsLoading] = useState(false);
+    const [copy, setCopy] = useState(false);
   useEffect(
     () => {
       const uploadImage = async () => {
@@ -17,6 +23,9 @@ function ImageHost({elementById}) {
         );
         if (isSuccess) {
           setImage([imageUrl, ...image]);
+          updateDoc(doc(db, "elements", postId), {
+            image: [imageUrl, ...image],
+          });
           setIsLoading(false);
           return imageUrl;
         } else {
@@ -36,6 +45,26 @@ function ImageHost({elementById}) {
     }
     setSelectedFile(e.target.files[0]);
   };
+  const deleteImg = (img) => {
+    deleteObject(ref(storage, img))
+      .then(() => {
+          setImage(image.filter((e) => e !== img));
+          updateDoc(doc(db, "elements", postId), {
+            image: image.filter((e) => e !== img),
+          });
+      })
+      .catch((error) => {
+        // Uh-oh, an error occurred!
+        console.error("Error deleting file: ", error);
+      });
+  }
+    const copyImg = (img) => {
+      navigator.clipboard.writeText(img);
+      setCopy(true);
+      setTimeout(function () {
+        setCopy(false);
+      }, 1000);
+    };
   return (
     <div className="options-modal">
       <h3 className="heading">Your Image</h3>
@@ -45,12 +74,29 @@ function ImageHost({elementById}) {
       >
         {image?.length > 0 &&
           image.map((img, i) => (
-            <img
-              src={img}
-              alt=""
-              key={i}
-              style={{ height: "150px", width: "150px" }}
-            />
+            <div className="text-center">
+              <div className="relative">
+                <img
+                  src={img}
+                  alt=""
+                  key={i}
+                  className="inline"
+                  style={{ height: "150px", width: "150px" }}
+                />
+                <span
+                  className="absolute text-red-400 points-tag p-2 h-6 rounded-lg inline-flex top-[-13px] right-0"
+                  onClick={() => deleteImg(img)}
+                >
+                  x
+                </span>
+              </div>
+              <span
+                className="points-tag mt-3 pl-3.5 pr-4 rounded-lg inline-flex"
+                onClick={() => copyImg(img)}
+              >
+                {copy ? "✔" : "copyImg"}
+              </span>
+            </div>
           ))}
         <div
           style={{
@@ -75,10 +121,7 @@ function ImageHost({elementById}) {
               }}
             />
           )}
-          <a
-            class="relative h-[200px] flex items-center justify-center cursor-pointer false w-full border-2 border-gray-600 bg-transparent border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            href="#"
-          >
+          <div class="relative h-[200px] flex items-center justify-center cursor-pointer false w-full border-2 border-gray-600 bg-transparent border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             <span class="flex items-center gap-3 mt-2 font-sans font-semibold text-gray-600 text-md">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +136,7 @@ function ImageHost({elementById}) {
                 <path d="M12 19v-7m0 0V5m0 7H5m7 0h7"></path>
               </svg>
             </span>
-          </a>
+          </div>
         </div>
       </div>
     </div>

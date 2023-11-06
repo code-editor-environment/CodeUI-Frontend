@@ -1,21 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import points from "../../../../assets/images/logoCover.png";
 import { Link } from "react-router-dom";
 import AppButton from "../../../../components/Button";
 import SkeletonCreator from "../../../../components/Skeleton/skeletonCreator";
-import { getTopCreators } from './../../../../api/account';
-function TopCreate() {
-  const [topCreator, setTopCreator] = useState([]);
-  useEffect(() => {
-    getTopCreators({page:1,pageSize:6}).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        setTopCreator(data.data);
-      }
-    });
-    // eslint-disable-next-line
-  }, []);
+function TopCreate({ topCreator }) {
   return (
     <div className="creators-section">
       <div>

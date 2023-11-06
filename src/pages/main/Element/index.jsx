@@ -41,37 +41,12 @@ function Element() {
         dispatch(getElements(data.data));
         setLoading(false);
         setTotalPages(
-          Math.ceil(data.metadata.total / windowSize.width > 1600 ? 15 : 12)
+          Math.ceil(data.metadata.total / (windowSize.width > 1600 ? 15 : 12))
         );
       }
     });
     // eslint-disable-next-line
   }, [search.category, page]);
-      // const fetchPost = async () => {
-      //   await getDocs(
-      //     query(
-      //       collection(db, `elements`),
-      //       search.category === "all"
-      //         ? where("status", "==", "approved")
-      //         : (where("status", "==", "approved"),
-      //           where("category", "==", search.category))
-      //     )
-      //   ).then((querySnapshot) => {
-      //     const newData = querySnapshot.docs.map((doc) => ({
-      //       ...doc.data(),
-      //       id: doc.id,
-      //     }));
-      //     setElements(newData);
-      //     // setTotalPages(newData.length);
-      //   });
-      // };
-      // useEffect(
-      //   () => {
-      //     fetchPost();
-      //   },
-      //   // eslint-disable-next-line
-      //   [search.category]
-      // );
   return (
     <main className="category-page">
       <div className="category-hero">

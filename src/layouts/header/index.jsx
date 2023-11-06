@@ -92,14 +92,14 @@ function Header() {
       </Link>
       <nav className="navigation">
         <div className="links">
-          <Link
+          {/* <Link
             className={`hover-underline-animation ${
               history === "/" ? "active" : "false"
             }`}
             to="/"
           >
             Home
-          </Link>
+          </Link> */}
           <Link
             className={`hover-underline-animation browse-link ${
               history !== "/" &&

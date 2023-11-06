@@ -6,7 +6,7 @@ import Pagination from "../Pagination";
 
 function Cards({ totalPages, page, setPage, loading }) {
   const { elements } = useSelector((state) => state.element);
-  return loading ? (
+  return !elements ? (
     <SkeletonElement total={10} />
   ) : (
     <>
