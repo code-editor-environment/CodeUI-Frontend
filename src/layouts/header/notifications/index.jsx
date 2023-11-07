@@ -2,12 +2,14 @@ import React from "react";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 import point from "../../../assets/images/logoCover.png";
 function Notification() {
-  const { ref, isComponentVisible, onClick } = useDetectOutsideClick();
+   const { isActive, setIsActive, nodeRef, triggerRef } =
+     useDetectOutsideClick(false);
   return (
     <div className="dropdown-container header-dropdown-menu dropdown-notifications">
       <button
         className="button button--secondary button--notifications false"
-        onClick={onClick}
+        ref={triggerRef}
+        onClick={() => setIsActive(!isActive)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -46,9 +48,9 @@ function Notification() {
         </svg>
       </button>
       <div
-        ref={ref}
+        ref={nodeRef}
         className={`dropdown-menu shadow-xl notifications right-auto lg:right-0 w-64 sm:w-96 text-offwhite bg-dark-600 ${
-          isComponentVisible ? "open" : "closed"
+          isActive ? "open" : "closed"
         }`}
       >
         <div className="flex items-center px-4 py-2 text-base font-semibold">
@@ -92,7 +94,7 @@ function Notification() {
                 <span className="flex items-center text-sm font-normal text-gray-400">
                   6. October at 1:13
                   <span className="flex items-center gap-1.5 px-2 py-1 text-sm font-semibold rounded-full text-offwhite">
-                    <img src={point} alt="" style={{width:"24px"}}/>
+                    <img src={point} alt="" style={{ width: "24px" }} />
                     10
                   </span>
                 </span>

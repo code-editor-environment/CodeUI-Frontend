@@ -500,27 +500,14 @@ class VideoCall extends Component {
             >
               <button style={{ color: "#424242" }} onClick={this.handleVideo}>
                 {this.state.video === true ? (
-                  <svg
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="50px"
-                    height="50px"
-                    viewBox="0,0,256,256"
-                  >
-                    <g
-                      fill="#ffffff"
-                      fill-rule="nonzero"
-                      stroke="none"
-                      stroke-width="1"
-                      stroke-linecap="butt"
-                      stroke-linejoin="miter"
-                      stroke-miterlimit="10"
-                    >
-                      <g transform="scale(5.12,5.12)">
-                        <path d="M5,9c-2.80078,0 -5,2.19922 -5,5v22c0,2.80078 2.19922,5 5,5h27c2.80078,0 5,-2.19922 5,-5v-22c0,-2.80078 -2.19922,-5 -5,-5zM50,12.3125l-11,5.875v13.625l11,5.875z"></path>
-                      </g>
-                    </g>
-                  </svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0,0,256,256">
+  <g fill="#ffffff" fillRule="nonzero" stroke="none" strokeWidth={1} strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit={10}>
+    <g transform="scale(5.12,5.12)">
+      <path d="M5,9c-2.80078,0 -5,2.19922 -5,5v22c0,2.80078 2.19922,5 5,5h27c2.80078,0 5,-2.19922 5,-5v-22c0,-2.80078 -2.19922,-5 -5,-5zM50,12.3125l-11,5.875v13.625l11,5.875z" />
+    </g>
+  </g>
+</svg>
+
                 ) : (
                   <svg
                     version="1.1"

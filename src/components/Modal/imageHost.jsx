@@ -123,18 +123,10 @@ function ImageHost({ elementById, postId }) {
           )}
           <div class="relative h-[200px] flex items-center justify-center cursor-pointer false w-full border-2 border-gray-600 bg-transparent border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             <span class="flex items-center gap-3 mt-2 font-sans font-semibold text-gray-600 text-md">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6 mx-auto text-gray-600"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              >
-                <path d="M12 19v-7m0 0V5m0 7H5m7 0h7"></path>
-              </svg>
+<svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-auto text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}>
+  <path d="M12 19v-7m0 0V5m0 7H5m7 0h7" />
+</svg>
+
             </span>
           </div>
         </div>

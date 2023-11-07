@@ -2,21 +2,23 @@ import React from "react";
 import ColorPicker from "react-pick-color";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 function BackgroundColor({ color, setColor }) {
-  const { ref, isComponentVisible, onClick } = useDetectOutsideClick();
+  const { isActive, setIsActive, nodeRef, triggerRef } =
+    useDetectOutsideClick(false);
   return (
     <label className="theme-switcher" style={{ left: "15px" }}>
       Background:
       <label
         className="switch-color"
-        onClick={onClick}
+        ref={triggerRef}
+        onClick={() => setIsActive(!isActive)}
         style={{ backgroundColor: color }}
       ></label>
       <label className="switch-label" htmlFor="preview-theme">
         {color}
       </label>
       <div
-        ref={ref}
-        className={`dropdown-menu ${isComponentVisible ? "open" : "closed"}`}
+        ref={nodeRef}
+        className={`dropdown-menu ${isActive ? "open" : "closed"}`}
         style={{ left: "3px", right: "auto", background: "none" }}
       >
         <ColorPicker

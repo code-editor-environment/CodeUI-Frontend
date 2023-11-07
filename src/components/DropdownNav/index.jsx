@@ -2,7 +2,8 @@ import React from "react";
 import styles from "./dropdownNav.module.scss";
 import { useDetectOutsideClick } from "../../hooks/useOutsideClick";
 function DropdownNav(props) {
-  const { ref, isComponentVisible, onClick } = useDetectOutsideClick();
+   const { isActive, setIsActive, nodeRef, triggerRef } =
+     useDetectOutsideClick(false);
   return (
     <>
       <svg
@@ -10,7 +11,8 @@ function DropdownNav(props) {
         viewBox="0 0 24 24"
         width={24}
         height={24}
-        onClick={onClick}
+        ref={triggerRef}
+        onClick={() => setIsActive(!isActive)}
       >
         <path fill="none" d="M0 0h24v24H0z" />
         <path
@@ -19,10 +21,8 @@ function DropdownNav(props) {
         />
       </svg>
       <nav
-        ref={ref}
-        className={`${styles.dropdownMenu} ${
-          isComponentVisible && styles.open
-        }`}
+        ref={nodeRef}
+        className={`${styles.dropdownMenu} ${isActive && styles.open}`}
       >
         <ul>
           {props.item.map((item, index) => (

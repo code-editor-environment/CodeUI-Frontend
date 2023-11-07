@@ -4,14 +4,19 @@ import { useParseUrl } from "../../../hooks/useParseUrl";
 // import { useIsLoading } from "../../../hooks/useIsLoading";
 import { getElements } from "../../../store/element/elements-slice";
 import { getListElements } from "../../../api/element";
+import cssIcon from "../../../assets/images/css.svg";
+import scssIcon from "../../../assets/images/scss.svg";
 import { useDispatch } from "react-redux";
 import Randomized from "./randomized";
+import { useNavigate } from "react-router-dom";
 function Element() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { search } = useParseUrl();
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
+  const [searchCreator, setSearchCreator] = useState("");
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -33,7 +38,9 @@ function Element() {
     getListElements({
       category: search.category,
       page,
-      pageSize: windowSize.width > 1600 ? 15:12,
+      pageSize: windowSize.width > 1600 ? 15 : 12,
+      filter: search.filter,
+      creator: search.creator,
     }).then((data) => {
       if (data.error) {
         console.log(data.error);
@@ -46,7 +53,11 @@ function Element() {
       }
     });
     // eslint-disable-next-line
-  }, [search.category, page]);
+  }, [search.category, search.filter, search.creator, page]);
+  const handleSubmit=(e) =>{
+    e.preventDefault();
+    navigate(`/elements?category=${search.category}&creator=${searchCreator}`);
+  }
   return (
     <main className="category-page">
       <div className="category-hero">
@@ -59,81 +70,70 @@ function Element() {
             <span className="bgTextRed">HTML</span> and{" "}
             <span className="bgTextBlue">CSS</span>
           </p>
-          <div className="filters-controls false">
-            <span className="page">
-              tag - #elements, #open-source , #{search.category}
-            </span>
-            <Randomized />
-            <div className="dropdown-container dropdown-theme">
-              <button className="dropdown-trigger">
-                <span className="icon" />
-                Any theme
+          <div className="filters-controls flex justify-end flex-wrap gap-1 gap-y-2 false">
+            {/* <p className="tags">
+              <button className="px-3 py-2 hover:bg-dark-600 rounded-lg cursor-pointer text-gray-300">
+                #{search.category}
+              </button>
+              <button className="px-3 py-2 hover:bg-dark-600 rounded-lg cursor-pointer text-gray-300">
+                #codeui
+              </button>
+              <button className="px-3 py-2 hover:bg-dark-600 rounded-lg cursor-pointer text-gray-300">
+                #gradient
+              </button>
+            </p> */}
+            <div className="h-[30px] w-[2px] bg-dark-600 mx-1 hidden lg:block" />
+            <div className="items-center hidden gap-1 text-sm lg:flex">
+              <div className="flex items-center cursor-pointer py-2 px-2.5 font-semibold gap-2 bg-dark-600 hover:bg-dark-600 rounded-lg text-gray-200">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
-                  width={24}
-                  height={24}
+                  className="h-5 w-5 mr-1"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
                 >
-                  <path fill="none" d="M0 0h24v24H0z" />
-                  <path
-                    fill="currentColor"
-                    d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z"
-                  />
-                </svg>
-              </button>
-              <nav className="dropdown-menu closed">
-                <ul>
-                  <li className="list-item">
-                    <a className="item" href="/buttons?theme=all">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        height={24}
-                      >
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path
-                          fill="currentColor"
-                          d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-2V6a6 6 0 1 1 0 12z"
-                        />
-                      </svg>
-                      <span>Any theme</span>
-                    </a>
-                  </li>
-                  <li className="list-item">
-                    <a className="item" href="/buttons?theme=dark">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        height={24}
-                      >
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path
-                          fill="currentColor"
-                          d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z"
-                        />
-                      </svg>
-                      <span>Dark</span>
-                    </a>
-                  </li>
-                  <li className="list-item">
-                    <a className="item" href="/buttons?theme=light">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        height={24}
-                      >
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.121 2.121-1.414 1.414-2.121-2.121zm2.121-14.85l1.414 1.415-2.121 2.121-1.414-1.414 2.121-2.121zM5.636 16.95l1.414 1.414-2.121 2.121-1.414-1.414 2.121-2.121zM23 11v2h-3v-2h3zM4 11v2H1v-2h3z" />
-                      </svg>
-                      <span>Light</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+                  <path d="M18.189 4c.986.74 1.878 1.599 2.654 2.556.105.13.157.287.157.444m-2.811 3a14.998 14.998 0 0 0 2.654-2.556A.703.703 0 0 0 21 7m0 0h-3.876a6 6 0 0 0-4.915 2.56L8.79 14.44A6 6 0 0 1 3.876 17H2m16.189 3a14.998 14.998 0 0 0 2.654-2.556A.704.704 0 0 0 21 17m-2.811-3c.986.74 1.878 1.599 2.654 2.556.105.13.157.287.157.444m0 0h-3.876a6 6 0 0 1-3.808-1.363M2 7h1.876a6 6 0 0 1 3.969 1.5" />
+                </svg>{" "}
+                Mixed
+              </div>
+              <div className="flex items-center cursor-pointer py-2 px-2.5 font-semibold gap-2 false hover:bg-dark-600 rounded-lg text-gray-200">
+                <img
+                  src={scssIcon}
+                  alt="scssIcon"
+                  style={{ width: "30px", padding: "4px" }}
+                />{" "}
+                SCSS
+              </div>
+              <div className="flex items-center cursor-pointer py-2 px-2.5 font-semibold gap-2 false hover:bg-dark-600 rounded-lg text-gray-200">
+                <img src={cssIcon} alt="cssIcon" style={{ width: "30px" }} />{" "}
+                CSS
+              </div>
             </div>
+            <div className="h-[30px] w-[2px] bg-dark-600 mx-1 hidden lg:block" />
+            <Randomized />
+            <form
+              className="flex ml-2 items-center [&:has(:focus-visible)]:ring-4 overflow-visible rounded-lg focus-visible:ring-sky-400 focus-visible:border-sky-400"
+              onSubmit={handleSubmit}
+            >
+              <input
+                type="text"
+                name="search"
+                id="search"
+                value={searchCreator}
+                onChange={(e) => setSearchCreator(e.target.value)}
+                placeholder="Search creator, posts..."
+                className="block focus:ring-0 w-full font-[inherit] placeholder:text-sm border-none rounded-l-lg shadow-sm bg-dark-600  md:text-base text-offwhite placeholder:text-gray-400"
+              />
+              <button
+                type="submit"
+                className="cursor-pointer text-sm bg-dark-500 hover:bg-dark-400 text-offwhite rounded-r-lg border-none h-[40px] px-4 py-2 font-sans font-semibold"
+              >
+                Search
+              </button>
+            </form>
           </div>
         </div>
       </div>

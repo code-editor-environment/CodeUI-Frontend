@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Editor from "@monaco-editor/react";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc , deleteDoc} from "firebase/firestore";
 import { useIsHidden } from "../../../hooks/useIsHidden";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -24,7 +24,8 @@ function Detail() {
   const { search } = useParseUrl();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { ref, isComponentVisible, onClick } = useDetectOutsideClick();
+  const { isActive, setIsActive, nodeRef, triggerRef } =
+    useDetectOutsideClick(false);
   // const { elementById } = useSelector((state) => state.element);
   const { isLogin, profileRes } = useIsLogin();
   const { hidden, handleClick } = useIsHidden();
@@ -33,7 +34,6 @@ function Detail() {
   const [findFavorite, setFindFavorite] = useState(false);
   const [isLike, setIsLike] = useState(false);
   const [elementById, setElementById] = useState(false);
-  console.log("🚀 ~ file: index.jsx:36 ~ Detail ~ elementById:", elementById)
   const [element, setElement] = useState(false);
   const [cssText, setCssText] = useState("");
   const [htmlText, setHtmlText] = useState("");
@@ -54,7 +54,6 @@ function Detail() {
         if (data.error) {
           console.log(data.error);
         } else {
-          console.log(data.data);
           setElement(data.data);
           setFindFavorite(data.data.isFavorite);
           setIsLike(data.data.isLiked);
@@ -75,8 +74,8 @@ function Detail() {
             if (data.error) {
               console.log(data.error);
             } else {
-              console.log(data.data);
               navigate(`/profile/${profileRes.username}`);
+              deleteDoc(doc(db, `elements`, postId))
             }
           });;
   };
@@ -261,17 +260,16 @@ function Detail() {
                   Background:
                   <label
                     className="switch-color"
-                    onClick={onClick}
+                    ref={triggerRef}
+                    onClick={() => setIsActive(!isActive)}
                     style={{ backgroundColor: color }}
                   ></label>
                   <label className="switch-label" htmlFor="preview-theme">
                     {color}
                   </label>
                   <div
-                    ref={ref}
-                    className={`dropdown-menu ${
-                      isComponentVisible ? "open" : "closed"
-                    }`}
+                    ref={nodeRef}
+                    className={`dropdown-menu ${isActive ? "open" : "closed"}`}
                     style={{ left: "3px", right: "auto", background: "none" }}
                   >
                     <ColorPicker
@@ -327,6 +325,11 @@ function Detail() {
                       className="add-to-favorites"
                       onClick={onFavorite}
                     >
+                      <div className="mr-2">
+                        {findFavorite
+                          ? element.favorites + 1
+                          : element.favorites}
+                      </div>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"

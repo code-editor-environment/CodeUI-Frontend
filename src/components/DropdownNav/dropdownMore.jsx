@@ -3,23 +3,23 @@ import styles from "./dropdownNav.module.scss";
 import { useDetectOutsideClick } from "../../hooks/useOutsideClick";
 import moreIcon from "../../assets/images/more.svg";
 function DropdownMore(props) {
-  const { ref, isComponentVisible, onClick } = useDetectOutsideClick();
+   const { isActive, setIsActive, nodeRef, triggerRef } =
+     useDetectOutsideClick(false);
   return (
     <>
       <button
         className="copy-all CSS"
         style={{ background: "#444" }}
-        onClick={onClick}
+        ref={triggerRef}
+        onClick={() => setIsActive(!isActive)}
       >
         <span className="copy-all__text">
           <img src={moreIcon} alt="" />
         </span>
       </button>
       <nav
-        ref={ref}
-        className={`${styles.dropdownMenu} ${
-          isComponentVisible && styles.open
-        }`}
+        ref={nodeRef}
+        className={`${styles.dropdownMenu} ${isActive && styles.open}`}
       >
         <ul>
           {props.item.map((item, index) => {

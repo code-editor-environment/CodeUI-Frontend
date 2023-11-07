@@ -1,28 +1,28 @@
 import { useState, useEffect, useRef } from "react";
-
-export const useDetectOutsideClick = () => {
-  const [isComponentVisible, setIsComponentVisible] = useState(false);
-  const ref = useRef(null);
-  const handleHideDropdown = (event) => {
-    if (event.key === "Escape") {
-      setIsComponentVisible(false);
-    }
-  };
-
-  const handleClickOutside = (event) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      setIsComponentVisible(false);
-    }
-  };
+export const useDetectOutsideClick = (initialState) => {
+  const triggerRef = useRef(null); 
+  const nodeRef = useRef(null); 
+  const [isActive, setIsActive] = useState(initialState);
 
   useEffect(() => {
-    document.addEventListener("keydown", handleHideDropdown, true);
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("keydown", handleHideDropdown, true);
-      document.removeEventListener("click", handleClickOutside, true);
+    const handleOutsideClick = (event) => {
+      if (
+        nodeRef.current &&
+        !nodeRef.current.contains(event.target) &&
+        !triggerRef.current.contains(event.target)
+      ) {
+        setIsActive(false);
+      }
     };
-  }, [isComponentVisible, ref]);
-  const onClick = () => setIsComponentVisible(true);
-  return { ref, isComponentVisible, onClick };
+
+    if (isActive) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isActive]);
+
+  return { isActive, setIsActive, nodeRef, triggerRef };
 };

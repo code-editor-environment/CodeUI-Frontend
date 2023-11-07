@@ -1,16 +1,23 @@
 import { NET } from "../../utils/define";
 import { handleApi } from "../../utils/helper";
 
-export const getListElements = handleApi(async ({ category, page, pageSize }) => {
-  const url =
-    category === "favorites"
-      ? `/element/getFavoriteElements?Page=${page}&PageSize=${pageSize}`
-      : `/element/getRandomElements${
-          category === "all" ? "?" : "?CategoryName=" + category + "&"
-        }Page=${page}&PageSize=${pageSize}`;
-  const result = await NET().get(url);
-  return result.data;
-});
+export const getListElements = handleApi(
+  async ({ category, page, pageSize, filter, creator }) => {
+    const url =
+      category === "favorites"
+        ? `/element/getFavoriteElements?Page=${page}&PageSize=${pageSize}`
+        : `/element/getRandomElements${
+            category === "all" ? "?" : "?CategoryName=" + category + "&"
+          }Page=${page}&PageSize=${pageSize}`;
+    const urlAll = `/element/getAll?Status=APPROVED&${
+      filter === "Favorites" ? "Favorites=1&" : ""
+    }${
+      creator ? `OwnerUsername=${creator}&` : ""
+    }Page=${page}&PageSize=${pageSize}`;
+    const result = await NET().get(filter || creator ? urlAll : url);
+    return result.data;
+  }
+);
 export const getListElementById = handleApi(async (elementId) => {
   const result = await NET().get(`/element/getByID?id=${elementId}`);
   return result.data;

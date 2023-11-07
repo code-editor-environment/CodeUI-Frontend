@@ -3,12 +3,14 @@ import { Link } from "react-router-dom";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 
 function Menu({ handleLogout, user }) {
-  const { ref, isComponentVisible, onClick } = useDetectOutsideClick();
+  const { isActive, setIsActive, nodeRef, triggerRef } =
+    useDetectOutsideClick(false);
   return (
     <div className="dropdown-container header-dropdown-menu">
       <button
         className="button button--secondary button--profile false"
-        onClick={onClick}
+        ref={triggerRef}
+        onClick={() => setIsActive(!isActive)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -30,8 +32,8 @@ function Menu({ handleLogout, user }) {
         />
       </button>
       <nav
-        ref={ref}
-        className={`dropdown-menu ${isComponentVisible ? "open" : "closed"}`}
+        ref={nodeRef}
+        className={`dropdown-menu ${isActive ? "open" : "closed"}`}
       >
         <ul>
           <li className="list-item">
