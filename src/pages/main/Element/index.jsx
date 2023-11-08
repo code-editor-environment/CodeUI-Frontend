@@ -5,7 +5,7 @@ import { useParseUrl } from "../../../hooks/useParseUrl";
 import { getElements } from "../../../store/element/elements-slice";
 import { getListElements } from "../../../api/element";
 import cssIcon from "../../../assets/images/css.svg";
-import scssIcon from "../../../assets/images/scss.svg";
+import tailwindIcon from "../../../assets/images/tailwind.svg";
 import { useDispatch } from "react-redux";
 import Randomized from "./randomized";
 import { useNavigate } from "react-router-dom";
@@ -101,11 +101,11 @@ function Element() {
               </div>
               <div className="flex items-center cursor-pointer py-2 px-2.5 font-semibold gap-2 false hover:bg-dark-600 rounded-lg text-gray-200">
                 <img
-                  src={scssIcon}
+                  src={tailwindIcon}
                   alt="scssIcon"
-                  style={{ width: "30px", padding: "4px" }}
+                  style={{ width: "30px", padding: "2px" }}
                 />{" "}
-                SCSS
+                Tailwind CSS
               </div>
               <div className="flex items-center cursor-pointer py-2 px-2.5 font-semibold gap-2 false hover:bg-dark-600 rounded-lg text-gray-200">
                 <img src={cssIcon} alt="cssIcon" style={{ width: "30px" }} />{" "}

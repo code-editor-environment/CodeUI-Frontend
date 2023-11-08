@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Editor from "@monaco-editor/react";
-import { doc, getDoc, setDoc , deleteDoc} from "firebase/firestore";
+import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { useIsHidden } from "../../../hooks/useIsHidden";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useIsLogin } from "../../../hooks/useIsLogin";
@@ -10,13 +10,21 @@ import { toast } from "react-toastify";
 import ColorPicker from "react-pick-color";
 // import { ResizableBox } from "react-resizable";
 // import { getElementById } from "../../../store/element/elements-slice";
-import { getListElementById, saveFavorite, like, putElement, deleteElement } from "../../../api/element";
+import {
+  getListElementById,
+  saveFavorite,
+  like,
+  putElement,
+  deleteElement,
+} from "../../../api/element";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 import EditorHeader from "./editorHeader";
 import { db } from "../../../configs/firebase.configs";
 import { useParseUrl } from "../../../hooks/useParseUrl";
 import AppButton from "../../../components/Button";
 import Comment from "./comment";
+import timeLineYellow from "../../../assets/images/time-line-yellow.svg";
+import timeLineRed from "../../../assets/images/time-line-red.svg";
 // import Console from "./console";
 // import styles from "./detail.module.scss";
 function Detail() {
@@ -70,14 +78,14 @@ function Detail() {
     setHtmlText(value);
   }
   const onDeletePost = () => {
-          deleteElement(postId).then((data) => {
-            if (data.error) {
-              console.log(data.error);
-            } else {
-              navigate(`/profile/${profileRes.username}`);
-              deleteDoc(doc(db, `elements`, postId))
-            }
-          });;
+    deleteElement(postId).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        navigate(`/profile/${profileRes.username}`);
+        deleteDoc(doc(db, `elements`, postId));
+      }
+    });
   };
   const onUpdatePost = () => {
     dispatch();
@@ -104,27 +112,28 @@ function Detail() {
     },
   };
 
-    const clickSubmitReview = () => {
-      clickSubmitDraft();
-      putElement(postId).then((data) => {
-        if (data.error) {
-          console.log(data.error);
-        } else {
-          navigate(`/profile/${profileRes.username}?element=pending`);
-          toast.success("successfully!");
-        }
-      });
-    };
+  const clickSubmitReview = () => {
+    clickSubmitDraft();
+    putElement(postId).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        navigate(`/profile/${profileRes.username}?element=pending`);
+        toast.success("successfully!");
+      }
+    });
+  };
   const clickSubmitDraft = () => {
     setDoc(doc(db, "elements", postId.toString()), {
       background: color,
       category: elementById.category,
+      typeCSS: elementById?.typeCSS || "css",
       css: cssText === "" ? elementById.css : cssText,
       html: htmlText === "" ? elementById.html : htmlText,
       status: "draft",
       theme: elementById.theme,
       usernameCreator: profileRes.username,
-    })
+    });
   };
   useEffect(
     () => {
@@ -159,26 +168,73 @@ function Detail() {
   };
   return (
     <main className="wrapper" style={{ padding: "10px" }}>
-      <button
-        className="button button--secondary button--icon button--back"
-        onClick={() => navigate(-1)}
-      >
-        <div style={{ display: "flex" }}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width={24}
-            height={24}
-          >
-            <path fill="none" d="M0 0h24v24H0z" />
-            <path
-              fill="currentColor"
-              d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z"
-            />
-          </svg>
-          Go back
+      <div className="flex flex-wrap items-center gap-3 mb-1">
+        <button
+          className="button button--secondary button--icon button--back"
+          onClick={() => navigate(-1)}
+        >
+          <div style={{ display: "flex" }}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width={24}
+              height={24}
+            >
+              <path fill="none" d="M0 0h24v24H0z" />
+              <path
+                fill="currentColor"
+                d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z"
+              />
+            </svg>
+            Go back
+          </div>
+        </button>
+
+        <div className="rounded-lg text-sm font-semibold">
+          <div className="flex items-center gap-1.5">
+            {search?.status === "pending" ? (
+              <>
+                <img className="tag-icon" src={timeLineYellow} alt="" />
+                <span className="text-yellow-400">
+                  This post is waiting to be reviewed.
+                </span>
+              </>
+            ) : search?.status === "rejected" ? (
+              <>
+                <img className="tag-icon" src={timeLineRed} alt="" />
+                <span className="text-red-400">
+                  This post has been rejected. Try to read the{" "}
+                  <Link
+                    rel="noreferrer"
+                    className="inline-flex items-baseline gap-0.5 text-offwhite underline"
+                    to="/guidelines"
+                    target="_blank"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      height={24}
+                      classname="h-4 w-4 translate-y-0.5 flex-none"
+                    >
+                      <path fill="none" d="M0 0h24v24H0z" />
+                      <path
+                        fill="currentColor"
+                        d="M21 8v12.993A1 1 0 0 1 20.007 22H3.993A.993.993 0 0 1 3 21.008V2.992C3 2.455 3.449 2 4.002 2h10.995L21 8zm-2 1h-5V4H5v16h14V9zM8 7h3v2H8V7zm0 4h8v2H8v-2zm0 4h8v2H8v-2z"
+                      />
+                    </svg>
+                    guidelines
+                  </Link>{" "}
+                  and see if it can be improved.
+                </span>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
-      </button>
+      </div>
+
       {elementById && (
         <>
           <div className="detail-page detail-page--button">
@@ -187,6 +243,7 @@ function Detail() {
                 postId={postId}
                 elementById={elementById}
                 changeEditor={changeEditor}
+                typeCSS={elementById?.typeCSS || "css"}
                 setChangeEditor={setChangeEditor}
                 htmlText={htmlText}
                 cssText={cssText}
@@ -244,7 +301,12 @@ function Detail() {
                 <iframe
                   srcDoc={`
         <html style="height: 100%;overflow: hidden;">
+        <head>
         <style>${cssText === "" ? elementById.css : cssText}</style>
+        ${
+          elementById?.typeCSS === "tailwindCSS" ?`<script src="https://cdn.tailwindcss.com"></script>`:""
+        }
+        </head>
         <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center; font-family: Montserrat, sans-serif;">${
           htmlText === "" ? elementById.html : htmlText
         }</body>
@@ -413,15 +475,15 @@ function Detail() {
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 24 24"
-                              width="24"
-                              height="24"
+                              width={24}
+                              height={24}
                               className="h-5 w-5"
                             >
-                              <path fill="none" d="M0 0h24v24H0z"></path>
+                              <path fill="none" d="M0 0h24v24H0z" />
                               <path
                                 fill="currentColor"
                                 d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z"
-                              ></path>
+                              />
                             </svg>
                             Delete
                           </button>
@@ -436,15 +498,15 @@ function Detail() {
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 24 24"
-                              width="24"
-                              height="24"
+                              width={24}
+                              height={24}
                               className="h-5 w-5"
                             >
-                              <path fill="none" d="M0 0h24v24H0z"></path>
+                              <path fill="none" d="M0 0h24v24H0z" />
                               <path
                                 fill="currentColor"
                                 d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z"
-                              ></path>
+                              />
                             </svg>
                             Delete
                           </button>
@@ -506,15 +568,15 @@ function Detail() {
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
-                            width="24"
-                            height="24"
+                            width={24}
+                            height={24}
                             className="h-5 w-5"
                           >
-                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path fill="none" d="M0 0h24v24H0z" />
                             <path
                               fill="currentColor"
                               d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z"
-                            ></path>
+                            />
                           </svg>
                           Delete
                         </button>
@@ -525,15 +587,15 @@ function Detail() {
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
-                            width="24"
-                            height="24"
+                            width={24}
+                            height={24}
                             className="h-5 w-5 false"
                           >
-                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path fill="none" d="M0 0h24v24H0z" />
                             <path
                               fill="currentColor"
                               d="M5.463 4.433A9.961 9.961 0 0 1 12 2c5.523 0 10 4.477 10 10 0 2.136-.67 4.116-1.81 5.74L17 12h3A8 8 0 0 0 6.46 6.228l-.997-1.795zm13.074 15.134A9.961 9.961 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.136.67-4.116 1.81-5.74L7 12H4a8 8 0 0 0 13.54 5.772l.997 1.795z"
-                            ></path>
+                            />
                           </svg>
                           Update
                         </button>

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import JSZip from "jszip";
 import htmlIcon from "../../../assets/images/html.svg";
 import beauty from "../../../assets/images/beauty.svg";
+import tailwindIcon from "../../../assets/images/tailwind.svg";
 import cssIcon from "../../../assets/images/css.svg";
 import scssIcon from "../../../assets/images/scss.svg";
 import copyIcon from "../../../assets/images/copy.svg";
@@ -21,6 +22,7 @@ function EditorHeader({
   postId,
   elementById,
   changeEditor,
+  typeCSS,
   setChangeEditor,
   htmlText,
   cssText,
@@ -125,34 +127,48 @@ function EditorHeader({
         >
           <img src={htmlIcon} alt="htmlIcon" style={{ width: "27px" }} /> HTML
         </span>
-        <span
-          className={`dropdown-container ${
-            changeEditor ? "editor-change-active" : ""
-          }`}
-          style={{ justifyContent: "space-between", position: "relative" }}
-        >
-          <div
-            style={{ display: "flex", alignItems: "center", width: "80%" }}
-            onClick={() => !changeEditor && setChangeEditor(!changeEditor)}
+        {typeCSS === "tailwindCSS" ? (
+          <span
+            className={`${!changeEditor ? "editor-change-active" : ""}`}
+            style={{ marginRight: "6px" }}
           >
-            {convert ? (
-              <>
-                <img
-                  src={scssIcon}
-                  alt="scssIcon"
-                  style={{ width: "30px", padding: "4px" }}
-                />{" "}
-                SCSS
-              </>
-            ) : (
-              <>
-                <img src={cssIcon} alt="cssIcon" style={{ width: "30px" }} />{" "}
-                CSS
-              </>
-            )}
-          </div>
-          <DropdownNav item={item} />
-        </span>
+            <img
+              src={tailwindIcon}
+              alt="htmlIcon"
+              style={{ width: "27px", marginRight: "6px" }}
+            />{" "}
+            TailwindCSS
+          </span>
+        ) : (
+          <span
+            className={`dropdown-container ${
+              changeEditor ? "editor-change-active" : ""
+            }`}
+            style={{ justifyContent: "space-between", position: "relative" }}
+          >
+            <div
+              style={{ display: "flex", alignItems: "center", width: "80%" }}
+              onClick={() => !changeEditor && setChangeEditor(!changeEditor)}
+            >
+              {convert ? (
+                <>
+                  <img
+                    src={scssIcon}
+                    alt="scssIcon"
+                    style={{ width: "30px", padding: "4px" }}
+                  />{" "}
+                  SCSS
+                </>
+              ) : (
+                <>
+                  <img src={cssIcon} alt="cssIcon" style={{ width: "30px" }} />{" "}
+                  CSS
+                </>
+              )}
+            </div>
+            <DropdownNav item={item} />
+          </span>
+        )}
       </div>
       <div style={{ display: "flex" }}>
         <button

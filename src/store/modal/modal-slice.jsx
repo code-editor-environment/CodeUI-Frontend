@@ -3,6 +3,7 @@ const initialState = {
   isOpen: false,
   content: null,
   category: "button",
+  typeCSS:"css",
   elementID: null,
 };
 export const ModalSlice = createSlice({
@@ -19,11 +20,14 @@ export const ModalSlice = createSlice({
     categories: (state, { payload }) => {
       state.category = payload;
     },
+    typeCSSs: (state, { payload }) => {
+      state.typeCSS = payload;
+    },
     postElementID: (state, { payload }) => {
       state.elementID = payload;
-    }
+    },
   },
 });
 
-export const { open, close, categories, postElementID } = ModalSlice.actions;
+export const { open, close, categories, typeCSSs, postElementID } = ModalSlice.actions;
 export default ModalSlice.reducer;

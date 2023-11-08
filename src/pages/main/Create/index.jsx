@@ -41,7 +41,7 @@ function Create() {
   const [theme, setTheme] = useState("dark");
   const [convert, setConvert] = useState(false);
   const [color, setColor] = useState("#212121");
-  const { elementID, category } = useSelector((state) => state.modal);
+  const { elementID, category, typeCSS } = useSelector((state) => state.modal);
   const { settingEditor } = useSelector((state) => state.profile);
   useEffect(
     () => {
@@ -114,6 +114,7 @@ function Create() {
     setDoc(doc(db, "elements", elementID.toString()), {
       background: color,
       category: category,
+      typeCSS:typeCSS,
       css: cssText,
       html: htmlText,
       status: "draft",
@@ -138,6 +139,7 @@ function Create() {
           <EditorHeader
             changeEditor={changeEditor}
             setChangeEditor={setChangeEditor}
+            typeCSS={typeCSS}
             htmlText={htmlText}
             cssText={cssText}
             convert={convert}
@@ -186,7 +188,12 @@ function Create() {
             <iframe
               srcDoc={`
         <html style="height: 100%;overflow: hidden;">
+        <head>
         <style>${cssText}</style>
+        ${
+          typeCSS === "tailwindCSS" ?`<script src="https://cdn.tailwindcss.com"></script>`:""
+        }
+        </head>
         <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center; font-family: Montserrat, sans-serif;">${htmlText}</body>
         </html>
       `}

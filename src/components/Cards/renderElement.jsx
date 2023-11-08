@@ -4,7 +4,7 @@ import { db } from "../../configs/firebase.configs";
 import { Link } from "react-router-dom";
 import { saveFavorite } from "../../api/element";
 import { useIsLogin } from "../../hooks/useIsLogin";
-
+import tailwindIcon from "../../assets/images/tailwind.svg";
 const RenderElement = ({ post, search }) => {
   const { isLogin } = useIsLogin();
   const [elementItem, setElementItem] = useState(null);
@@ -41,15 +41,38 @@ const RenderElement = ({ post, search }) => {
             className="get-html-css"
             to={`/detail/${post.id}${search ? "?status=" + search : ""}`}
           >
-            {/* {test ? "t" : "f"} */}
             Get <span className="html">HTML</span> &amp;{" "}
             <span className="css">CSS</span>
           </Link>
+          {elementItem?.typeCSS === "tailwindCSS" && (
+            <div className="absolute z-20 flex items-center left-1.5 top-[6px] gap-0.5">
+              <div
+                className="px-1 py-1"
+                id="tailwind-9c4fefbd-a73e-4e67-bdef-14624cade3e3"
+              >
+                <img
+                  src={tailwindIcon}
+                  alt="htmlIcon"
+                  style={{ width: "24px" }}
+                />
+              </div>
+            </div>
+          )}
+
           <iframe
             srcDoc={`
         <html style="height: 100%;overflow: hidden;">
+        <head>
         <style>${elementItem.css}</style>
-        <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center; font-family: Montserrat, sans-serif;">${elementItem.html}</body>
+        ${
+          elementItem?.typeCSS === "tailwindCSS"
+            ? `<script src="https://cdn.tailwindcss.com"></script>`
+            : ""
+        }
+        </head>
+        <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center; font-family: Montserrat, sans-serif;">${
+          elementItem.html
+        }</body>
         </html>
       `}
             title="output"

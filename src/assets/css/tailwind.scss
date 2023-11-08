@@ -996,6 +996,9 @@ select {
 .mb-12 {
     margin-bottom: 3rem!important
 }
+.mb-16 {
+   margin-bottom: 4rem !important;
+} 
 
 .mb-2 {
     margin-bottom: .5rem!important
@@ -1144,7 +1147,9 @@ select {
 .mt-14 {
     margin-top: 3.5rem!important
 }
-
+.mt-16 {
+    margin-top: 4rem!important;
+}
 .mt-2 {
     margin-top: .5rem!important
 }
@@ -2324,7 +2329,9 @@ select {
 .gap-10 {
     gap: 2.5rem!important
 }
-
+.gap-12 {
+    gap: 3rem!important;
+}
 .gap-2 {
     gap: .5rem!important
 }
@@ -4142,7 +4149,10 @@ select {
     --tw-text-opacity: 1 !important;
     color: rgb(224 231 255 / var(--tw-text-opacity))!important
 }
-
+.text-indigo-300 {
+    --tw-text-opacity: 1 !important;
+    color: rgb(165 180 252 / var(--tw-text-opacity))!important
+}
 .text-indigo-400 {
     --tw-text-opacity: 1 !important;
     color: rgb(129 140 248 / var(--tw-text-opacity))!important
@@ -5314,7 +5324,14 @@ select {
     .sm\:pt-6 {
         padding-top: 1.5rem!important
     }
+    .sm\:indent-0 {
+        text-indent: 0px!important
+    }
 
+    .sm\:text-3xl {
+        font-size: 1.875rem!important;
+        line-height: 2.25rem!important
+    }
     .sm\:text-4xl {
         font-size: 2.25rem!important;
         line-height: 2.5rem!important
@@ -5462,6 +5479,10 @@ select {
 
     .md\:grid-cols-2 {
         grid-template-columns: repeat(2,minmax(0,1fr))!important
+    }
+
+    .md\:grid-cols-3 {
+        grid-template-columns: repeat(3,minmax(0,1fr))!important
     }
 
     .md\:grid-cols-\[1fr_auto\] {

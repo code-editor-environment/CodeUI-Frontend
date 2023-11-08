@@ -18,6 +18,7 @@ import VideoCall from "./pages/main/Chat/videoCall";
 import Integration from "./core/integration";
 import Challenges from "./pages/main/Challenges";
 import DetailChallenges from "./pages/main/Challenges/detailChallenges";
+import Guidelines from "./pages/main/Guidelines";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             />
             <Route path="creators" element={<Creators />} />
             <Route path="subscription" element={<Subscription />} />
+            <Route path="guidelines" element={<Guidelines />} />
             <Route path="profile/:username" element={<Profile />} />
             <Route path="chat" element={<ChatBox />} />
             <Route path="chat/:chatId" element={<VideoCall />} />

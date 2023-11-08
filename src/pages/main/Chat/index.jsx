@@ -13,18 +13,18 @@ function ChatBox() {
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
   useEffect(() => {
-    if (isLogin.user) {
+    if (isLogin) {
       socket.current = io("http://localhost:5000");
-      socket.current.emit("add-user", isLogin.user._id);
+      socket.current.emit("add-user", isLogin.id);
     }
-  }, [isLogin.user]);
+  }, [isLogin]);
 
   useEffect(() => {
     async function setCont(){
-      if (isLogin.user) {
-        if (isLogin.user.html_url) {
+      if (isLogin) {
+        if (isLogin) {
           const data = await axios.get(
-            `${import.meta.env.NODE_DOMAIN}/users?ne=${isLogin.user._id}`
+            `${import.meta.env.VITE_NODE_DOMAIN}/users?ne=${isLogin.id}`
           );
           setContacts(data.data.list);
         } else {
@@ -34,7 +34,7 @@ function ChatBox() {
     }
     setCont();
     }, // eslint-disable-next-line
-    [isLogin.user]
+    [isLogin]
   );
   const handleChatChange = (chat) => {
     setCurrentChat(chat);

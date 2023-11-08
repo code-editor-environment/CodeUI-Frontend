@@ -1,10 +1,11 @@
 import React from "react";
 import { useDetectOutsideClick } from "../../../../hooks/useOutsideClick";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useParseUrl } from "../../../../hooks/useParseUrl";
 
 function Randomized() {
-    const { search } = useParseUrl();
+    const { search} = useParseUrl();
+    const { pathname } = useLocation();
   const { isActive, setIsActive, nodeRef, triggerRef } =
     useDetectOutsideClick(false);
 const item = [
@@ -99,7 +100,7 @@ const item = [
             <li className="list-item" key={i}>
               <Link
                 className="item"
-                to={`/elements?category=${search.category}${
+                to={`${pathname}?category=${search.category}${
                   item.name === "Randomized" ? "" : "&filter=" + item.name
                 }`}
                 onClick={() => setIsActive(!isActive)}

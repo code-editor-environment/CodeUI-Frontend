@@ -7,15 +7,19 @@ import { Link } from "react-router-dom";
 function Buttons({ category }) {
   const [post, setPost] = useState(0);
   useEffect(() => {
-    getListElements({ category, page: 1, pageSize: 6 }).then(
-      (data) => {
-        if (data.error) {
-          console.log(data.error);
-        } else {
-          setPost(data.data);
-        }
+    getListElements({
+      category,
+      page: 1,
+      pageSize: 6,
+      filter: null,
+      creator: null,
+    }).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setPost(data.data);
       }
-    );
+    });
     // eslint-disable-next-line
   }, []);
   return (

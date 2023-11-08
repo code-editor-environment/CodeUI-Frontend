@@ -189,7 +189,7 @@ function Header() {
                 }
               />
               <Notification />
-              <Link
+              {/* <Link
                 className="button button--secondary button--notifications false"
                 to="/chat"
               >
@@ -219,7 +219,7 @@ function Header() {
                     ></path>
                   </g>
                 </svg>
-              </Link>
+              </Link> */}
               <Menu handleLogout={handleLogout} user={profileRes} />
             </>
           ) : (

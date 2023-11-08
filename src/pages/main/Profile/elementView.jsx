@@ -14,6 +14,7 @@ import styles from "./profile.module.scss";
 import RenderElement from "../../../components/Cards/renderElement";
 import { getListElementByCreator } from "../../../api/element";
 import Pagination from "../../../components/Pagination";
+import Randomized from "../Element/randomized";
 function ElementView() {
   const { username } = useParams();
   const { search } = useParseUrl();
@@ -116,54 +117,7 @@ function ElementView() {
             </nav>
           </div>
           <div className={styles.filter}>
-            <div className="dropdown-container dropdown-orderBy">
-              <button className="text-gray-300 h-[40px] text-sm dropdown-trigger px-3 py-2 hover:bg-dark-600 rounded-lg false">
-                <span className="icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  >
-                    <path d="M20 4H4v2.586a1 1 0 0 0 .293.707l5.414 5.414a1 1 0 0 1 .293.707V18l4 3v-7.586a1 1 0 0 1 .293-.707l5.414-5.414A1 1 0 0 0 20 6.586V4Z" />
-                  </svg>
-                </span>
-                favorites
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={24}
-                  height={24}
-                >
-                  <path fill="none" d="M0 0h24v24H0z" />
-                  <path
-                    fill="currentColor"
-                    d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="dropdown-container dropdown-theme">
-              <button className="text-gray-300 h-[40px] text-sm dropdown-trigger px-3 py-2 hover:bg-dark-600 rounded-lg false">
-                <span className="icon" />
-                Any theme
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={24}
-                  height={24}
-                >
-                  <path fill="none" d="M0 0h24v24H0z" />
-                  <path
-                    fill="currentColor"
-                    d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z"
-                  />
-                </svg>
-              </button>
-            </div>
+          <Randomized/>
           </div>
         </div>
       </div>
