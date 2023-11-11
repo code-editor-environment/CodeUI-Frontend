@@ -16,6 +16,7 @@ function Challenges() {
     };
     fetchData();
   }, []);
+
   return (
     <div className="pt-[40px] pb-[100px]">
       {data.map((item, index) => (
@@ -34,6 +35,24 @@ function Challenges() {
               />
             </div>
             <div className="pt-[65%] p-10 ms:pt-10 relative z-40 flex flex-col items-start flex-1 ms:max-w-[65%]">
+              {/* <div class="flex items-center gap-3 flex-wrap">
+                <div class="py-2 pl-3 pr-4 rounded-lg inline-flex items-center gap-2 text-sm font-bold bg-yellow-600 text-yellow-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    class="w-5 h-5"
+                  >
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path
+                      fill="currentColor"
+                      d="M17 15.245v6.872a.5.5 0 0 1-.757.429L12 20l-4.243 2.546a.5.5 0 0 1-.757-.43v-6.87a8 8 0 1 1 10 0zm-8 1.173v3.05l3-1.8 3 1.8v-3.05A7.978 7.978 0 0 1 12 17a7.978 7.978 0 0 1-3-.582zM12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"
+                    ></path>
+                  </svg>{" "}
+                  Voting started
+                </div>
+              </div> */}
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="py-2 pl-3 pr-4 rounded-lg inline-flex items-center gap-2 text-sm font-bold bg-dark-600 text-white">
                   <svg
@@ -58,6 +77,21 @@ function Challenges() {
                 {item.content}
               </div>
               <p className="text-base text-gray-400">{item.description}</p>
+              {/* <footer class="flex items-center gap-4 mt-8 flex-wrap">
+                <div>
+                  🎉 You've already submitted a{" "}
+                  <a
+                    class="underline post-link"
+                    href="/tranquoclong/unlucky-shrimp-12"
+                  >
+                    tooltip
+                  </a>
+                  !
+                </div>
+                <div class="deadline">
+                  <div>Vote for the winner below!</div>
+                </div>
+              </footer> */}
               <footer className="flex flex-wrap items-end flex-1 gap-6 mt-8 font-semibold">
                 <div className="flex items-center gap-2">
                   <svg

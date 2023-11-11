@@ -1,44 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { collection, getDocs } from "firebase/firestore";
 import { useIsLogin } from "../../hooks/useIsLogin";
 import { useParseUrl } from "../../hooks/useParseUrl";
 import styles from "./sidebar.module.scss";
-import { db } from "../../configs/firebase.configs";
+import { useSelector } from "react-redux";
 function Sidebar() {
-  const { search } = useParseUrl();
+  const { listCategories } = useSelector((state) => state.element);
+  const { search, objectToQueryString } = useParseUrl();
   const { isLogin } = useIsLogin();
   const isActive = (path) => {
     if (search.category === path) return "active";
     else return "false";
   };
-  const [todos, setTodos] = useState([]);
-  const fetchPost = async () => {
-    await getDocs(collection(db, "categories")).then((querySnapshot) => {
-      const newData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setTodos(newData);
-    });
-  };
-  useEffect(() => {
-    fetchPost();
-  }, []);
   return (
     <div className="navigation-section">
       <div className="sticky-wrapper">
         <nav className="navigation-categories">
           <Link
             className={`tab tab--all ${isActive("all")}`}
-            to="/elements?category=all"
+            to={`/elements?category=all&${objectToQueryString("category")}`}
           >
             <div className="tab-content">All</div>
           </Link>
-          {todos?.map((category, i) => (
+          {listCategories?.map((category, i) => (
             <Link
               className={`tab tab--button ${isActive(category.name)}`}
-              to={`/elements?category=${category.name}`}
+              to={`/elements?category=${category.name}&${objectToQueryString(
+                "category"
+              )}`}
               key={i}
             >
               <div className="tab-content">{category.description}</div>
@@ -47,7 +36,9 @@ function Sidebar() {
           {isLogin && (
             <Link
               className={`tab tab--favorites ${isActive("favorites")}`}
-              to="/elements?category=favorites"
+              to={`/elements?category=favorites&${objectToQueryString(
+                "category"
+              )}`}
             >
               <div className="tab-content">
                 <svg
@@ -69,7 +60,7 @@ function Sidebar() {
         </nav>
         <div className={styles.ads}>
           <div className={styles.adsContent}>
-            <a>
+            <Link to="#">
               <img
                 alt="ads via Carbon"
                 className="block "
@@ -77,7 +68,7 @@ function Sidebar() {
                 height={100}
                 width={150}
               />
-            </a>
+            </Link>
           </div>
           <span>ads via Carbon</span>
         </div>

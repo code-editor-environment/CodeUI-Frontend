@@ -1,5 +1,10 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./pagination.module.scss";
-function Pagination({ value, onChange, range }) {
+import { useParseUrl } from "../../hooks/useParseUrl";
+function Pagination({ value, range }) {
+  const navigate = useNavigate();
+  const { search, objectToQueryString } = useParseUrl();
+  const { pathname } = useLocation();
   let pattern = null;
   switch (true) {
     case range < 7:
@@ -17,7 +22,12 @@ function Pagination({ value, onChange, range }) {
 
   function changeNumber(n) {
     if (typeof n === "number" && n > 0 && n <= range) {
-      onChange(n);
+      window.scrollTo({ top: 0 });
+      navigate(
+        `${pathname}?${objectToQueryString("page")}${
+          n === 1 ? "" : "&page=" + n
+        }`
+      );
     }
   }
   return (

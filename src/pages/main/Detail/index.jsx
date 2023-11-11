@@ -1,6 +1,13 @@
 import { useState } from "react";
 import Editor from "@monaco-editor/react";
-import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  collection,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useIsHidden } from "../../../hooks/useIsHidden";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -25,6 +32,8 @@ import AppButton from "../../../components/Button";
 import Comment from "./comment";
 import timeLineYellow from "../../../assets/images/time-line-yellow.svg";
 import timeLineRed from "../../../assets/images/time-line-red.svg";
+import { getElements } from "../../../store/element/elements-slice";
+// import { fetchElements } from "../../../store/element/elements-slice";
 // import Console from "./console";
 // import styles from "./detail.module.scss";
 function Detail() {
@@ -111,9 +120,19 @@ function Detail() {
       enabled: settingEditor?.miniMap === "enabled" ? true : false,
     },
   };
-
+      const fetchPosts = async () => {
+        await getDocs(collection(db, "elements")).then((querySnapshot) => {
+          const newData = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          dispatch(getElements(newData));
+        });
+      };
   const clickSubmitReview = () => {
-    clickSubmitDraft();
+    clickSubmitDraft("PENDING");
+    fetchPosts();
+    // dispatch(fetchElements());
     putElement(postId).then((data) => {
       if (data.error) {
         console.log(data.error);
@@ -123,22 +142,19 @@ function Detail() {
       }
     });
   };
-  const clickSubmitDraft = () => {
-    setDoc(doc(db, "elements", postId.toString()), {
+  const clickSubmitDraft = async (status) => {
+    await updateDoc(doc(db, "elements", postId.toString()), {
       background: color,
-      category: elementById.category,
-      typeCSS: elementById?.typeCSS || "css",
       css: cssText === "" ? elementById.css : cssText,
       html: htmlText === "" ? elementById.html : htmlText,
-      status: "draft",
+      status: status,
       theme: elementById.theme,
-      usernameCreator: profileRes.username,
     });
   };
   useEffect(
     () => {
       const autoSave = setTimeout(() => {
-        search?.status === "draft" && clickSubmitDraft();
+        search?.status === "draft" && clickSubmitDraft("DRAFT");
       }, settingEditor?.autoSave || 3000);
       return () => clearTimeout(autoSave);
     }, // eslint-disable-next-line
@@ -304,7 +320,9 @@ function Detail() {
         <head>
         <style>${cssText === "" ? elementById.css : cssText}</style>
         ${
-          elementById?.typeCSS === "tailwindCSS" ?`<script src="https://cdn.tailwindcss.com"></script>`:""
+          elementById?.typeCSS === "tailwind"
+            ? `<script src="https://cdn.tailwindcss.com"></script>`
+            : ""
         }
         </head>
         <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center; font-family: Montserrat, sans-serif;">${
@@ -374,7 +392,6 @@ function Detail() {
                     : `${elementById.theme !== "dark" ? "#e8e8e8" : "#212121"}`}
                 </span>
               </div>
-              {/* <Console /> */}
             </div>
           </div>
           <div className="detail-action">
@@ -389,8 +406,8 @@ function Detail() {
                     >
                       <div className="mr-2">
                         {findFavorite
-                          ? element.favorites + 1
-                          : element.favorites}
+                          ? element?.favorites + 1
+                          : element?.favorites}
                       </div>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -531,7 +548,9 @@ function Detail() {
                               </svg>
                             }
                             onClick={() => {
-                              clickSubmitDraft();
+                              clickSubmitDraft("DRAFT");
+                              fetchPosts();
+                              // dispatch(fetchElements());
                               navigate(
                                 `/profile/${profileRes.username}?element=draft`
                               );

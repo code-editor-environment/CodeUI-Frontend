@@ -1,10 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-function Stat({ elements, users }) {
+function Stat({ users }) {
+   const { elements } = useSelector((state) => state.element);
   return (
     <div className="home-page__stats">
       <div className="stat">
-        <span className="stat__heading">{elements}</span>
+        <span className="stat__heading">{elements?.length}</span>
         <p className="stat__text">UI elements, ready for you to use</p>
       </div>
       <div className="stat">

@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react";
 import { useIsHidden } from "../../../hooks/useIsHidden";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, updateDoc, collection, getDocs } from "firebase/firestore";
 import PostStatusModal from "../../../components/Modal/postStatusModal";
 import {
   defaultButtonHTML,
@@ -29,10 +29,12 @@ import AppButton from "../../../components/Button";
 import { putElement } from "../../../api/element";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import BackgroundColor from "./backgroundColor";
+import { getElements } from "../../../store/element/elements-slice";
+// import { fetchElements } from "../../../store/element/elements-slice";
 function Create() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { profileRes } = useIsLogin();
+  const { isLogin, profileRes } = useIsLogin();
   const { hidden, handleClick } = useIsHidden();
   const [cssText, setCssText] = useState("");
   const [htmlText, setHtmlText] = useState("");
@@ -43,6 +45,7 @@ function Create() {
   const [color, setColor] = useState("#212121");
   const { elementID, category, typeCSS } = useSelector((state) => state.modal);
   const { settingEditor } = useSelector((state) => state.profile);
+  const { elements } = useSelector((state) => state.element);
   useEffect(
     () => {
       dispatch(open(<PostStatusModal />));
@@ -98,8 +101,19 @@ function Create() {
         enabled: settingEditor?.miniMap === "enabled" ? true : false,
       },
     };
+      const fetchPost = async () => {
+        await getDocs(collection(db, "elements")).then((querySnapshot) => {
+          const newData = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          dispatch(getElements(newData));
+        });
+      };
   const clickSubmitReview = () => {
-    clickSubmitDraft();
+    clickSubmitDraft("PENDING");
+    fetchPost();
+    // dispatch(fetchElements());
     putElement(elementID).then((data) => {
       if (data.error) {
         console.log(data.error);
@@ -110,22 +124,19 @@ function Create() {
       }
     });
   };
-  const clickSubmitDraft = () => {
-    setDoc(doc(db, "elements", elementID.toString()), {
+  const clickSubmitDraft = async (status) => {
+    await updateDoc(doc(db, "elements", elementID.toString()), {
       background: color,
-      category: category,
-      typeCSS:typeCSS,
       css: cssText,
       html: htmlText,
-      status: "draft",
+      status: status,
       theme: theme,
-      usernameCreator: profileRes.username,
-    })
+    });
   };
   useEffect(
     () => {
       const autoSave = setTimeout(() => {
-        elementID && clickSubmitDraft();
+        elementID && clickSubmitDraft("DRAFT");
       }, settingEditor?.autoSave || 3000);
       return () => clearTimeout(autoSave);
     }, // eslint-disable-next-line
@@ -191,7 +202,9 @@ function Create() {
         <head>
         <style>${cssText}</style>
         ${
-          typeCSS === "tailwindCSS" ?`<script src="https://cdn.tailwindcss.com"></script>`:""
+          typeCSS === "tailwind"
+            ? `<script src="https://cdn.tailwindcss.com"></script>`
+            : ""
         }
         </head>
         <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center; font-family: Montserrat, sans-serif;">${htmlText}</body>
@@ -254,7 +267,9 @@ function Create() {
                   </svg>
                 }
                 onClick={() => {
-                  clickSubmitDraft();
+                  clickSubmitDraft("DRAFT");
+                  fetchPost();
+                  // dispatch(fetchElements());
                   navigate(`/profile/${profileRes.username}?element=draft`);
                   toast.success("successfully!");
                   dispatch(postElementID(null));

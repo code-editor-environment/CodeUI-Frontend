@@ -1,20 +1,52 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import RenderElement from "./renderElement";
 import SkeletonElement from "../Skeleton/skeletonElement";
 import Pagination from "../Pagination";
+import { useParseUrl } from "../../hooks/useParseUrl";
+import useTimeBasedRandom from "../../core/useTimeBasedRandom";
 
-function Cards({ totalPages, page, setPage, loading }) {
-  const { elements } = useSelector((state) => state.element);
-  return !elements ? (
+function Cards() {
+  const { search } = useParseUrl();
+  const { elements, totalElements } = useSelector((state) => state.element);
+  const filteredElements = useMemo(() => {
+    return elements;
+  }, [elements]);
+  const { randomizedArray } = useTimeBasedRandom(filteredElements);
+  const renderElements = useMemo(() => {
+    return randomizedArray
+      .filter((post) => {
+        return (
+          post.status === "APPROVED" &&
+          (search.category && search.category !== "all"
+            ? post.category === search.category
+            : true) &&
+          (search.creator
+            ? post.usernameCreator.includes(search.creator)
+            : true) &&
+          (search.c ? post.typeCSS === search.c : true)
+        );
+      })
+      .sort((a, b) => {
+        return search.filter === "desc"
+          ? new Date(b.createDate) - new Date(a.createDate)
+          : true && search.filter === "asc"
+          ? new Date(a.createDate) - new Date(b.createDate)
+          : true;
+      });
+  }, [randomizedArray, search]);
+  return elements?.length === 0 ? (
     <SkeletonElement total={10} />
   ) : (
     <>
       <section className="cards-container cards-container--all">
-        {elements?.length > 0 ? (
-          elements.map((post, index) => (
-            <RenderElement post={post} key={index} />
-          ))
+        {renderElements?.length > 0 ? (
+          renderElements
+            .slice(
+              ((search.page || 1) - 1) * totalElements.windowSize,
+              (search.page || 1) * totalElements.windowSize
+            )
+            .map((post, index) => <RenderElement post={post} key={index} />)
         ) : (
           <div className="flex items-center justify-center col-span-full border-dashed border-gray-500 border-2  min-h-[300px] rounded-2xl">
             <div className="flex flex-col items-center font-semibold text-gray-500">
@@ -37,8 +69,11 @@ function Cards({ totalPages, page, setPage, loading }) {
           </div>
         )}
       </section>
-      {totalPages > 1 && (
-        <Pagination value={page} range={totalPages} onChange={setPage} />
+      {Math.ceil(renderElements?.length / totalElements.windowSize) > 1 && (
+        <Pagination
+          value={parseInt(search.page) || 1}
+          range={Math.ceil(renderElements?.length / totalElements.windowSize)}
+        />
       )}
     </>
   );

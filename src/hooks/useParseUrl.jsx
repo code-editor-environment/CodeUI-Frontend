@@ -11,6 +11,14 @@ export const useParseUrl = () => {
     var pair = params[i].split("=");
     search[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
   }
-
-  return { search, pathname };
+  function objectToQueryString(excludeKey) {
+    const excludeKeys = excludeKey === "page" ? [excludeKey] : [excludeKey,"page"];
+    return Object.keys(search)
+      .filter((key) => !excludeKeys.includes(key))
+      .map(
+        (key) => `${encodeURIComponent(key)}=${encodeURIComponent(search[key])}`
+      )
+      .join("&");
+  }
+  return { search, pathname, objectToQueryString };
 };

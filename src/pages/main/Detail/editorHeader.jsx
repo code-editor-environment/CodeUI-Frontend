@@ -127,7 +127,7 @@ function EditorHeader({
         >
           <img src={htmlIcon} alt="htmlIcon" style={{ width: "27px" }} /> HTML
         </span>
-        {typeCSS === "tailwindCSS" ? (
+        {typeCSS === "tailwind" ? (
           <span
             className={`${!changeEditor ? "editor-change-active" : ""}`}
             style={{ marginRight: "6px" }}

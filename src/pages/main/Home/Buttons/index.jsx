@@ -1,37 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import AppButton from "../../../../components/Button";
 import SkeletonElement from "../../../../components/Skeleton/skeletonElement";
 import RenderElement from "../../../../components/Cards/renderElement";
-import { getListElements } from "../../../../api/element";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import useTimeBasedRandom from "../../../../core/useTimeBasedRandom";
 function Buttons({ category }) {
-  const [post, setPost] = useState(0);
-  useEffect(() => {
-    getListElements({
-      category,
-      page: 1,
-      pageSize: 6,
-      filter: null,
-      creator: null,
-    }).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        setPost(data.data);
-      }
-    });
-    // eslint-disable-next-line
-  }, []);
+   const { elements } = useSelector((state) => state.element);
+  const filteredElements = useMemo(() => {
+    return elements
+      ?.filter((element) => element.category === category);
+  }, [elements, category]);
+  const { randomizedArray } = useTimeBasedRandom(filteredElements);
+  const renderElements = useMemo(() => {
+    return randomizedArray
+      .filter((post) => {
+        return post.status === "APPROVED";
+      })
+      .slice(0, 6);
+  }, [randomizedArray]);
   return (
     <section className="posts-preview" style={{ width: "100%" }}>
       <div className="posts-header">
         <Link to={`/elements?category=${category}`}>
-          <h3 className="preview-heading">{category}s</h3>
+          <h3 className="preview-heading">{category}</h3>
         </Link>
       </div>
-      {post?.length > 0 ? (
+      {renderElements?.length > 0 ? (
         <div className="content">
-          {post.map((post, index) => (
+          {renderElements.map((post, index) => (
             <RenderElement post={post} key={index} />
           ))}
         </div>

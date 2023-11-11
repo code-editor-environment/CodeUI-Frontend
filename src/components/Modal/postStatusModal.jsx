@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { collection, getDocs } from "firebase/firestore";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { doc, setDoc } from "firebase/firestore";
 import {
   postElementID,
   categories,
@@ -11,11 +11,13 @@ import { db } from "../../configs/firebase.configs";
 import { createElement } from "../../api/element";
 import tailwindIcon from "../../assets/images/tailwind.svg";
 import cssIcon from "../../assets/images/css.svg";
+import { useIsLogin } from "../../hooks/useIsLogin";
 function PostStatusModal() {
   const dispatch = useDispatch();
+    const { listCategories } = useSelector((state) => state.element);
+  const { isLogin, profileRes } = useIsLogin();
   const [type, setType] = useState("button");
   const [typeCSS, setTypeCSS] = useState("css");
-  const [todos, setTodos] = useState([]);
   const changeStatus = (e) => {
     setType(e.target.value);
   };
@@ -31,28 +33,30 @@ function PostStatusModal() {
         console.log(data.error);
       } else {
         dispatch(postElementID(data.data.id));
+        const currentDate = new Date();
+        setDoc(doc(db, "elements", data.data.id.toString()), {
+          accountID: isLogin.id,
+          background: "#212121",
+          category: type,
+          createDate: currentDate.toISOString(),
+          css: "",
+          html: "",
+          status: "DRAFT",
+          subscription: "normal",
+          theme: "dark",
+          typeCSS: typeCSS,
+          usernameCreator: profileRes.username,
+        });
       }
     });
     dispatch(close());
   };
-  const fetchPost = async () => {
-    await getDocs(collection(db, "categories")).then((querySnapshot) => {
-      const newData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setTodos(newData);
-    });
-  };
 
-  useEffect(() => {
-    fetchPost();
-  }, []);
   return (
     <div className="options-modal">
       <h3 className="heading">What are you making?</h3>
       <div className="options">
-        {todos?.map((category, i) => (
+        {listCategories?.map((category, i) => (
           <label
             className={`option ${type === category.name ? "active" : "false"}`}
             key={i}
@@ -91,11 +95,11 @@ function PostStatusModal() {
         </button>
         <button
           className={`px-6 py-1 text-gray-200 flex items-center gap-2 border-2 border-solid pl-5 cursor-pointer font-sans text-lg font-semibold  rounded-l-none transition-colors  rounded-lg label bg-dark-600  ${
-            typeCSS === "tailwindCSS"
+            typeCSS === "tailwind"
               ? " hover:sky-500 border-sky-500 hover:border-sky-500"
               : " hover:border-gray-400 border-dark-300"
           }`}
-          onClick={() => setTypeCSS("tailwindCSS")}
+          onClick={() => setTypeCSS("tailwind")}
         >
           <img
             src={tailwindIcon}
