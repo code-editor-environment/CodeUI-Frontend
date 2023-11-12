@@ -51,7 +51,6 @@ function ElementView() {
           : true;
       });
   }, [randomizedArray, search]);
-  console.log("🚀 ~ file: elementView.jsx:54 ~ renderElements ~ renderElements:", renderElements)
   const navC = [
     {
       name: "Mixed",

@@ -13,8 +13,32 @@ export const ElementSlice = createSlice({
   initialState,
   reducers: {
     getElements: (state, { payload }) => {
-      console.log("zxc");
       state.elements = payload;
+    },
+    pushElements: (state, { payload }) => {
+      const index = state.elements.findIndex(
+        (item) => item["id"] === payload["id"]
+      );
+      if (index > -1) {
+        state.elements[index] = {
+          ...state.elements[index],
+          ...payload,
+        };
+      } else {
+        state.elements = [...state.elements, payload];
+      }
+    },
+    checkElements: (state, { payload }) => {
+      const index = state.elements.findIndex(
+        (item) => item["id"] === payload["id"]
+      );
+      state.elements[index] = {
+        ...state.elements[index],
+        ...payload,
+      };
+    },
+    deleteElements: (state, { payload: id }) => {
+      state.elements = state.elements.filter((item) => item.id !== id);
     },
     getCategories: (state, { payload }) => {
       state.listCategories = payload;
@@ -28,6 +52,13 @@ export const ElementSlice = createSlice({
   },
 });
 
-export const { getElements, getCategories, getTotalElements, getElementById } =
-  ElementSlice.actions;
+export const {
+  getElements,
+  getCategories,
+  pushElements,
+  deleteElements,
+  getTotalElements,
+  getElementById,
+  checkElements,
+} = ElementSlice.actions;
 export default ElementSlice.reducer;

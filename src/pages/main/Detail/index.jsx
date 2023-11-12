@@ -3,8 +3,6 @@ import Editor from "@monaco-editor/react";
 import {
   doc,
   getDoc,
-  getDocs,
-  collection,
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -32,7 +30,10 @@ import AppButton from "../../../components/Button";
 import Comment from "./comment";
 import timeLineYellow from "../../../assets/images/time-line-yellow.svg";
 import timeLineRed from "../../../assets/images/time-line-red.svg";
-import { getElements } from "../../../store/element/elements-slice";
+import {
+  pushElements,
+  deleteElements,
+} from "../../../store/element/elements-slice";
 // import { fetchElements } from "../../../store/element/elements-slice";
 // import Console from "./console";
 // import styles from "./detail.module.scss";
@@ -91,13 +92,19 @@ function Detail() {
       if (data.error) {
         console.log(data.error);
       } else {
+        dispatch(deleteElements(postId));
         navigate(`/profile/${profileRes.username}`);
+        toast.success("successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
+        });
         deleteDoc(doc(db, `elements`, postId));
       }
     });
   };
   const onUpdatePost = () => {
-    dispatch();
+    // dispatch();
     // updatePost(postId, elementById, htmlText, cssText, hidden, navigate)
   };
   const onFavorite = () => {
@@ -120,36 +127,41 @@ function Detail() {
       enabled: settingEditor?.miniMap === "enabled" ? true : false,
     },
   };
-      const fetchPosts = async () => {
-        await getDocs(collection(db, "elements")).then((querySnapshot) => {
-          const newData = querySnapshot.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }));
-          dispatch(getElements(newData));
-        });
-      };
+
   const clickSubmitReview = () => {
     clickSubmitDraft("PENDING");
-    fetchPosts();
-    // dispatch(fetchElements());
     putElement(postId).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
         navigate(`/profile/${profileRes.username}?element=pending`);
-        toast.success("successfully!");
+        toast.success("successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
+        });
       }
     });
   };
   const clickSubmitDraft = async (status) => {
-    await updateDoc(doc(db, "elements", postId.toString()), {
+    const elementRef = doc(db, "elements", postId.toString());
+    await updateDoc(elementRef, {
       background: color,
       css: cssText === "" ? elementById.css : cssText,
       html: htmlText === "" ? elementById.html : htmlText,
       status: status,
       theme: elementById.theme,
     });
+        const updatedDoc = await getDoc(elementRef);
+        if (updatedDoc.exists()) {
+          const dataUpdated = {
+            id: postId.toString(),
+            ...updatedDoc.data(),
+          };
+          dispatch(pushElements(dataUpdated));
+        } else {
+          throw new Error("Document not found");
+        }
   };
   useEffect(
     () => {
@@ -205,7 +217,6 @@ function Detail() {
             Go back
           </div>
         </button>
-
         <div className="rounded-lg text-sm font-semibold">
           <div className="flex items-center gap-1.5">
             {search?.status === "pending" ? (
@@ -231,7 +242,7 @@ function Detail() {
                       viewBox="0 0 24 24"
                       width={24}
                       height={24}
-                      classname="h-4 w-4 translate-y-0.5 flex-none"
+                      className="h-4 w-4 translate-y-0.5 flex-none"
                     >
                       <path fill="none" d="M0 0h24v24H0z" />
                       <path
@@ -549,12 +560,14 @@ function Detail() {
                             }
                             onClick={() => {
                               clickSubmitDraft("DRAFT");
-                              fetchPosts();
-                              // dispatch(fetchElements());
                               navigate(
                                 `/profile/${profileRes.username}?element=draft`
                               );
-                              toast.success("successfully!");
+                              toast.success("successfully!", {
+                                position: "top-center",
+                                autoClose: 2000,
+                                theme: "dark",
+                              });
                             }}
                           />
                           <AppButton

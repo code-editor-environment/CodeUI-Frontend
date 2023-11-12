@@ -12,9 +12,10 @@ import { createElement } from "../../api/element";
 import tailwindIcon from "../../assets/images/tailwind.svg";
 import cssIcon from "../../assets/images/css.svg";
 import { useIsLogin } from "../../hooks/useIsLogin";
+import { pushElements } from "../../store/element/elements-slice";
 function PostStatusModal() {
   const dispatch = useDispatch();
-    const { listCategories } = useSelector((state) => state.element);
+  const { listCategories } = useSelector((state) => state.element);
   const { isLogin, profileRes } = useIsLogin();
   const [type, setType] = useState("button");
   const [typeCSS, setTypeCSS] = useState("css");
@@ -47,6 +48,22 @@ function PostStatusModal() {
           typeCSS: typeCSS,
           usernameCreator: profileRes.username,
         });
+        dispatch(
+          pushElements({
+            id: data.data.id.toString(),
+            accountID: isLogin.id,
+            background: "#212121",
+            category: type,
+            createDate: currentDate.toISOString(),
+            css: "",
+            html: "",
+            status: "DRAFT",
+            subscription: "normal",
+            theme: "dark",
+            typeCSS: typeCSS,
+            usernameCreator: profileRes.username,
+          })
+        );
       }
     });
     dispatch(close());

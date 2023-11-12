@@ -37,7 +37,11 @@ function Menu({ handleLogout, user }) {
       >
         <ul>
           <li className="list-item">
-            <Link className="item" to={`/profile/${user.username}`}>
+            <Link
+              className="item"
+              to={`/profile/${user.username}`}
+              onClick={() => setIsActive(!isActive)}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

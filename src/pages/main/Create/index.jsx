@@ -3,7 +3,11 @@ import Editor from "@monaco-editor/react";
 import { useIsHidden } from "../../../hooks/useIsHidden";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { doc, updateDoc, collection, getDocs } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
 import PostStatusModal from "../../../components/Modal/postStatusModal";
 import {
   defaultButtonHTML,
@@ -29,12 +33,12 @@ import AppButton from "../../../components/Button";
 import { putElement } from "../../../api/element";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import BackgroundColor from "./backgroundColor";
-import { getElements } from "../../../store/element/elements-slice";
+import { pushElements } from "../../../store/element/elements-slice";
 // import { fetchElements } from "../../../store/element/elements-slice";
 function Create() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLogin, profileRes } = useIsLogin();
+  const { profileRes } = useIsLogin();
   const { hidden, handleClick } = useIsHidden();
   const [cssText, setCssText] = useState("");
   const [htmlText, setHtmlText] = useState("");
@@ -45,7 +49,6 @@ function Create() {
   const [color, setColor] = useState("#212121");
   const { elementID, category, typeCSS } = useSelector((state) => state.modal);
   const { settingEditor } = useSelector((state) => state.profile);
-  const { elements } = useSelector((state) => state.element);
   useEffect(
     () => {
       dispatch(open(<PostStatusModal />));
@@ -95,43 +98,47 @@ function Create() {
   function handleEditorChangeHtml(value, event) {
     setHtmlText(value);
   }
-    const options = {
-      fontSize: settingEditor?.fontSize || 17,
-      minimap: {
-        enabled: settingEditor?.miniMap === "enabled" ? true : false,
-      },
-    };
-      const fetchPost = async () => {
-        await getDocs(collection(db, "elements")).then((querySnapshot) => {
-          const newData = querySnapshot.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }));
-          dispatch(getElements(newData));
-        });
-      };
+  const options = {
+    fontSize: settingEditor?.fontSize || 17,
+    minimap: {
+      enabled: settingEditor?.miniMap === "enabled" ? true : false,
+    },
+  };
   const clickSubmitReview = () => {
     clickSubmitDraft("PENDING");
-    fetchPost();
-    // dispatch(fetchElements());
     putElement(elementID).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
         navigate(`/profile/${profileRes.username}?element=pending`);
-        toast.success("successfully!");
+        toast.success("successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
+        });
         dispatch(postElementID(null));
       }
     });
   };
   const clickSubmitDraft = async (status) => {
-    await updateDoc(doc(db, "elements", elementID.toString()), {
+    const elementRef = doc(db, "elements", elementID.toString());
+    await updateDoc(elementRef, {
       background: color,
       css: cssText,
       html: htmlText,
       status: status,
       theme: theme,
     });
+    const updatedDoc = await getDoc(elementRef);
+    if (updatedDoc.exists()) {
+      const dataUpdated = {
+        id: elementID.toString(),
+        ...updatedDoc.data(),
+      };
+    dispatch(pushElements(dataUpdated));
+    } else {
+      throw new Error("Document not found");
+    }
   };
   useEffect(
     () => {
@@ -268,10 +275,14 @@ function Create() {
                 }
                 onClick={() => {
                   clickSubmitDraft("DRAFT");
-                  fetchPost();
+                  // fetchPost();
                   // dispatch(fetchElements());
                   navigate(`/profile/${profileRes.username}?element=draft`);
-                  toast.success("successfully!");
+                  toast.success("successfully!", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    theme: "dark",
+                  });
                   dispatch(postElementID(null));
                 }}
               />
