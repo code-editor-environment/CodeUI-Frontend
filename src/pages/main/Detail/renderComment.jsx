@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import RepComment from "./repComment";
+import { formatDateString } from "../../../utils/functions";
 // import styles from "./detail.module.scss";
 
 function RenderComment({ comment, onDelete, index }) {
@@ -32,13 +33,15 @@ function RenderComment({ comment, onDelete, index }) {
                 <div className="font-bold text-gray-200 text-base leading-2 flex items-center gap-2">
                   {comment.account.username}
                   <span className="xl:inline hidden ml-2 font-normal text-gray-400 text-sm">
-                    {new Date(comment.timestamp).toDateString()}
+                    {/* {new Date(comment.timestamp).toDateString()} */}
+                    {formatDateString(comment.timestamp)}
                   </span>
                 </div>
               </Link>
               <div className="flex items-center gap-4">
                 <span className="xl:hidden text-gray-400 block text-sm">
-                  {new Date(comment.timestamp).toDateString()}
+                  {/* {new Date(comment.timestamp).toDateString()} */}
+                  {formatDateString(comment.timestamp)}
                 </span>
               </div>
             </div>

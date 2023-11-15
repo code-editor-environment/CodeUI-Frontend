@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { postReplyComment, deleteComment } from "../../../api/element";
 import { useIsLogin } from "../../../hooks/useIsLogin";
+import { formatDateString } from "../../../utils/functions";
 // import styles from "./detail.module.scss";
 
 function RepComment({
@@ -67,13 +68,15 @@ function RepComment({
                         <div className="font-bold text-gray-200 text-base leading-2 flex items-center gap-2">
                           {inverseComment.account.username}
                           <span className="xl:inline hidden ml-2 font-normal text-gray-400 text-sm">
-                            {new Date(inverseComment.timestamp).toDateString()}
+                            {/* {new Date(inverseComment.timestamp).toDateString()} */}
+                            {formatDateString(inverseComment.timestamp)}
                           </span>
                         </div>
                       </Link>
                       <div className="flex items-center gap-4">
                         <span className="xl:hidden text-gray-400 block text-sm">
-                          {new Date(inverseComment.timestamp).toDateString()}
+                          {/* {new Date(inverseComment.timestamp).toDateString()} */}
+                          {formatDateString(inverseComment.timestamp)}
                         </span>
                       </div>
                     </div>

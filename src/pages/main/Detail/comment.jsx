@@ -54,7 +54,7 @@ function Comment({ postId, element }) {
     });
   };
   const onReportPostModal = () => {
-    dispatch(open(<ReportPostModal />));
+    dispatch(open(<ReportPostModal id={postId} />));
   };
   return (
     <div className="col-span-full grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 mt-10">
@@ -110,9 +110,8 @@ function Comment({ postId, element }) {
                 ))}
             </div>
           </section>
-          <a
+          <div
             className="relative h-[200px] flex items-center justify-center cursor-pointer false w-full border-2 border-gray-600 bg-transparent border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            href="#"
           >
             <span className="flex items-center gap-3 mt-2 font-sans font-semibold text-gray-600 text-md">
               <svg
@@ -129,7 +128,7 @@ function Comment({ postId, element }) {
               </svg>
               No variations yet, create one!
             </span>
-          </a>
+          </div>
         </div>
       </div>
       <aside>
@@ -162,8 +161,9 @@ function Comment({ postId, element }) {
               </svg>{" "}
               {new Date(element?.updateDate).toDateString()}
             </div>
-            <button className="px-4 py-2.5 font-sans flex items-center gap-2 border-none rounded-lg text-base font-semibold transition-colors duration-200 bg-transparent hover:bg-dark-600 max-md:bg-dark-600 text-offwhite cursor-pointer group"
-            onClick={onReportPostModal}
+            <button
+              className="px-4 py-2.5 font-sans flex items-center gap-2 border-none rounded-lg text-base font-semibold transition-colors duration-200 bg-transparent hover:bg-dark-600 max-md:bg-dark-600 text-offwhite cursor-pointer group"
+              onClick={onReportPostModal}
             >
               <svg
                 viewBox="0 0 24 24"
@@ -188,7 +188,7 @@ function Comment({ postId, element }) {
         </div>
         <section className="rounded-xl md:pr-8 max-w-full md:w-[300px] xl:w-[350px] mb-6">
           <div className="grid grid-cols-[48px_1fr] gap-4 content-start">
-            <Link className to="/profile/longnlp14_NDixtn">
+            <Link to={`/profile/${element?.profileResponse?.accountID}`}>
               <img
                 src={element?.profileResponse?.imageUrl}
                 alt=""
@@ -197,7 +197,7 @@ function Comment({ postId, element }) {
             </Link>
             <div className="max-w-full overflow-hidden">
               <Link
-                to={`/profile/${element?.ownerUsername}`}
+                to={`/profile/${element?.profileResponse?.accountID}`}
                 className="block text-xl font-semibold text-gray-200 truncate overflow-hidden"
               >
                 {element?.ownerUsername}

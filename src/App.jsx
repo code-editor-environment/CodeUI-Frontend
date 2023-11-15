@@ -38,7 +38,7 @@ function App() {
             <Route path="creators" element={<Creators />} />
             <Route path="subscription" element={<Subscription />} />
             <Route path="guidelines" element={<Guidelines />} />
-            <Route path="profile/:username" element={<Profile />} />
+            <Route path="profile/:accountID" element={<Profile />} />
             <Route path="chat" element={<ChatBox />} />
             <Route path="chat/:chatId" element={<VideoCall />} />
           </Route>

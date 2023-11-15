@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { close } from "../../store/modal/modal-slice";
+import { reportElement } from "../../api/element";
 
-function ReportPostModal() {
+function ReportPostModal({ id }) {
   const reasons = [
     {
       title: "Misleading or Inappropriate Content",
@@ -33,14 +34,21 @@ function ReportPostModal() {
       value: 10,
     },
   ];
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [type, setType] = useState(3);
   const changeStatus = (value) => {
     setType(value);
   };
-    const submit = () => {
-      dispatch(close());
-    };
+  const submit = () => {
+    reportElement({ id, reason: type }).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        console.log(data.data);
+        dispatch(close());
+      }
+    });
+  };
   return (
     <div className="p-10">
       <div className="mb-4 text-2xl font-bold text-gray-300">Report post</div>

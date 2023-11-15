@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 
-function Menu({ handleLogout, user }) {
+function Menu({ handleLogout, user, isLogin }) {
   const { isActive, setIsActive, nodeRef, triggerRef } =
     useDetectOutsideClick(false);
   return (
@@ -39,7 +39,7 @@ function Menu({ handleLogout, user }) {
           <li className="list-item">
             <Link
               className="item"
-              to={`/profile/${user.username}`}
+              to={`/profile/${isLogin.id}`}
               onClick={() => setIsActive(!isActive)}
             >
               <svg

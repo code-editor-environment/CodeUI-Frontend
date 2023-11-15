@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getStorage, removeStorage } from "../../utils/helper";
+import { getStorage, removeStorage, setStorage } from "../../utils/helper";
 const initialState = {
   profiles: {},
   user: JSON.parse(getStorage("codeUiLog"))
@@ -11,6 +11,7 @@ const initialState = {
   profileRes: JSON.parse(getStorage("profileResponse"))
     ? JSON.parse(getStorage("profileResponse"))
     : null,
+  fav: JSON.parse(getStorage("fav")) ? JSON.parse(getStorage("fav")) : [],
 };
 export const ProfileSlice = createSlice({
   name: "profile",
@@ -25,6 +26,23 @@ export const ProfileSlice = createSlice({
     userProfile: (state, { payload }) => {
       state.user = payload;
     },
+    getFav: (state, { payload }) => {
+      state.fav = payload;
+    },
+    postFav: (state, { payload }) => {
+      state.fav = [...state.fav, payload];
+      setStorage({
+        key: "fav",
+        value: JSON.stringify(state.fav),
+      });
+    },
+    deleteFav: (state, { payload:id }) => {
+      state.fav = state.fav.filter((item) => item !== id);
+      setStorage({
+        key: "fav",
+        value: JSON.stringify(state.fav),
+      });
+    },
     userProfileRes: (state, { payload }) => {
       state.profileRes = payload;
     },
@@ -37,6 +55,14 @@ export const ProfileSlice = createSlice({
   },
 });
 
-export const { getProfile, getSettingEditor, userProfile, userProfileRes, actLogout } =
-  ProfileSlice.actions;
+export const {
+  getProfile,
+  getSettingEditor,
+  getFav,
+  postFav,
+  deleteFav,
+  userProfile,
+  userProfileRes,
+  actLogout,
+} = ProfileSlice.actions;
 export default ProfileSlice.reducer;

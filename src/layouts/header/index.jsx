@@ -220,7 +220,11 @@ function Header() {
                   </g>
                 </svg>
               </Link> */}
-              <Menu handleLogout={handleLogout} user={profileRes} />
+              <Menu
+                handleLogout={handleLogout}
+                user={profileRes}
+                isLogin={isLogin}
+              />
             </>
           ) : (
             <>

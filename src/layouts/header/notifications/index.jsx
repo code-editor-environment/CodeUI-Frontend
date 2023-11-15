@@ -16,7 +16,6 @@ function Notification() {
     useDetectOutsideClick(false);
   const [data, setData] = useState([]);
   const [check, setCheck] = useState({ quantity: 0, element :[]});
-  console.log("🚀 ~ file: index.jsx:16 ~ Notification ~ check:", check);
   const fetchPost = async () => {
     try {
       const docRef = doc(db, "notifications", isLogin.id);
@@ -59,7 +58,6 @@ function Notification() {
         status:check.element[0].status,
         ...updatedDoc.data(),
       };
-      console.log("🚀 ~ file: index.jsx:62 ~ updateElement ~ dataUpdated:", dataUpdated)
       dispatch(checkElements(dataUpdated));
     } else {
       throw new Error("Document not found");
@@ -107,7 +105,7 @@ function Notification() {
               has been approved!
             </p>
             <span className="flex items-center text-sm font-normal text-gray-400">
-              {formatDateString(item.date)}
+              {formatDateString(item.date, "nt")}
             </span>
           </div>
         </li>

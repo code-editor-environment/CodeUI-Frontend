@@ -1,27 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { saveFavorite } from "../../api/element";
 import { useIsLogin } from "../../hooks/useIsLogin";
 import tailwindIcon from "../../assets/images/tailwind.svg";
+// import { getStorage, setStorage } from "../../utils/helper";
+import { useDispatch, useSelector } from "react-redux";
+import { postFav, deleteFav } from "../../store/profile/profile-slice";
 const RenderElement = ({ post, search }) => {
   const { isLogin } = useIsLogin();
-  // const [elementItem, setElementItem] = useState(0);
-  // const [findFavorite, setFindFavorite] = useState(false);
-  // useEffect(() => {
-  //   window.scrollTo({ top: 0 });
-  //   getListElementById(post.id).then((data) => {
-  //     if (data.error) {
-  //       console.log(data.error);
-  //     } else {
-  //       setElementItem(data.data);
-  //       setFindFavorite(data.data?.isFavorite);
-  //     }
-  //   });
-  // }, [post.id]);
+  const dispatch = useDispatch();
+  const { fav } = useSelector((state) => state.profile);
+  const [checkFavorite, setCheckFavorite] = useState(fav.includes(post.id));
   const onFavorite = () => {
-    // setFindFavorite(!findFavorite);
+    setCheckFavorite(!checkFavorite);
     const timeout = setTimeout(() => {
-      saveFavorite({ accountId: isLogin.id, postId: post.id });
+      if (checkFavorite) {
+        dispatch(deleteFav(post.id));
+      } else {
+        dispatch(postFav(post.id));
+      }
     }, 1000);
     return () => clearTimeout(timeout);
   };
@@ -75,7 +71,7 @@ const RenderElement = ({ post, search }) => {
           height="100%"
         />
       </div>
-      {/* {isLogin && (
+      {isLogin && (
         <button
           type="submit"
           className="card__bookmark false"
@@ -93,9 +89,9 @@ const RenderElement = ({ post, search }) => {
               d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1zm13 2H6v15.432l6-3.761 6 3.761V4z"
             />
           </svg>{" "}
-          <span>{findFavorite ? "UnSave" : "Save"}</span>
+          <span>{checkFavorite ? "UnSave" : "Save"}</span>
         </button>
-      )} */}
+      )}
       <div className="card__footer">
         <Link to={`/profile/${post.usernameCreator}`}>
           <span className="card__nickname text-color">

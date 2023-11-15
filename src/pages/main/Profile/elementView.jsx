@@ -22,13 +22,13 @@ import scssIcon from "../../../assets/images/scss.svg";
 import tailwindIcon from "../../../assets/images/tailwind.svg";
 import CategoryView from "./categoryView";
 function ElementView() {
-  const { username } = useParams();
+  const { accountID } = useParams();
   const { search, objectToQueryString, pathname } = useParseUrl();
-  const { isLogin, profileRes } = useIsLogin();
+  const { isLogin } = useIsLogin();
   const { elements, totalElements } = useSelector((state) => state.element);
   const filteredElements = useMemo(() => {
-    return elements.filter((element) => element.usernameCreator === username);
-  }, [elements, username]);
+    return elements.filter((element) => element.accountID === accountID);
+  }, [elements, accountID]);
   const { randomizedArray } = useTimeBasedRandom(filteredElements);
   const renderElements = useMemo(() => {
     return randomizedArray
@@ -112,7 +112,7 @@ function ElementView() {
                 <img className="tag-icon" src={timeLineGreen} alt="" />
                 Public
               </Link>
-              {isLogin && profileRes.username === username && (
+              {isLogin && isLogin.id === accountID && (
                 <>
                   <Link
                     className={`${styles.timeLineGreen} ${isActive(
@@ -212,7 +212,7 @@ function ElementView() {
               button and introduce yourself to the rest of the galaxy.
             </h3>
             <p className="paragraph" />
-            {isLogin && profileRes.username === username && (
+            {isLogin && isLogin.id === accountID && (
               <AppButton
                 children="Create"
                 btnType="button_1"

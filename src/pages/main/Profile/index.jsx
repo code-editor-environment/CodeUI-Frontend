@@ -13,9 +13,9 @@ import ElementView from "./elementView";
 // import styles from "./profile.module.scss";
 // import Element from './../Element/index';
 function Profile() {
-  const { username } = useParams();
+  const { accountID } = useParams();
   const dispatch = useDispatch();
-  const { isLogin, profileRes } = useIsLogin();
+  const { isLogin } = useIsLogin();
   const { profiles } = useSelector((state) => state.profile);
   // const [postReview, setPostReview] = useState([]);
   const [follow, setFollow] = useState(false);
@@ -24,10 +24,11 @@ function Profile() {
     () => {
       window.scrollTo({ top: 0 });
       // setLoading(true);
-      getProfiles(username).then((data) => {
+      getProfiles(accountID).then((data) => {
         if (data.error) {
           console.log(data.error);
         } else {
+          console.log(data.data);
           dispatch(getProfile(data.data));
           setFollow(data.data.isFollow);
         }
@@ -49,7 +50,7 @@ function Profile() {
       // });
     },
     // eslint-disable-next-line
-    [username]
+    [accountID]
   );
   const onUpdateProfileModal = () => {
     dispatch(open(<UpdateProfileModal />));
@@ -61,7 +62,7 @@ function Profile() {
       const onFollow =() => {
         setFollow(!follow);
       const timeout = setTimeout(() => {
-        postFollowCreator(username);
+        postFollowCreator(profiles.username);
       }, 1000);
       return () => clearTimeout(timeout);
     }
@@ -156,7 +157,7 @@ function Profile() {
               </aside>
             </div>
             {isLogin &&
-              (profileRes.username === username ? (
+              (isLogin.id === accountID ? (
                 <div className="buttons">
                   <AppButton
                     children="Edit profile"

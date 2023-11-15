@@ -9,6 +9,7 @@ import useTimeBasedRandom from "../../core/useTimeBasedRandom";
 function Cards() {
   const { search } = useParseUrl();
   const { elements, totalElements } = useSelector((state) => state.element);
+  const { fav } = useSelector((state) => state.profile);
   const filteredElements = useMemo(() => {
     return elements;
   }, [elements]);
@@ -19,7 +20,9 @@ function Cards() {
         return (
           post.status === "APPROVED" &&
           (search.category && search.category !== "all"
-            ? post.category === search.category
+            ? search.category === "favorites"
+              ? fav.includes(post.id)
+              : post.category === search.category
             : true) &&
           (search.creator
             ? post.usernameCreator.includes(search.creator)
@@ -34,7 +37,7 @@ function Cards() {
           ? new Date(a.createDate) - new Date(b.createDate)
           : true;
       });
-  }, [randomizedArray, search]);
+  }, [randomizedArray, search, fav]);
   return elements?.length === 0 ? (
     <SkeletonElement total={10} />
   ) : (

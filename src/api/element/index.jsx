@@ -88,3 +88,14 @@ export const deleteElement = handleApi(async (id) => {
   const result = await NET().delete(`/element/deleteElement?id=${id}`);
   return result.data;
 });
+
+export const reportElement = handleApi(async (data) => {
+  const result = await NET().post(
+    `/report/createElementReport?elementId=${data.id}&reason=${data.reason}`,
+    {
+      reportContent: "string",
+      reportImages: [],
+    }
+  );
+  return result.data;
+});

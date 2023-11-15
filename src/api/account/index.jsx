@@ -1,8 +1,10 @@
 import { NET } from "../../utils/define";
 import { handleApi } from "../../utils/helper";
 
-export const getProfiles = handleApi(async (username) => {
-  const result = await NET().get(`/profile/getByUsername?username=${username}`);
+export const getProfiles = handleApi(async (accountID) => {
+  const result = await NET().get(
+    `/profile/getByAccountId?accountId=${accountID}`
+  );
   return result.data;
 });
 

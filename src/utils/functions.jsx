@@ -52,7 +52,7 @@ const cloneObjectWithChildPropertyValues = (obj) => {
   return clonedObj;
 };
 
-function formatDateString(isoString) {
+function formatDateString(isoString, type) {
   const months = [
     "January",
     "February",
@@ -67,14 +67,20 @@ function formatDateString(isoString) {
     "November",
     "December",
   ];
-
   const date = new Date(isoString);
-  const day = date.getUTCDate();
-  const month = months[date.getUTCMonth()];
-  const hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes().toString().padStart(2, "0");
-
-  return `${day}. ${month} at ${hours}:${minutes}`;
+  if (type === "nt") {
+    const day = date.getUTCDate();
+    const month = months[date.getUTCMonth()];
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+    return `${day}. ${month} at ${hours}:${minutes}`;
+  } else {
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${day}. ${month} at ${hours}:${minutes}`;
+  }
 }
 export {
   separateCountryCodeAndPhoneNumber,

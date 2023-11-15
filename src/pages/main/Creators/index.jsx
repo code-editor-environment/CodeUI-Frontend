@@ -35,7 +35,7 @@ function Creators() {
           <>
             {topCreator.map((user, index) => (
               <Link
-                to={`/profile/${user.username}`}
+                to={`/profile/${user.id}`}
                 className="creator"
                 key={index}
               >
@@ -48,7 +48,10 @@ function Creators() {
                 <span className="username" style={{ maxWidth: "100%" }}>
                   {user.username}
                 </span>
-                <Link to={`/profile/${user.login}`} className="number-of-posts">
+                <Link
+                  to={`/profile/${user.id}`}
+                  className="number-of-posts"
+                >
                   <div className="points-tag">
                     <img src={points} alt="" /> <span>100</span>
                   </div>
