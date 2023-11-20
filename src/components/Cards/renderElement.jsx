@@ -5,6 +5,7 @@ import tailwindIcon from "../../assets/images/tailwind.svg";
 // import { getStorage, setStorage } from "../../utils/helper";
 import { useDispatch, useSelector } from "react-redux";
 import { postFav, deleteFav } from "../../store/profile/profile-slice";
+import { saveFavorite } from "../../api/element";
 const RenderElement = ({ post, search }) => {
   const { isLogin } = useIsLogin();
   const dispatch = useDispatch();
@@ -15,8 +16,10 @@ const RenderElement = ({ post, search }) => {
     const timeout = setTimeout(() => {
       if (checkFavorite) {
         dispatch(deleteFav(post.id));
+        saveFavorite({ accountId: isLogin.id, postId:post.id });
       } else {
         dispatch(postFav(post.id));
+        saveFavorite({ accountId: isLogin.id, postId: post.id });
       }
     }, 1000);
     return () => clearTimeout(timeout);
@@ -93,7 +96,7 @@ const RenderElement = ({ post, search }) => {
         </button>
       )}
       <div className="card__footer">
-        <Link to={`/profile/${post.usernameCreator}`}>
+        <Link to={`/profile/${post.accountID}`}>
           <span className="card__nickname text-color">
             {post.usernameCreator}
           </span>

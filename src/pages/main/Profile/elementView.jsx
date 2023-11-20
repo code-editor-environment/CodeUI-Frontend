@@ -18,7 +18,7 @@ import Randomized from "../Element/randomized";
 import { useSelector } from "react-redux";
 import useTimeBasedRandom from "../../../core/useTimeBasedRandom";
 import cssIcon from "../../../assets/images/css.svg";
-import scssIcon from "../../../assets/images/scss.svg";
+// import scssIcon from "../../../assets/images/scss.svg";
 import tailwindIcon from "../../../assets/images/tailwind.svg";
 import CategoryView from "./categoryView";
 function ElementView() {
@@ -86,11 +86,11 @@ function ElementView() {
       icon: <img src={cssIcon} alt="cssIcon" style={{ width: "27px" }} />,
       url: "css",
     },
-    {
-      name: "SCSS",
-      icon: <img src={scssIcon} alt="scssIcon" style={{ width: "22px" }} />,
-      url: "scss",
-    },
+    // {
+    //   name: "SCSS",
+    //   icon: <img src={scssIcon} alt="scssIcon" style={{ width: "22px" }} />,
+    //   url: "scss",
+    // },
   ];
   const isActive = (path) => {
     if (search?.element === path) return styles.active;

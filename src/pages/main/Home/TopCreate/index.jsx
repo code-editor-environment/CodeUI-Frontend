@@ -16,7 +16,7 @@ function TopCreate({ topCreator }) {
         {topCreator.length > 0 ? (
           topCreator.map((user, index) => (
             <Link
-              to={`/profile/${user.username}`}
+              to={`/profile/${user.id}`}
               className="creator"
               key={index}
             >

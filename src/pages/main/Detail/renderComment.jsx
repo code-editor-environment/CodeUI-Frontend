@@ -18,7 +18,7 @@ function RenderComment({ comment, onDelete, index }) {
       >
         <div>
           <div className="flex mb-3 items-center">
-            <Link to={`/profile/${comment.account.username}`}>
+            <Link to={`/profile/${comment.account.id}`}>
               <img
                 src={comment.account.profile.imageUrl}
                 alt=""
@@ -28,7 +28,7 @@ function RenderComment({ comment, onDelete, index }) {
             <div className="flex flex-col items-start">
               <Link
                 className="block"
-                to={`/profile/${comment.account.username}`}
+                to={`/profile/${comment.account.id}`}
               >
                 <div className="font-bold text-gray-200 text-base leading-2 flex items-center gap-2">
                   {comment.account.username}

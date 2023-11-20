@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { formatDateString } from "../../../utils/functions";
 import { useDispatch } from "react-redux";
 import { checkElements } from "../../../store/element/elements-slice";
+import timeLineRed from "../../../assets/images/time-line-red.svg";
 function Notification() {
   const dispatch = useDispatch();
   const { isLogin } = useIsLogin();
@@ -103,6 +104,31 @@ function Notification() {
                 <b className="text-blue-400"> {item.title} </b>
               </Link>
               has been approved!
+            </p>
+            <span className="flex items-center text-sm font-normal text-gray-400">
+              {formatDateString(item.date, "nt")}
+            </span>
+          </div>
+        </li>
+      ),
+      REJECTED: (
+        <li className="pl-3 gap-3 w-full inline-flex bg-dark-600 false">
+          <div className="flex-[0_0_40px] mt-1 items-start justify-center min-w-0 pt-2 pb-2">
+            <div className="text-blue-800 bg-gray-600 rounded-lg w-[40px] h-[40px] flex items-center justify-center blue">
+              <img className="tag-icon" src={timeLineRed} alt="" />
+            </div>
+          </div>
+          <div className=" font-semibold min-w-0 pr-3 pt-3 pb-3">
+            <p className="text-base font-semibold">
+              Your Element on a
+              <Link
+                className="underline underline-offset-2"
+                to={`/detail/${item.id}?status=rejected`}
+                onClick={() => setIsActive(!isActive)}
+              >
+                <b className="text-red-400"> {item.title} </b>
+              </Link>
+              has been rejected!
             </p>
             <span className="flex items-center text-sm font-normal text-gray-400">
               {formatDateString(item.date, "nt")}

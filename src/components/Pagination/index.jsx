@@ -3,7 +3,7 @@ import styles from "./pagination.module.scss";
 import { useParseUrl } from "../../hooks/useParseUrl";
 function Pagination({ value, range }) {
   const navigate = useNavigate();
-  const { search, objectToQueryString } = useParseUrl();
+  const { objectToQueryString } = useParseUrl();
   const { pathname } = useLocation();
   let pattern = null;
   switch (true) {

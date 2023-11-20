@@ -53,7 +53,7 @@ function RepComment({
               >
                 <div>
                   <div className="flex mb-3 items-center">
-                    <Link to={`/profile/${inverseComment.account.username}`}>
+                    <Link to={`/profile/${inverseComment.account.id}`}>
                       <img
                         src={inverseComment.account.profile.imageUrl}
                         alt=""
@@ -63,7 +63,7 @@ function RepComment({
                     <div className="flex flex-col items-start">
                       <Link
                         className="block"
-                        to={`/profile/${inverseComment.account.username}`}
+                        to={`/profile/${inverseComment.account.id}`}
                       >
                         <div className="font-bold text-gray-200 text-base leading-2 flex items-center gap-2">
                           {inverseComment.account.username}

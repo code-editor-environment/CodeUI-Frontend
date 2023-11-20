@@ -1,11 +1,6 @@
 import { useState } from "react";
 import Editor from "@monaco-editor/react";
-import {
-  doc,
-  getDoc,
-  deleteDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { useIsHidden } from "../../../hooks/useIsHidden";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -30,10 +25,12 @@ import AppButton from "../../../components/Button";
 import Comment from "./comment";
 import timeLineYellow from "../../../assets/images/time-line-yellow.svg";
 import timeLineRed from "../../../assets/images/time-line-red.svg";
+import timeLineBlue from "../../../assets/images/time-line-blue.svg";
 import {
   pushElements,
   deleteElements,
 } from "../../../store/element/elements-slice";
+import { deleteFav, postFav } from "../../../store/profile/profile-slice";
 // import { fetchElements } from "../../../store/element/elements-slice";
 // import Console from "./console";
 // import styles from "./detail.module.scss";
@@ -58,6 +55,7 @@ function Detail() {
   const [changeEditor, setChangeEditor] = useState(false);
   const [color, setColor] = useState("#e8e8e8");
   const { settingEditor } = useSelector((state) => state.profile);
+  // const { fav } = useSelector((state) => state.profile);
   const fetchPost = async () => {
     await getDoc(doc(db, `elements`, postId)).then((querySnapshot) => {
       setElementById(querySnapshot.data());
@@ -110,7 +108,13 @@ function Detail() {
   const onFavorite = () => {
     setFindFavorite(!findFavorite);
     const timeout = setTimeout(() => {
-      saveFavorite({ accountId: isLogin.id, postId });
+      if (findFavorite) {
+        dispatch(deleteFav(postId));
+        saveFavorite({ accountId: isLogin.id, postId });
+      } else {
+        dispatch(postFav(postId));
+        saveFavorite({ accountId: isLogin.id, postId });
+      }
     }, 1000);
     return () => clearTimeout(timeout);
   };
@@ -152,16 +156,16 @@ function Detail() {
       status: status,
       theme: elementById.theme,
     });
-        const updatedDoc = await getDoc(elementRef);
-        if (updatedDoc.exists()) {
-          const dataUpdated = {
-            id: postId.toString(),
-            ...updatedDoc.data(),
-          };
-          dispatch(pushElements(dataUpdated));
-        } else {
-          throw new Error("Document not found");
-        }
+    const updatedDoc = await getDoc(elementRef);
+    if (updatedDoc.exists()) {
+      const dataUpdated = {
+        id: postId.toString(),
+        ...updatedDoc.data(),
+      };
+      dispatch(pushElements(dataUpdated));
+    } else {
+      throw new Error("Document not found");
+    }
   };
   useEffect(
     () => {
@@ -253,6 +257,13 @@ function Detail() {
                     guidelines
                   </Link>{" "}
                   and see if it can be improved.
+                </span>
+              </>
+            ) : search?.status === "draft" ? (
+              <>
+                <img className="tag-icon" src={timeLineBlue} alt="" />
+                <span className="text-blue-400">
+                  This post is saved as a draft.
                 </span>
               </>
             ) : (
@@ -415,25 +426,29 @@ function Detail() {
                       className="add-to-favorites"
                       onClick={onFavorite}
                     >
-                      <div className="mr-2">
+                      <div
+                        className={`flex gap-1.5 items-center mr-2 ${
+                          findFavorite && " text-yellow-400"
+                        }`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          className="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                        >
+                          <path d="M5 9c0-1.861 0-2.792.245-3.545a5 5 0 0 1 3.21-3.21C9.208 2 10.139 2 12 2s2.792 0 3.545.245a5 5 0 0 1 3.21 3.21C19 6.208 19 7.139 19 9v13l-1.794-1.537c-1.848-1.584-2.771-2.376-3.808-2.678a5 5 0 0 0-2.796 0c-1.037.302-1.96 1.094-3.808 2.678L5 22V9Z" />
+                        </svg>
                         {findFavorite
                           ? element?.favorites + 1
                           : element?.favorites}
                       </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        height={24}
-                      >
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path
-                          fill="currentColor"
-                          d="M5 2h14a1 1 0 0 1 1 1v19.143a.5.5 0 0 1-.766.424L12 18.03l-7.234 4.536A.5.5 0 0 1 4 22.143V3a1 1 0 0 1 1-1zm13 2H6v15.432l6-3.761 6 3.761V4z"
-                        />
-                      </svg>{" "}
                       <span>
-                        {findFavorite ? "Delete" : "Add"} to favorites
+                        {findFavorite ? "Remove from" : "Save to"} favorites
                       </span>
                     </button>
                     <button
