@@ -74,7 +74,7 @@ const RenderElement = ({ post, search }) => {
           height="100%"
         />
       </div>
-      {isLogin && (
+      {/* {isLogin && (
         <button
           type="submit"
           className="card__bookmark false"
@@ -94,7 +94,7 @@ const RenderElement = ({ post, search }) => {
           </svg>{" "}
           <span>{checkFavorite ? "UnSave" : "Save"}</span>
         </button>
-      )}
+      )} */}
       <div className="card__footer">
         <Link to={`/profile/${post.accountID}`}>
           <span className="card__nickname text-color">

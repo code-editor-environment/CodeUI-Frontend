@@ -25,7 +25,7 @@ import {
   defaultSpinnerCSS,
   defaultSwitchCSS,
 } from "./defaultCSS";
-import { open, postElementID } from "../../../store/modal/modal-slice";
+import { close, open, postElementID } from "../../../store/modal/modal-slice";
 import { db } from "../../../configs/firebase.configs";
 import { toast } from "react-toastify";
 import EditorHeader from "../Detail/editorHeader";
@@ -34,11 +34,12 @@ import { putElement } from "../../../api/element";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import BackgroundColor from "./backgroundColor";
 import { pushElements } from "../../../store/element/elements-slice";
+import SelectTagModal from "../../../components/Modal/selectTagModal";
 // import { fetchElements } from "../../../store/element/elements-slice";
 function Create() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { profileRes } = useIsLogin();
+  const { isLogin } = useIsLogin();
   const { hidden, handleClick } = useIsHidden();
   const [cssText, setCssText] = useState("");
   const [htmlText, setHtmlText] = useState("");
@@ -104,23 +105,30 @@ function Create() {
       enabled: settingEditor?.miniMap === "enabled" ? true : false,
     },
   };
-  const clickSubmitReview = () => {
-    clickSubmitDraft("PENDING");
+  const clickSubmitReview = (selectedTags, option, linkSource, nameSource) => {
+    clickSubmitDraft("PENDING", selectedTags, option, linkSource, nameSource);
     putElement(elementID).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
-        navigate(`/profile/${profileRes.username}?element=pending`);
+        navigate(`/profile/${isLogin.id}?element=pending`);
         toast.success("successfully!", {
           position: "top-center",
           autoClose: 2000,
           theme: "dark",
         });
         dispatch(postElementID(null));
+        dispatch(close());
       }
     });
   };
-  const clickSubmitDraft = async (status) => {
+  const clickSubmitDraft = async (
+    status,
+    selectedTags,
+    option,
+    linkSource,
+    nameSource
+  ) => {
     const elementRef = doc(db, "elements", elementID.toString());
     await updateDoc(elementRef, {
       background: color,
@@ -128,6 +136,12 @@ function Create() {
       html: htmlText,
       status: status,
       theme: theme,
+      tags: selectedTags || [],
+      source: {
+        name: option || "original",
+        url: linkSource || "",
+        author: nameSource || "",
+      },
     });
     const updatedDoc = await getDoc(elementRef);
     if (updatedDoc.exists()) {
@@ -135,7 +149,7 @@ function Create() {
         id: elementID.toString(),
         ...updatedDoc.data(),
       };
-    dispatch(pushElements(dataUpdated));
+      dispatch(pushElements(dataUpdated));
     } else {
       throw new Error("Document not found");
     }
@@ -277,7 +291,7 @@ function Create() {
                   clickSubmitDraft("DRAFT");
                   // fetchPost();
                   // dispatch(fetchElements());
-                  navigate(`/profile/${profileRes.username}?element=draft`);
+                  navigate(`/profile/${isLogin.id}?element=draft`);
                   toast.success("successfully!", {
                     position: "top-center",
                     autoClose: 2000,
@@ -303,7 +317,18 @@ function Create() {
                     />
                   </svg>
                 }
-                onClick={() => clickSubmitReview()}
+                onClick={() =>
+                  dispatch(
+                    open(
+                      <SelectTagModal
+                        cssText={cssText}
+                        typeCSS={typeCSS}
+                        htmlText={htmlText}
+                        clickSubmitReview={clickSubmitReview}
+                      />
+                    )
+                  )
+                }
               />
             </div>
           </div>

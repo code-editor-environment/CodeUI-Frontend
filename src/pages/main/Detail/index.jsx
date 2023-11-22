@@ -31,6 +31,8 @@ import {
   deleteElements,
 } from "../../../store/element/elements-slice";
 import { deleteFav, postFav } from "../../../store/profile/profile-slice";
+import { close, open } from "../../../store/modal/modal-slice";
+import SelectTagModal from "../../../components/Modal/selectTagModal";
 // import { fetchElements } from "../../../store/element/elements-slice";
 // import Console from "./console";
 // import styles from "./detail.module.scss";
@@ -42,7 +44,7 @@ function Detail() {
   const { isActive, setIsActive, nodeRef, triggerRef } =
     useDetectOutsideClick(false);
   // const { elementById } = useSelector((state) => state.element);
-  const { isLogin, profileRes } = useIsLogin();
+  const { isLogin } = useIsLogin();
   const { hidden, handleClick } = useIsHidden();
   // const [check, setCheck] = useState(false);
   const [convert, setConvert] = useState(false);
@@ -91,7 +93,7 @@ function Detail() {
         console.log(data.error);
       } else {
         dispatch(deleteElements(postId));
-        navigate(`/profile/${profileRes.username}`);
+        navigate(`/profile/${isLogin.id}`);
         toast.success("successfully!", {
           position: "top-center",
           autoClose: 2000,
@@ -132,22 +134,29 @@ function Detail() {
     },
   };
 
-  const clickSubmitReview = () => {
-    clickSubmitDraft("PENDING");
+  const clickSubmitReview = (selectedTags, option, linkSource, nameSource) => {
+    clickSubmitDraft("PENDING", selectedTags, option, linkSource, nameSource);
     putElement(postId).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
-        navigate(`/profile/${profileRes.username}?element=pending`);
+        navigate(`/profile/${isLogin.id}?element=pending`);
         toast.success("successfully!", {
           position: "top-center",
           autoClose: 2000,
           theme: "dark",
         });
+        dispatch(close());
       }
     });
   };
-  const clickSubmitDraft = async (status) => {
+  const clickSubmitDraft = async (
+    status,
+    selectedTags,
+    option,
+    linkSource,
+    nameSource
+  ) => {
     const elementRef = doc(db, "elements", postId.toString());
     await updateDoc(elementRef, {
       background: color,
@@ -155,6 +164,12 @@ function Detail() {
       html: htmlText === "" ? elementById.html : htmlText,
       status: status,
       theme: elementById.theme,
+      tags: selectedTags || [],
+      source: {
+        name: option || "original",
+        url: linkSource || "",
+        author: nameSource || "",
+      },
     });
     const updatedDoc = await getDoc(elementRef);
     if (updatedDoc.exists()) {
@@ -413,6 +428,17 @@ function Detail() {
                     ? `${elementById.theme === "dark" ? "#e8e8e8" : "#212121"}`
                     : `${elementById.theme !== "dark" ? "#e8e8e8" : "#212121"}`}
                 </span>
+                {elementById.source.name !== "original" && (
+                  <label
+                    className="theme-switcher"
+                    style={{ left: "15px", top: "auto", bottom: "20px" }}
+                  >
+                    REPOST FROM:{" "}
+                    <Link to={elementById.source.url} target="_blank">
+                      Link
+                    </Link>
+                  </label>
+                )}
               </div>
             </div>
           </div>
@@ -502,7 +528,7 @@ function Detail() {
                 </span> */}
               </div>
             </div>
-            {elementById.usernameCreator === profileRes?.username && (
+            {elementById.accountID === isLogin?.id && (
               <div className="controls">
                 <div className="user-controls">
                   <div className="errors" />
@@ -556,6 +582,7 @@ function Detail() {
                         </>
                       ) : (
                         <>
+                        
                           <AppButton
                             children="Save as a draft"
                             btnType="button_2"
@@ -575,9 +602,7 @@ function Detail() {
                             }
                             onClick={() => {
                               clickSubmitDraft("DRAFT");
-                              navigate(
-                                `/profile/${profileRes.username}?element=draft`
-                              );
+                              navigate(`/profile/${isLogin.id}?element=draft`);
                               toast.success("successfully!", {
                                 position: "top-center",
                                 autoClose: 2000,
@@ -602,7 +627,24 @@ function Detail() {
                                 />
                               </svg>
                             }
-                            onClick={() => clickSubmitReview()}
+                            onClick={() =>
+                              dispatch(
+                                open(
+                                  <SelectTagModal
+                                    cssText={
+                                      cssText === "" ? elementById.css : cssText
+                                    }
+                                    typeCSS={elementById?.typeCSS}
+                                    htmlText={
+                                      htmlText === ""
+                                        ? elementById.html
+                                        : htmlText
+                                    }
+                                    clickSubmitReview={clickSubmitReview}
+                                  />
+                                )
+                              )
+                            }
                           />
                         </>
                       )
@@ -653,7 +695,13 @@ function Detail() {
               </div>
             )}
           </div>
-          {!search?.status && <Comment postId={postId} element={element} />}
+          {!search?.status && (
+            <Comment
+              postId={postId}
+              element={element}
+              elementById={elementById}
+            />
+          )}
         </>
       )}
     </main>

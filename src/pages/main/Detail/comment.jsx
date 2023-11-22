@@ -12,7 +12,7 @@ import { open } from "../../../store/modal/modal-slice";
 import ReportPostModal from "../../../components/Modal/reportPostModal";
 // import styles from "./detail.module.scss";
 
-function Comment({ postId, element }) {
+function Comment({ postId, element, elementById }) {
   const dispatch = useDispatch();
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
@@ -110,9 +110,7 @@ function Comment({ postId, element }) {
                 ))}
             </div>
           </section>
-          <div
-            className="relative h-[200px] flex items-center justify-center cursor-pointer false w-full border-2 border-gray-600 bg-transparent border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
+          <div className="relative h-[200px] flex items-center justify-center cursor-pointer false w-full border-2 border-gray-600 bg-transparent border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             <span className="flex items-center gap-3 mt-2 font-sans font-semibold text-gray-600 text-md">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -140,10 +138,9 @@ function Comment({ postId, element }) {
             className="flex flex-wrap gap-y-0 gap-x-2 text-gray-400 max-w-[300px]"
             style={{ color: "rgb(232, 232, 232)" }}
           >
-            <span>#switch</span>
-            <span>#dark</span>
-            <span>#theme</span>
-            <span>#light</span>
+            {elementById.tags.map((tag, index) => (
+              <span key={index}>#{tag}</span>
+            ))}
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3 mt-4">
             <div className="flex items-center gap-3 font-normal text-gray-400">
