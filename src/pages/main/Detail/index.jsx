@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Editor from "@monaco-editor/react";
-import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { useIsHidden } from "../../../hooks/useIsHidden";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -16,6 +16,7 @@ import {
   like,
   putElement,
   deleteElement,
+  createElement,
 } from "../../../api/element";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 import EditorHeader from "./editorHeader";
@@ -29,13 +30,14 @@ import timeLineBlue from "../../../assets/images/time-line-blue.svg";
 import {
   pushElements,
   deleteElements,
+  getDataVariation,
 } from "../../../store/element/elements-slice";
 import { deleteFav, postFav } from "../../../store/profile/profile-slice";
 import { close, open } from "../../../store/modal/modal-slice";
 import SelectTagModal from "../../../components/Modal/selectTagModal";
 // import { fetchElements } from "../../../store/element/elements-slice";
 // import Console from "./console";
-// import styles from "./detail.module.scss";
+import styles from "./detail.module.scss";
 function Detail() {
   const { postId } = useParams();
   const { search } = useParseUrl();
@@ -44,7 +46,7 @@ function Detail() {
   const { isActive, setIsActive, nodeRef, triggerRef } =
     useDetectOutsideClick(false);
   // const { elementById } = useSelector((state) => state.element);
-  const { isLogin } = useIsLogin();
+  const { isLogin, profileRes } = useIsLogin();
   const { hidden, handleClick } = useIsHidden();
   // const [check, setCheck] = useState(false);
   const [convert, setConvert] = useState(false);
@@ -103,10 +105,10 @@ function Detail() {
       }
     });
   };
-  const onUpdatePost = () => {
-    // dispatch();
-    // updatePost(postId, elementById, htmlText, cssText, hidden, navigate)
-  };
+  // const onUpdatePost = () => {
+  //   // dispatch();
+  //   // updatePost(postId, elementById, htmlText, cssText, hidden, navigate)
+  // };
   const onFavorite = () => {
     setFindFavorite(!findFavorite);
     const timeout = setTimeout(() => {
@@ -158,19 +160,28 @@ function Detail() {
     nameSource
   ) => {
     const elementRef = doc(db, "elements", postId.toString());
-    await updateDoc(elementRef, {
-      background: color,
-      css: cssText === "" ? elementById.css : cssText,
-      html: htmlText === "" ? elementById.html : htmlText,
-      status: status,
-      theme: elementById.theme,
-      tags: selectedTags || [],
-      source: {
-        name: option || "original",
-        url: linkSource || "",
-        author: nameSource || "",
-      },
-    });
+    const dataUpdate = selectedTags
+      ? {
+          background: color,
+          css: cssText === "" ? elementById.css : cssText,
+          html: htmlText === "" ? elementById.html : htmlText,
+          status: status,
+          theme: elementById.theme,
+          tags: selectedTags || [],
+          source: {
+            name: option,
+            url: linkSource,
+            author: nameSource,
+          },
+        }
+      : {
+          background: color,
+          css: cssText === "" ? elementById.css : cssText,
+          html: htmlText === "" ? elementById.html : htmlText,
+          status: status,
+          theme: elementById.theme,
+        };
+    await updateDoc(elementRef, dataUpdate);
     const updatedDoc = await getDoc(elementRef);
     if (updatedDoc.exists()) {
       const dataUpdated = {
@@ -191,6 +202,62 @@ function Detail() {
     }, // eslint-disable-next-line
     [htmlText, cssText, color]
   );
+  const NewVariation = () => {
+    createElement({
+      title: elementById.category,
+      description: elementById.category,
+      categoryName: elementById.category,
+    }).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        const currentDate = new Date();
+        const dataVariation = {
+          id: data.data.id.toString(),
+          accountID: isLogin.id,
+          background: elementById.background,
+          category: elementById.category,
+          createDate: currentDate.toISOString(),
+          css: elementById.css,
+          html: elementById.html,
+          status: "DRAFT",
+          subscription: "normal",
+          theme: "dark",
+          typeCSS: elementById.typeCSS,
+          usernameCreator: profileRes.username,
+          tags: elementById.tags,
+          source: {
+            name: "modified",
+            url: `https://codeui.vercel.app/detail/${postId}`,
+            author: elementById.usernameCreator,
+          },
+        };
+        navigate(`/create?status=variation`);
+        // dispatch(postElementID(data.data.id));
+        setDoc(doc(db, "elements", data.data.id.toString()), {
+          accountID: isLogin.id,
+          background: elementById.background,
+          category: elementById.category,
+          createDate: currentDate.toISOString(),
+          css: elementById.css,
+          html: elementById.html,
+          status: "DRAFT",
+          subscription: "normal",
+          theme: "dark",
+          typeCSS: elementById.typeCSS,
+          usernameCreator: profileRes.username,
+          tags: elementById.tags,
+          source: {
+            name: "modified",
+            url: `https://codeui.vercel.app/detail/${postId}`,
+            author: elementById.usernameCreator,
+          },
+        });
+        dispatch(getDataVariation(dataVariation));
+        dispatch(pushElements(dataVariation));
+      }
+    });
+  };
   const LikeIcons = ({ color, cover }) => {
     return (
       <svg
@@ -528,6 +595,58 @@ function Detail() {
                 </span> */}
               </div>
             </div>
+            {elementById.accountID !== isLogin?.id && (
+              <div className={`${styles.point} flex items-stretch gap-2`}>
+                <div
+                  className={`px-4 py-2.5 font-sans flex items-center gap-2 border-none rounded-lg text-sm  font-semibold transition-colors duration-200 bg-transparent hover:bg-dark-600 max-md:bg-dark-600 text-offwhite cursor-pointer max-md:hidden whitespace-nowrap`}
+                  onClick={() => NewVariation()}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                  >
+                    <path d="M16.902 16.902c.235-.035.445-.082.643-.147a5 5 0 0 0 3.21-3.21C21 12.792 21 11.861 21 10s0-2.792-.245-3.545a5 5 0 0 0-3.21-3.21C16.792 3 15.861 3 14 3s-2.792 0-3.545.245a5 5 0 0 0-3.21 3.21 3.921 3.921 0 0 0-.147.643m9.804 9.804C17 16.239 17 15.372 17 14c0-1.861 0-2.792-.245-3.545a5 5 0 0 0-3.21-3.21C12.792 7 11.861 7 10 7c-1.373 0-2.24 0-2.902.098m9.804 9.804a3.923 3.923 0 0 1-.147.643 5 5 0 0 1-3.21 3.21C12.792 21 11.861 21 10 21s-2.792 0-3.545-.245a5 5 0 0 1-3.21-3.21C3 16.792 3 15.861 3 14s0-2.792.245-3.545a5 5 0 0 1 3.21-3.21c.198-.065.407-.112.643-.147" />
+                  </svg>
+                  New variation
+                </div>
+                <div
+                  className={`${styles.info} styles-module_tooltip__mnnfp styles-module_dark__xNqje points-tooltip shadow-lg bg-dark-600 styles-module_show__2NboJ styles-module_clickable__Bv9o7`}
+                  style={{ left: "-165px", top: "-200px" }}
+                >
+                  <span className="heading">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                    >
+                      <path d="M16.902 16.902c.235-.035.445-.082.643-.147a5 5 0 0 0 3.21-3.21C21 12.792 21 11.861 21 10s0-2.792-.245-3.545a5 5 0 0 0-3.21-3.21C16.792 3 15.861 3 14 3s-2.792 0-3.545.245a5 5 0 0 0-3.21 3.21 3.921 3.921 0 0 0-.147.643m9.804 9.804C17 16.239 17 15.372 17 14c0-1.861 0-2.792-.245-3.545a5 5 0 0 0-3.21-3.21C12.792 7 11.861 7 10 7c-1.373 0-2.24 0-2.902.098m9.804 9.804a3.923 3.923 0 0 1-.147.643 5 5 0 0 1-3.21 3.21C12.792 21 11.861 21 10 21s-2.792 0-3.545-.245a5 5 0 0 1-3.21-3.21C3 16.792 3 15.861 3 14s0-2.792.245-3.545a5 5 0 0 1 3.21-3.21c.198-.065.407-.112.643-.147" />
+                    </svg>
+                    New variation
+                  </span>
+                  <p className="font-normal text-gray-300">
+                    The text in the image reads: "Variations Add a variation to
+                    this post. Modify colors, icons, or style to add a unique
+                    touch. A variation should be similar to the original post
+                    but also different in some way.
+                  </p>
+                  <div
+                    className="react-tooltip-arrow styles-module_arrow__K0L3T"
+                    style={{ left: 171, bottom: "-4px" }}
+                  />
+                </div>
+              </div>
+            )}
             {elementById.accountID === isLogin?.id && (
               <div className="controls">
                 <div className="user-controls">
@@ -582,8 +701,7 @@ function Detail() {
                         </>
                       ) : (
                         <>
-                        
-                          <AppButton
+                          {/* <AppButton
                             children="Save as a draft"
                             btnType="button_2"
                             Icon={
@@ -609,7 +727,26 @@ function Detail() {
                                 theme: "dark",
                               });
                             }}
-                          />
+                          /> */}
+                          <button
+                            className="button button--notifications button--icon"
+                            onClick={onDeletePost}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              height={24}
+                              className="h-5 w-5"
+                            >
+                              <path fill="none" d="M0 0h24v24H0z" />
+                              <path
+                                fill="currentColor"
+                                d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z"
+                              />
+                            </svg>
+                            Delete
+                          </button>
                           <AppButton
                             children="Submit for review"
                             btnType="button_0"
@@ -641,6 +778,8 @@ function Detail() {
                                         : htmlText
                                     }
                                     clickSubmitReview={clickSubmitReview}
+                                    background={color}
+                                    elementById={elementById}
                                   />
                                 )
                               )
@@ -669,7 +808,7 @@ function Detail() {
                           </svg>
                           Delete
                         </button>
-                        <button
+                        {/* <button
                           className="button button--primary button--icon button--rotated"
                           onClick={onUpdatePost}
                         >
@@ -687,7 +826,46 @@ function Detail() {
                             />
                           </svg>
                           Update
-                        </button>
+                        </button> */}
+                        <AppButton
+                          children="Update"
+                          btnType="button_1"
+                          Icon={
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              height={24}
+                              className="h-5 w-5 false"
+                            >
+                              <path fill="none" d="M0 0h24v24H0z" />
+                              <path
+                                fill="currentColor"
+                                d="M5.463 4.433A9.961 9.961 0 0 1 12 2c5.523 0 10 4.477 10 10 0 2.136-.67 4.116-1.81 5.74L17 12h3A8 8 0 0 0 6.46 6.228l-.997-1.795zm13.074 15.134A9.961 9.961 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.136.67-4.116 1.81-5.74L7 12H4a8 8 0 0 0 13.54 5.772l.997 1.795z"
+                              />
+                            </svg>
+                          }
+                          onClick={() =>
+                            dispatch(
+                              open(
+                                <SelectTagModal
+                                  cssText={
+                                    cssText === "" ? elementById.css : cssText
+                                  }
+                                  typeCSS={elementById?.typeCSS}
+                                  htmlText={
+                                    htmlText === ""
+                                      ? elementById.html
+                                      : htmlText
+                                  }
+                                  clickSubmitReview={clickSubmitReview}
+                                  background={color}
+                                  elementById={elementById}
+                                />
+                              )
+                            )
+                          }
+                        />
                       </>
                     )}
                   </div>

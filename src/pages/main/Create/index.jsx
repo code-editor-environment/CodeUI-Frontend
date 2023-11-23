@@ -3,11 +3,7 @@ import Editor from "@monaco-editor/react";
 import { useIsHidden } from "../../../hooks/useIsHidden";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  doc,
-  updateDoc,
-  getDoc,
-} from "firebase/firestore";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 import PostStatusModal from "../../../components/Modal/postStatusModal";
 import {
   defaultButtonHTML,
@@ -33,13 +29,19 @@ import AppButton from "../../../components/Button";
 import { putElement } from "../../../api/element";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import BackgroundColor from "./backgroundColor";
-import { pushElements } from "../../../store/element/elements-slice";
+import {
+  getDataVariation,
+  pushElements,
+} from "../../../store/element/elements-slice";
 import SelectTagModal from "../../../components/Modal/selectTagModal";
+import { useParseUrl } from "../../../hooks/useParseUrl";
 // import { fetchElements } from "../../../store/element/elements-slice";
 function Create() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLogin } = useIsLogin();
+  const { search } = useParseUrl();
+  const { dataVariation } = useSelector((state) => state.element);
   const { hidden, handleClick } = useIsHidden();
   const [cssText, setCssText] = useState("");
   const [htmlText, setHtmlText] = useState("");
@@ -47,47 +49,53 @@ function Create() {
   // const [srcDoc, setSrcDoc] = useState("");
   const [theme, setTheme] = useState("dark");
   const [convert, setConvert] = useState(false);
-  const [color, setColor] = useState("#212121");
+  const [color, setColor] = useState(dataVariation?.background || "#212121");
   const { elementID, category, typeCSS } = useSelector((state) => state.modal);
   const { settingEditor } = useSelector((state) => state.profile);
+
   useEffect(
     () => {
-      dispatch(open(<PostStatusModal />));
+      search?.status !== "variation" && dispatch(open(<PostStatusModal />));
     },
     // eslint-disable-next-line
     []
   );
   useEffect(
     () => {
-      switch (category) {
-        case "button":
-          setHtmlText(defaultButtonHTML);
-          setCssText(defaultButtonCSS);
-          break;
-        case "switch":
-          setHtmlText(defaultSwitchHTML);
-          setCssText(defaultSwitchCSS);
-          break;
-        case "checkbox":
-          setHtmlText(defaultCheckboxHTML);
-          setCssText(defaultCheckboxCSS);
-          break;
-        case "card":
-          setHtmlText(defaultCardHTML);
-          setCssText(defaultCardCSS);
-          break;
-        case "spinner":
-          setHtmlText(defaultSpinnerHTML);
-          setCssText(defaultSpinnerCSS);
-          break;
-        case "input":
-          setHtmlText(defaultInputHTML);
-          setCssText(defaultInputCSS);
-          break;
-        default:
-          setHtmlText(defaultButtonHTML);
-          setCssText(defaultButtonCSS);
-          break;
+      if (search?.status !== "variation") {
+        switch (category) {
+          case "button":
+            setHtmlText(defaultButtonHTML);
+            setCssText(defaultButtonCSS);
+            break;
+          case "switch":
+            setHtmlText(defaultSwitchHTML);
+            setCssText(defaultSwitchCSS);
+            break;
+          case "checkbox":
+            setHtmlText(defaultCheckboxHTML);
+            setCssText(defaultCheckboxCSS);
+            break;
+          case "card":
+            setHtmlText(defaultCardHTML);
+            setCssText(defaultCardCSS);
+            break;
+          case "spinner":
+            setHtmlText(defaultSpinnerHTML);
+            setCssText(defaultSpinnerCSS);
+            break;
+          case "input":
+            setHtmlText(defaultInputHTML);
+            setCssText(defaultInputCSS);
+            break;
+          default:
+            setHtmlText(defaultButtonHTML);
+            setCssText(defaultButtonCSS);
+            break;
+        }
+      } else {
+        setHtmlText(dataVariation?.html);
+        setCssText(dataVariation?.css);
       }
     },
     // eslint-disable-next-line
@@ -107,7 +115,7 @@ function Create() {
   };
   const clickSubmitReview = (selectedTags, option, linkSource, nameSource) => {
     clickSubmitDraft("PENDING", selectedTags, option, linkSource, nameSource);
-    putElement(elementID).then((data) => {
+    putElement(dataVariation?.id || elementID).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
@@ -118,6 +126,7 @@ function Create() {
           theme: "dark",
         });
         dispatch(postElementID(null));
+        dispatch(getDataVariation(null));
         dispatch(close());
       }
     });
@@ -129,24 +138,37 @@ function Create() {
     linkSource,
     nameSource
   ) => {
-    const elementRef = doc(db, "elements", elementID.toString());
-    await updateDoc(elementRef, {
-      background: color,
-      css: cssText,
-      html: htmlText,
-      status: status,
-      theme: theme,
-      tags: selectedTags || [],
-      source: {
-        name: option || "original",
-        url: linkSource || "",
-        author: nameSource || "",
-      },
-    });
+    const elementRef = doc(
+      db,
+      "elements",
+      dataVariation?.id || elementID.toString()
+    );
+    const dataUpdate = selectedTags
+      ? {
+          background: color,
+          css: cssText,
+          html: htmlText,
+          status: status,
+          theme: theme,
+          tags: selectedTags,
+          source: {
+            name: option,
+            url: linkSource,
+            author: nameSource,
+          },
+        }
+      : {
+          background: color,
+          css: cssText,
+          html: htmlText,
+          status: status,
+          theme: theme,
+        };
+    await updateDoc(elementRef, dataUpdate);
     const updatedDoc = await getDoc(elementRef);
     if (updatedDoc.exists()) {
       const dataUpdated = {
-        id: elementID.toString(),
+        id: dataVariation?.id || elementID.toString(),
         ...updatedDoc.data(),
       };
       dispatch(pushElements(dataUpdated));
@@ -157,7 +179,11 @@ function Create() {
   useEffect(
     () => {
       const autoSave = setTimeout(() => {
-        elementID && clickSubmitDraft("DRAFT");
+        if (search?.status === "variation") {
+          dataVariation?.id  && clickSubmitDraft("DRAFT"); 
+        } else {
+          elementID && clickSubmitDraft("DRAFT");
+        }
       }, settingEditor?.autoSave || 3000);
       return () => clearTimeout(autoSave);
     }, // eslint-disable-next-line
@@ -171,7 +197,7 @@ function Create() {
           <EditorHeader
             changeEditor={changeEditor}
             setChangeEditor={setChangeEditor}
-            typeCSS={typeCSS}
+            typeCSS={dataVariation?.typeCSS || typeCSS}
             htmlText={htmlText}
             cssText={cssText}
             convert={convert}
@@ -223,7 +249,7 @@ function Create() {
         <head>
         <style>${cssText}</style>
         ${
-          typeCSS === "tailwind"
+          dataVariation?.typeCSS || typeCSS === "tailwind"
             ? `<script src="https://cdn.tailwindcss.com"></script>`
             : ""
         }
@@ -298,6 +324,7 @@ function Create() {
                     theme: "dark",
                   });
                   dispatch(postElementID(null));
+                  dispatch(getDataVariation(null));
                 }}
               />
               <AppButton
@@ -322,9 +349,10 @@ function Create() {
                     open(
                       <SelectTagModal
                         cssText={cssText}
-                        typeCSS={typeCSS}
+                        typeCSS={dataVariation?.typeCSS || typeCSS}
                         htmlText={htmlText}
                         clickSubmitReview={clickSubmitReview}
+                        background={color}
                       />
                     )
                   )

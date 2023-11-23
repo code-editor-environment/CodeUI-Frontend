@@ -1,6 +1,14 @@
 import { useState } from "react";
-
-function SelectTagModal({ cssText, typeCSS, htmlText, clickSubmitReview }) {
+import tailwindIcon from "../../assets/images/tailwind.svg";
+import { useSelector } from "react-redux";
+function SelectTagModal({
+  cssText,
+  typeCSS,
+  htmlText,
+  clickSubmitReview,
+  background,
+  elementById,
+}) {
   const tags = [
     "simple",
     "material design",
@@ -150,12 +158,21 @@ function SelectTagModal({ cssText, typeCSS, htmlText, clickSubmitReview }) {
     "2d button",
     "pattern",
   ];
+  const { dataVariation } = useSelector((state) => state.element);
   const [back, setBack] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [option, setOption] = useState("original");
-  const [linkSource, setLinkSource] = useState("");
-  const [nameSource, setNameSource] = useState("");
+  const [selectedTags, setSelectedTags] = useState(
+    elementById?.tags || dataVariation?.tags || []
+  );
+  const [option, setOption] = useState(
+    elementById?.source?.name || dataVariation?.source?.name || "original"
+  );
+  const [linkSource, setLinkSource] = useState(
+    elementById?.source?.url || dataVariation?.source?.url || ""
+  );
+  const [nameSource, setNameSource] = useState(
+    elementById?.source?.author || dataVariation?.source?.author || ""
+  );
   const [isLinkValid, setIsLinkValid] = useState(true);
   const handleOptionChange = (e) => {
     setOption(e.target.value);
@@ -201,7 +218,25 @@ function SelectTagModal({ cssText, typeCSS, htmlText, clickSubmitReview }) {
         <div className="flex justify-center">
           <div className="mb-10 w-[285px] pointer-events-none">
             <article className="card text-black h-full card--radio group false false">
-              <div className="card-content">
+              <div
+                className="card-content"
+                style={{ backgroundColor: background }}
+              >
+                {" "}
+                {typeCSS === "tailwind" && (
+                  <div className="absolute z-20 flex items-center left-1.5 top-[6px] gap-0.5">
+                    <div
+                      className="px-1 py-1"
+                      id="tailwind-9c4fefbd-a73e-4e67-bdef-14624cade3e3"
+                    >
+                      <img
+                        src={tailwindIcon}
+                        alt="htmlIcon"
+                        style={{ width: "24px" }}
+                      />
+                    </div>
+                  </div>
+                )}
                 <iframe
                   srcDoc={`
         <html style="height: 100%;overflow: hidden;">

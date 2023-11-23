@@ -7,6 +7,7 @@ const initialState = {
   totalElements: 0,
   loading: false,
   error: null,
+  dataVariation: null,
 };
 export const ElementSlice = createSlice({
   name: "element",
@@ -49,6 +50,9 @@ export const ElementSlice = createSlice({
     getElementById: (state, { payload }) => {
       state.elementById = payload;
     },
+    getDataVariation: (state, { payload }) => {
+      state.dataVariation = payload;
+    },
   },
 });
 
@@ -60,5 +64,6 @@ export const {
   getTotalElements,
   getElementById,
   checkElements,
+  getDataVariation,
 } = ElementSlice.actions;
 export default ElementSlice.reducer;

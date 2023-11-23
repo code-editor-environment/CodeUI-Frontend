@@ -228,6 +228,18 @@
     }
   }
 }
+.point {
+  position: relative;
+  .info {
+    display: none;
+  }
+  &:hover {
+    .info {
+      display: flex;
+    }
+  }
+}
+
 @media (min-width: 768px) {
   .commentContainer {
     grid-template-columns: 1fr auto;

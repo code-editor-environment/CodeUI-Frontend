@@ -109,7 +109,7 @@ function EditorHeader({
         check: elementById?.usernameCreator === profileRes?.username,
       },
       {
-        label: "Export .zip",
+        label: "Export zip",
         onClick: handleDownload,
       },
       {

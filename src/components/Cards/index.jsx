@@ -25,8 +25,16 @@ function Cards() {
               : post.category === search.category
             : true) &&
           (search.creator
-            ? post.usernameCreator.includes(search.creator)
+            ? post.usernameCreator.includes(search.creator) ||
+              post.tags.some((tag) =>
+                tag.toLowerCase().includes(search.creator.toLowerCase())
+              )
             : true) &&
+          // (search.creator
+          //   ? post.tags.some((tag) =>
+          //       tag.toLowerCase().includes(search.creator.toLowerCase())
+          //     )
+          //   : true) &&
           (search.c ? post.typeCSS === search.c : true)
         );
       })
