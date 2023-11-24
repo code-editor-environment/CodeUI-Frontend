@@ -27,7 +27,7 @@ function DropdownNav(props) {
         <ul>
           {props.item.map((item, index) => (
             <li key={index}>
-              <div className={styles.item} onClick={item.onClick}>
+              <div className={styles.item} onClick={()=>{item.onClick(); setIsActive(!isActive);}}>
                 {item.icon}
                 <div>{item.label}</div>
               </div>

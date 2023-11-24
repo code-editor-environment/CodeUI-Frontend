@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { postReplyComment, deleteComment } from "../../../api/element";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import { formatDateString } from "../../../utils/functions";
+import { toast } from "react-toastify";
+import { open } from "../../../store/modal/modal-slice";
+import ConfirmModal from "../../../components/Modal/confirmModal";
+import { useDispatch } from "react-redux";
 // import styles from "./detail.module.scss";
 
 function RepComment({
@@ -12,6 +16,7 @@ function RepComment({
   setCheck,
   check,
 }) {
+  const dispatch = useDispatch();
   const [comments, setComments] = useState(inverseRootComment);
   const [repComment, setRepComment] = useState("");
   const { profileRes } = useIsLogin();
@@ -35,6 +40,11 @@ function RepComment({
             console.log(data.error);
           } else {
             setComments(comments.filter((c) => c.id !== id));
+                                          toast.success("successfully!", {
+                                position: "top-center",
+                                autoClose: 2000,
+                                theme: "dark",
+                              });
           }
         });
       };
@@ -92,7 +102,16 @@ function RepComment({
                       inverseComment.account.username && (
                       <button
                         className="flex items-center gap-2 text-gray-400 font-sans cursor-pointer bg-transparent hover:bg-dark-400 px-2 py-2 rounded border-none"
-                        onClick={() => onDelete(inverseComment.id)}
+                        onClick={() =>
+                          dispatch(
+                            open(
+                              <ConfirmModal
+                                title={"Review"}
+                                onClick={() => onDelete(inverseComment.id)}
+                              />
+                            )
+                          )
+                        }
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

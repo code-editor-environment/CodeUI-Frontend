@@ -38,6 +38,7 @@ import SelectTagModal from "../../../components/Modal/selectTagModal";
 // import { fetchElements } from "../../../store/element/elements-slice";
 // import Console from "./console";
 import styles from "./detail.module.scss";
+import ConfirmModal from "../../../components/Modal/confirmModal";
 function Detail() {
   const { postId } = useParams();
   const { search } = useParseUrl();
@@ -658,7 +659,16 @@ function Detail() {
                           <div />
                           <button
                             className="button button--notifications button--icon"
-                            onClick={onDeletePost}
+                            onClick={() =>
+                              dispatch(
+                                open(
+                                  <ConfirmModal
+                                    title={"Review"}
+                                    onClick={onDeletePost}
+                                  />
+                                )
+                              )
+                            }
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -681,7 +691,16 @@ function Detail() {
                           <div />
                           <button
                             className="button button--notifications button--icon"
-                            onClick={onDeletePost}
+                            onClick={() =>
+                              dispatch(
+                                open(
+                                  <ConfirmModal
+                                    title={"Rejected"}
+                                    onClick={onDeletePost}
+                                  />
+                                )
+                              )
+                            }
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -730,7 +749,16 @@ function Detail() {
                           /> */}
                           <button
                             className="button button--notifications button--icon"
-                            onClick={onDeletePost}
+                            onClick={() =>
+                              dispatch(
+                                open(
+                                  <ConfirmModal
+                                    title={"Draft"}
+                                    onClick={onDeletePost}
+                                  />
+                                )
+                              )
+                            }
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

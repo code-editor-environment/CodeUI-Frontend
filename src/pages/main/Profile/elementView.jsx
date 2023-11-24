@@ -35,7 +35,9 @@ function ElementView() {
       .filter((post) => {
         return (
           (search.element
-            ? post.status === search.element.toUpperCase()
+            ? search.element === "variations"
+              ? post.source.name !== "original" && post.status === "APPROVED"
+              : post.status === search.element.toUpperCase()
             : post.status === "APPROVED") &&
           (search.category && search.category !== "all"
             ? post.category === search.category
@@ -187,7 +189,7 @@ function ElementView() {
               .map((post, index) => (
                 <RenderElement
                   post={post}
-                  search={search?.element}
+                  search={search?.element !== "variations" && search?.element}
                   key={index}
                 />
               ))}

@@ -10,6 +10,7 @@ import RenderComment from "./renderComment";
 import { useDispatch } from "react-redux";
 import { open } from "../../../store/modal/modal-slice";
 import ReportPostModal from "../../../components/Modal/reportPostModal";
+import { toast } from "react-toastify";
 // import styles from "./detail.module.scss";
 
 function Comment({ postId, element, elementById }) {
@@ -50,6 +51,14 @@ function Comment({ postId, element, elementById }) {
       } else {
         setComments(comments.filter((c) => c.id !== id));
         setTotal(total - 1);
+                                                  toast.success(
+                                                    "successfully!",
+                                                    {
+                                                      position: "top-center",
+                                                      autoClose: 2000,
+                                                      theme: "dark",
+                                                    }
+                                                  );
       }
     });
   };

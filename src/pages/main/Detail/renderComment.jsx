@@ -3,9 +3,13 @@ import { Link } from "react-router-dom";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import RepComment from "./repComment";
 import { formatDateString } from "../../../utils/functions";
+import { open } from "../../../store/modal/modal-slice";
+import ConfirmModal from "../../../components/Modal/confirmModal";
+import { useDispatch } from "react-redux";
 // import styles from "./detail.module.scss";
 
 function RenderComment({ comment, onDelete, index }) {
+  const dispatch = useDispatch();
   const [check, setCheck] = useState(false);
   const { profileRes } = useIsLogin();
 
@@ -26,10 +30,7 @@ function RenderComment({ comment, onDelete, index }) {
               />
             </Link>
             <div className="flex flex-col items-start">
-              <Link
-                className="block"
-                to={`/profile/${comment.account.id}`}
-              >
+              <Link className="block" to={`/profile/${comment.account.id}`}>
                 <div className="font-bold text-gray-200 text-base leading-2 flex items-center gap-2">
                   {comment.account.username}
                   <span className="xl:inline hidden ml-2 font-normal text-gray-400 text-sm">
@@ -53,7 +54,16 @@ function RenderComment({ comment, onDelete, index }) {
             {profileRes?.username === comment.account.username && (
               <button
                 className="flex items-center gap-2 text-gray-400 font-sans cursor-pointer bg-transparent hover:bg-dark-400 px-2 py-2 rounded border-none"
-                onClick={() => onDelete(comment.id)}
+                onClick={() =>
+                  dispatch(
+                    open(
+                      <ConfirmModal
+                        title={"Review"}
+                        onClick={() => onDelete(comment.id)}
+                      />
+                    )
+                  )
+                }
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
