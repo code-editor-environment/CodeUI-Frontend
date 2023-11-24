@@ -36,7 +36,7 @@ function ElementView() {
         return (
           (search.element
             ? search.element === "variations"
-              ? post.source.name !== "original" && post.status === "APPROVED"
+              ? post.status === "APPROVED" && post?.source?.name !== "original"
               : post.status === search.element.toUpperCase()
             : post.status === "APPROVED") &&
           (search.category && search.category !== "all"

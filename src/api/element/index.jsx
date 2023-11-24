@@ -69,6 +69,14 @@ export const postComment = handleApi(async (data) => {
   return result.data;
 });
 
+export const putComment = handleApi(async (data) => {
+  const result = await NET().put(
+    `/react-element/editComment?CommentId=${data.CommentId}`,
+    { commentContent: data.commentContent }
+  );
+  return result.data;
+});
+
 export const postReplyComment = handleApi(async (data) => {
   const result = await NET().post(
     `/react-element/replyComment?CommentId=${data.CommentId}`,

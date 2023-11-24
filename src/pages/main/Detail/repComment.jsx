@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { postReplyComment, deleteComment } from "../../../api/element";
+import { postReplyComment, deleteComment, putComment } from "../../../api/element";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import { formatDateString } from "../../../utils/functions";
 import { toast } from "react-toastify";
@@ -10,19 +10,23 @@ import { useDispatch } from "react-redux";
 // import styles from "./detail.module.scss";
 
 function RepComment({
-    id,
+  id,
   commentUsername,
   inverseRootComment,
   setCheck,
   check,
 }) {
   const dispatch = useDispatch();
-  const [comments, setComments] = useState(inverseRootComment);
+  const [comments, setComments] = useState([]);
   const [repComment, setRepComment] = useState("");
+  const [checks, setChecks] = useState(false);
   const { profileRes } = useIsLogin();
+  useEffect(() => {
+    setComments(inverseRootComment);
+  }, [inverseRootComment]);
   const onRepComment = () => {
     postReplyComment({
-      CommentId:id,
+      CommentId: id,
       commentContent: repComment,
     }).then((data) => {
       if (data.error) {
@@ -34,20 +38,34 @@ function RepComment({
       }
     });
   };
-      const onDelete = (id) => {
-        deleteComment(id).then((data) => {
-          if (data.error) {
-            console.log(data.error);
-          } else {
-            setComments(comments.filter((c) => c.id !== id));
-                                          toast.success("successfully!", {
-                                position: "top-center",
-                                autoClose: 2000,
-                                theme: "dark",
-                              });
-          }
+  const editComment = (CommentId, commentContent) => {
+    putComment({ CommentId, commentContent }).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        const index = comments.findIndex(
+          (item) => item["id"] === data.data["id"]
+        );
+        comments[index] = { ...comments[index], commentContent };
+        setComments([...comments]);
+        setChecks(false);
+      }
+    });
+  };
+  const onDelete = (id) => {
+    deleteComment(id).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setComments(comments.filter((c) => c.id !== id));
+        toast.success("successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
         });
-      };
+      }
+    });
+  };
   return (
     <>
       {comments.length > 0 &&
@@ -61,7 +79,7 @@ function RepComment({
                 className="flex relative gap-4 lg:gap-6 bg-dark-600 py-4 px-4 lg:px-6 rounded-xl overflow-hidden"
                 style={{ wordBreak: "break-word" }}
               >
-                <div>
+                <div className="w-full">
                   <div className="flex mb-3 items-center">
                     <Link to={`/profile/${inverseComment.account.id}`}>
                       <img
@@ -91,42 +109,107 @@ function RepComment({
                       </div>
                     </div>
                   </div>
-                  <p className="text-gray-200 text-base block">
-                    <span className="font-semibold text-gray-50">
-                      @{commentUsername}
-                    </span>{" "}
-                    {inverseComment.commentContent}
-                  </p>
+                  {checks ? (
+                    <div className="w-full relative flex mb-2">
+                      <div className="flex flex-col w-full gap-3">
+                        <div className="relative w-full bg-dark-600 flex items-center gap-4 focus-visible:ring-sky-400  rounded-xl overflow-hidden">
+                          <input
+                            type="text"
+                            name="content"
+                            id="content"
+                            className="w-full focus-visible:border-sky-400 rounded-lg text-base flex-1 border-solid border border-dark-300 block font-sans bg-dark-500 text-gray-200 placeholder:text-gray-400 outline-none focus:outline-none focus:ring-0 focus:border-gray-700 px-4 py-3"
+                            placeholder="Add a comment..."
+                            value={checks}
+                            onChange={(e) => setChecks(e.target.value)}
+                            style={{ marginLeft: "3px" }}
+                          />
+                          <button
+                            className="disabled:bg-dark-400 group relative overflow-hidden text-transparent px-8 py-3 font-sans  disabled:cursor-auto bg-blue-800 border-none cursor-pointer h-full text-offwhite font-semibold rounded-lg transition"
+                            onClick={() =>
+                              editComment(inverseComment.id, checks)
+                            }
+                            disabled={checks === inverseComment.commentContent}
+                          >
+                            Send
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <p className="translate-y-12 opacity-0 transform transition absolute flex text-white">
+                                <span className="  ">0</span>
+                                <span className="opacity-70">/256</span>
+                              </p>
+                              <span className="translate-y-0 opacity-100 transform transition absolute text-white">
+                                Send
+                              </span>
+                            </div>
+                          </button>
+                          <button
+                            className="px-4 py-3 font-sans bg-transparent transition hover:bg-dark-400 border-none cursor-pointer h-full text-offwhite font-semibold rounded-lg"
+                            onClick={() => setChecks(false)}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="w-5 h-5 transform rotate-45"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                            >
+                              <path d="M12 19v-7m0 0V5m0 7H5m7 0h7" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-gray-200 text-base block">
+                      <span className="font-semibold text-gray-50">
+                        @{commentUsername}
+                      </span>{" "}
+                      {inverseComment.commentContent}
+                    </p>
+                  )}
+
                   <div className="lg:absolute top-3 right-4 mt-6 lg:mt-0 font-semibold flex items-center gap-2 -ml-2 lg:ml-0">
                     {profileRes?.username ===
                       inverseComment.account.username && (
-                      <button
-                        className="flex items-center gap-2 text-gray-400 font-sans cursor-pointer bg-transparent hover:bg-dark-400 px-2 py-2 rounded border-none"
-                        onClick={() =>
-                          dispatch(
-                            open(
-                              <ConfirmModal
-                                title={"Review"}
-                                onClick={() => onDelete(inverseComment.id)}
-                              />
-                            )
-                          )
-                        }
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
+                      <>
+                        <button
+                          className="flex items-center gap-2 text-gray-400 font-sans cursor-pointer bg-transparent hover:bg-dark-400 px-2 py-2 rounded border-none"
+                          onClick={() =>
+                            setChecks(inverseComment.commentContent)
+                          }
                         >
-                          <path d="m16 7-1.106-2.211a3.236 3.236 0 0 0-5.788 0L8 7M4 7h16M6 7h12v8c0 1.864 0 2.796-.305 3.53a4 4 0 0 1-2.164 2.165C14.796 21 13.864 21 12 21s-2.796 0-3.53-.305a4 4 0 0 1-2.166-2.164C6 17.796 6 16.864 6 15V7Z" />
-                        </svg>
-                        Delete
-                      </button>
+                          Edit
+                        </button>
+                        <button
+                          className="flex items-center gap-2 text-gray-400 font-sans cursor-pointer bg-transparent hover:bg-dark-400 px-2 py-2 rounded border-none"
+                          onClick={() =>
+                            dispatch(
+                              open(
+                                <ConfirmModal
+                                  title={"Comment"}
+                                  onClick={() => onDelete(inverseComment.id)}
+                                />
+                              )
+                            )
+                          }
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                          >
+                            <path d="m16 7-1.106-2.211a3.236 3.236 0 0 0-5.788 0L8 7M4 7h16M6 7h12v8c0 1.864 0 2.796-.305 3.53a4 4 0 0 1-2.164 2.165C14.796 21 13.864 21 12 21s-2.796 0-3.53-.305a4 4 0 0 1-2.166-2.164C6 17.796 6 16.864 6 15V7Z" />
+                          </svg>
+                          Delete
+                        </button>
+                      </>
                     )}
                   </div>
                 </div>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   getListComment,
   postComment,
+  putComment,
   deleteComment,
 } from "../../../api/element";
 import { useIsLogin } from "../../../hooks/useIsLogin";
@@ -16,6 +17,7 @@ import { toast } from "react-toastify";
 function Comment({ postId, element, elementById }) {
   const dispatch = useDispatch();
   const [comments, setComments] = useState([]);
+  console.log("🚀comments:", comments)
   const [comment, setComment] = useState("");
   const [total, setTotal] = useState(0);
   const { isLogin, profileRes } = useIsLogin();
@@ -33,6 +35,20 @@ function Comment({ postId, element, elementById }) {
     // eslint-disable-next-line
     []
   );
+  const onEditComment = (CommentId, commentContent) => {
+    putComment({ CommentId, commentContent }).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        const index = comments.findIndex(
+          (item) => item["id"] === data.data["id"]
+        );
+        comments[index] = { ...comments[index], commentContent };
+        setComments([...comments]);
+      }
+    });
+  };
+
   const onComment = () => {
     postComment({ postId, commentContent: comment }).then((data) => {
       if (data.error) {
@@ -51,14 +67,11 @@ function Comment({ postId, element, elementById }) {
       } else {
         setComments(comments.filter((c) => c.id !== id));
         setTotal(total - 1);
-                                                  toast.success(
-                                                    "successfully!",
-                                                    {
-                                                      position: "top-center",
-                                                      autoClose: 2000,
-                                                      theme: "dark",
-                                                    }
-                                                  );
+        toast.success("successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
+        });
       }
     });
   };
@@ -113,6 +126,7 @@ function Comment({ postId, element, elementById }) {
                 comments.map((comment, index) => (
                   <RenderComment
                     comment={comment}
+                    onEditComment={onEditComment}
                     onDelete={onDelete}
                     index={index}
                   />
