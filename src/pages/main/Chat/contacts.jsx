@@ -11,19 +11,15 @@ export default function Contacts({ contacts, changeChat }) {
       {contacts.map((contact, index) => {
         return (
           <div
-            key={contact._id}
+            key={contact.id}
             className={`${styles.msg} ${
               index === currentSelected ? styles.online : ""
             }`}
             onClick={() => changeCurrentChat(index, contact)}
           >
-            <img
-              className={styles.msgProfile}
-              src={contact.avatar_url}
-              alt=""
-            />
+            <img className={styles.msgProfile} src={contact.imageUrl} alt="" />
             <div className={styles.msgDetail}>
-              <div className={styles.msgUsername}>{contact.name}</div>
+              <div className={styles.msgUsername}>{contact.username}</div>
               {/* <div className={styles.msgContent}>
                 <span className={styles.msgMessage}>
                   What time was our meet

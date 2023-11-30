@@ -10,6 +10,7 @@ import AppButton from "../../../components/Button";
 import { open } from "../../../store/modal/modal-slice";
 import UpdateProfileModal from "../../../components/Modal/updateProfileModal";
 import ElementView from "./elementView";
+import DonationModal from "../../../components/Modal/donationModal";
 // import styles from "./profile.module.scss";
 // import Element from './../Element/index';
 function Profile() {
@@ -54,6 +55,9 @@ function Profile() {
   );
   const onUpdateProfileModal = () => {
     dispatch(open(<UpdateProfileModal />));
+  };
+  const onDonationModal = () => {
+    dispatch(open(<DonationModal />));
   };
   function handleLogout(e) {
     e.preventDefault();
@@ -221,7 +225,6 @@ function Profile() {
                   <AppButton
                     children="Donate"
                     btnType="button_1"
-                    htmlType="a"
                     Icon={
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -236,6 +239,7 @@ function Profile() {
                         />
                       </svg>
                     }
+                    onClick={onDonationModal}
                   />
                 </div>
               ))}

@@ -17,7 +17,6 @@ import { toast } from "react-toastify";
 function Comment({ postId, element, elementById }) {
   const dispatch = useDispatch();
   const [comments, setComments] = useState([]);
-  console.log("🚀comments:", comments)
   const [comment, setComment] = useState("");
   const [total, setTotal] = useState(0);
   const { isLogin, profileRes } = useIsLogin();
@@ -181,28 +180,30 @@ function Comment({ postId, element, elementById }) {
               </svg>{" "}
               {new Date(element?.updateDate).toDateString()}
             </div>
-            <button
-              className="px-4 py-2.5 font-sans flex items-center gap-2 border-none rounded-lg text-base font-semibold transition-colors duration-200 bg-transparent hover:bg-dark-600 max-md:bg-dark-600 text-offwhite cursor-pointer group"
-              onClick={onReportPostModal}
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5 text-red-400 opacity-70 group-hover:opacity-100"
+            {isLogin && (
+              <button
+                className="px-4 py-2.5 font-sans flex items-center gap-2 border-none rounded-lg text-base font-semibold transition-colors duration-200 bg-transparent hover:bg-dark-600 max-md:bg-dark-600 text-offwhite cursor-pointer group"
+                onClick={onReportPostModal}
               >
-                <path
-                  d="M12 13V8.93768M12 16V15.999M13.2355 4.2522C12.4454 3.91593 11.5546 3.91593 10.7645 4.2522C8.40767 5.25526 2.84035 14.1527 3.00351 16.5308C3.06747 17.463 3.5294 18.3211 4.26914 18.8819C6.23598 20.3727 17.764 20.3727 19.7309 18.8819C20.4706 18.3211 20.9325 17.463 20.9965 16.5308C21.1596 14.1527 15.5923 5.25526 13.2355 4.2522Z"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-gray-400 group-hover:text-gray-200">
-                Report
-              </span>
-            </button>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5 text-red-400 opacity-70 group-hover:opacity-100"
+                >
+                  <path
+                    d="M12 13V8.93768M12 16V15.999M13.2355 4.2522C12.4454 3.91593 11.5546 3.91593 10.7645 4.2522C8.40767 5.25526 2.84035 14.1527 3.00351 16.5308C3.06747 17.463 3.5294 18.3211 4.26914 18.8819C6.23598 20.3727 17.764 20.3727 19.7309 18.8819C20.4706 18.3211 20.9325 17.463 20.9965 16.5308C21.1596 14.1527 15.5923 5.25526 13.2355 4.2522Z"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className="text-gray-400 group-hover:text-gray-200">
+                  Report
+                </span>
+              </button>
+            )}
           </div>
           <div className="w-full h-[2px] bg-dark-500 mb-6 mt-4" />
         </div>

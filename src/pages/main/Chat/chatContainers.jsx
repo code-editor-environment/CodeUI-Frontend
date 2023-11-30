@@ -15,8 +15,8 @@ export default function ChatContainers({ currentChat, socket, isLogin }) {
         const response = await axios.post(
           `${import.meta.env.VITE_NODE_DOMAIN}/messages/getmsg`,
           {
-            from: isLogin._id,
-            to: currentChat._id,
+            from: isLogin.id,
+            to: currentChat.id,
           }
         );
         setMessages(response.data);
@@ -28,13 +28,13 @@ export default function ChatContainers({ currentChat, socket, isLogin }) {
 
   const handleSendMsg = async (msg) => {
     socket.current.emit("send-msg", {
-      to: currentChat._id,
-      from: isLogin._id,
+      to: currentChat.id,
+      from: isLogin.id,
       msg,
     });
     await axios.post(`${import.meta.env.VITE_NODE_DOMAIN}/messages/addmsg`, {
-      from: isLogin._id,
-      to: currentChat._id,
+      from: isLogin.id,
+      to: currentChat.id,
       message: msg,
     });
 
@@ -68,10 +68,10 @@ export default function ChatContainers({ currentChat, socket, isLogin }) {
         <div className={styles.chatAreaTitle}>
           <img
             className={styles.chatMsgImg}
-            src={currentChat.avatar_url}
+            src={currentChat.imageUrl}
             alt=""
           />{" "}
-          {currentChat?.name}
+          {currentChat?.username}
         </div>
         <div className={styles.icon}>
           <svg height="34px" viewBox="-5 -5 30 30" width="34px">
@@ -86,7 +86,7 @@ export default function ChatContainers({ currentChat, socket, isLogin }) {
             ></path>
           </svg>
           <Link
-            to={`http://127.0.0.1:5173/chat/${isLogin._id + currentChat._id}`}
+            to={`http://127.0.0.1:5173/chat/${isLogin.id + currentChat.id}`}
             target="_blank"
             rel="noreferrer"
           >
@@ -122,7 +122,7 @@ export default function ChatContainers({ currentChat, socket, isLogin }) {
                 {!message.fromSelf && (
                   <img
                     className={styles.chatMsgImg}
-                    src={currentChat.avatar_url}
+                    src={currentChat.imageUrl}
                     alt=""
                   />
                 )}

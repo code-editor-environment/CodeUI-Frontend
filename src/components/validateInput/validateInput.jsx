@@ -8,6 +8,18 @@ export function validateLogin(values) {
   }
   return errors;
 }
+export function validateDonate(values) {
+  let errors = {};
+  if (!values.money) {
+    errors.money = "Money is required";
+  } else if (values.money < 1000) {
+    errors.money = "Money must be greater than 1000";
+  }
+  if (!values.orderDescription) {
+    errors.orderDescription = "orderDescription is required";
+  }
+  return errors;
+}
 export function validateRegister(values) {
   let errors = {};
   if (!values.email) {

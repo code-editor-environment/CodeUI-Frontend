@@ -39,6 +39,7 @@ import SelectTagModal from "../../../components/Modal/selectTagModal";
 // import Console from "./console";
 import styles from "./detail.module.scss";
 import ConfirmModal from "../../../components/Modal/confirmModal";
+import IssueModal from "../../../components/Modal/issueModal";
 function Detail() {
   const { postId } = useParams();
   const { search } = useParseUrl();
@@ -59,12 +60,16 @@ function Detail() {
   const [htmlText, setHtmlText] = useState("");
   const [changeEditor, setChangeEditor] = useState(false);
   const [color, setColor] = useState("#e8e8e8");
+  const [reason, setReason] = useState([]);
   const { settingEditor } = useSelector((state) => state.profile);
   // const { fav } = useSelector((state) => state.profile);
   const fetchPost = async () => {
     await getDoc(doc(db, `elements`, postId)).then((querySnapshot) => {
       setElementById(querySnapshot.data());
       setColor(querySnapshot.data().background);
+    });
+    await getDoc(doc(db, `reason`, postId)).then((querySnapshot) => {
+      if (querySnapshot.data()) setReason(querySnapshot.data().data);
     });
   };
   useEffect(
@@ -337,7 +342,7 @@ function Detail() {
                         d="M21 8v12.993A1 1 0 0 1 20.007 22H3.993A.993.993 0 0 1 3 21.008V2.992C3 2.455 3.449 2 4.002 2h10.995L21 8zm-2 1h-5V4H5v16h14V9zM8 7h3v2H8V7zm0 4h8v2H8v-2zm0 4h8v2H8v-2z"
                       />
                     </svg>
-                    guidelines
+                    Guidelines
                   </Link>{" "}
                   and see if it can be improved.
                 </span>
@@ -496,17 +501,6 @@ function Detail() {
                     ? `${elementById.theme === "dark" ? "#e8e8e8" : "#212121"}`
                     : `${elementById.theme !== "dark" ? "#e8e8e8" : "#212121"}`}
                 </span>
-                {elementById.source.name !== "original" && (
-                  <label
-                    className="theme-switcher"
-                    style={{ left: "15px", top: "auto", bottom: "20px" }}
-                  >
-                    REPOST FROM:{" "}
-                    <Link to={elementById.source.url} target="_blank">
-                      Link
-                    </Link>
-                  </label>
-                )}
               </div>
             </div>
           </div>
@@ -560,6 +554,39 @@ function Detail() {
                         <LikeIcons color="#AEAEAE" cover="#DADADA" />
                       )}
                     </button>
+                    {elementById.source.name !== "original" && (
+                      // <label
+                      //   className="theme-switcher"
+                      //   style={{ left: "15px", top: "auto", bottom: "20px" }}
+                      // >
+                      //   REPOST FROM:{" "}
+                      //   <Link to={elementById.source.url} target="_blank">
+                      //     Link
+                      //   </Link>
+                      // </label>
+                      <div className="flex items-center gap-2 px-3 font-semibold text-gray-200">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-blue-400"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                        >
+                          <path d="M16.902 16.902c.235-.035.445-.082.643-.147a5 5 0 0 0 3.21-3.21C21 12.792 21 11.861 21 10s0-2.792-.245-3.545a5 5 0 0 0-3.21-3.21C16.792 3 15.861 3 14 3s-2.792 0-3.545.245a5 5 0 0 0-3.21 3.21 3.921 3.921 0 0 0-.147.643m9.804 9.804C17 16.239 17 15.372 17 14c0-1.861 0-2.792-.245-3.545a5 5 0 0 0-3.21-3.21C12.792 7 11.861 7 10 7c-1.373 0-2.24 0-2.902.098m9.804 9.804a3.923 3.923 0 0 1-.147.643 5 5 0 0 1-3.21 3.21C12.792 21 11.861 21 10 21s-2.792 0-3.545-.245a5 5 0 0 1-3.21-3.21C3 16.792 3 15.861 3 14s0-2.792.245-3.545a5 5 0 0 1 3.21-3.21c.198-.065.407-.112.643-.147" />
+                        </svg>
+                        Variation of a
+                        <Link
+                          to={elementById.source.url}
+                          target="_blank"
+                          className="underline underline-offset-2"
+                        >
+                          FROM
+                        </Link>
+                      </div>
+                    )}
                   </>
                 )}
               </div>
@@ -688,7 +715,15 @@ function Detail() {
                         </>
                       ) : search?.status === "rejected" ? (
                         <>
-                          <div />
+                          {/* <div /> */}
+                          <button
+                            className="px-4 py-2.5 font-sans flex items-center gap-2 border-none rounded-lg text-sm font-semibold transition-colors duration-200 bg-transparent hover:bg-dark-600 max-md:bg-dark-600 text-offwhite cursor-pointer text-red-400 whitespace-nowrap"
+                            onClick={() =>
+                              dispatch(open(<IssueModal reason={reason} />))
+                            }
+                          >
+                            {reason.length} issue
+                          </button>
                           <button
                             className="button button--notifications button--icon"
                             onClick={() =>

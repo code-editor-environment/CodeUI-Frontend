@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   GoogleAuthProvider,
   GithubAuthProvider,
@@ -24,6 +24,7 @@ import Point from "./point";
 function Header() {
   const history = window.location.pathname;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { isLogin, profileRes } = useIsLogin();
   const [loading, setLoading] = useState(false);
 
@@ -77,6 +78,7 @@ function Header() {
   };
   function handleLogout(e) {
     e.preventDefault();
+    navigate("/");
     dispatch(actLogout());
   }
   return (
@@ -189,37 +191,26 @@ function Header() {
                 }
               />
               <Notification />
-              {/* <Link
+              <Link
                 className="button button--secondary button--notifications false"
                 to="/chat"
               >
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
                   version="1.1"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48px"
+                  height="48px"
+                  viewBox="0,0,256,256"
                 >
-                  <g>
-                    <linearGradient
-                      id="a"
-                      x1="12"
-                      x2="12"
-                      y1="2"
-                      y2="21.99"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop offset="0" stopColor="#138bd7"></stop>
-                      <stop offset="1" stopColor="#62aafb"></stop>
-                    </linearGradient>
-                    <path
-                      fill="url(#a)"
-                      d="M17 2H7C4.24 2 2 4.23 2 6.98v6.98c0 2.75 2.24 4.98 5 4.98h1.5c.27 0 .63.18.8.4l1.5 1.99c.66.88 1.74.88 2.4 0l1.5-1.99c.19-.25.49-.4.8-.4H17c2.76 0 5-2.23 5-4.98V6.98C22 4.23 19.76 2 17 2zm-4 11.75H7c-.41 0-.75-.34-.75-.75s.34-.75.75-.75h6c.41 0 .75.34.75.75s-.34.75-.75.75zm4-5H7c-.41 0-.75-.34-.75-.75s.34-.75.75-.75h10c.41 0 .75.34.75.75s-.34.75-.75.75z"
-                      opacity="1"
-                    ></path>
+                  <g
+                    fill="#ffffff"
+                  >
+                    <g transform="scale(5.33333,5.33333)">
+                      <path d="M10.5,7c-3.57194,0 -6.5,2.92806 -6.5,6.5v17c0,3.57194 2.92806,6.5 6.5,6.5h1.5v5.5c0,1.96599 2.4273,3.17893 4,2l10,-7.5h11.5c3.57194,0 6.5,-2.92806 6.5,-6.5v-17c0,-3.57194 -2.92806,-6.5 -6.5,-6.5zM10.5,10h27c1.95006,0 3.5,1.54994 3.5,3.5v17c0,1.95006 -1.54994,3.5 -3.5,3.5h-12c-0.32478,0.00015 -0.64073,0.1057 -0.90039,0.30078l-9.59961,7.19922v-6c-0.00008,-0.82839 -0.67161,-1.49992 -1.5,-1.5h-3c-1.95006,0 -3.5,-1.54994 -3.5,-3.5v-17c0,-1.95006 1.54994,-3.5 3.5,-3.5z" />
+                    </g>
                   </g>
                 </svg>
-              </Link> */}
+              </Link>
               <Menu
                 handleLogout={handleLogout}
                 user={profileRes}

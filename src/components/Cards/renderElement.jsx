@@ -6,6 +6,7 @@ import tailwindIcon from "../../assets/images/tailwind.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { postFav, deleteFav } from "../../store/profile/profile-slice";
 import { saveFavorite } from "../../api/element";
+import { formatDateString } from "../../utils/functions";
 const RenderElement = ({ post, search }) => {
   const { isLogin } = useIsLogin();
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ const RenderElement = ({ post, search }) => {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-5 w-5 text-blue-600"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -116,6 +117,9 @@ const RenderElement = ({ post, search }) => {
           <span>{checkFavorite ? "UnSave" : "Save"}</span>
         </button>
       )} */}
+      <button type="submit" className="card__bookCate">
+        <span>{post.category}</span>
+      </button>
       <div className="card__footer">
         <Link to={`/profile/${post.accountID}`}>
           <span className="card__nickname text-color">
@@ -123,8 +127,9 @@ const RenderElement = ({ post, search }) => {
           </span>
         </Link>
         <div className="card__views">
+          {new Date(post.createDate).toDateString()}
           {/* {findFavorite ? elementItem?.favorites + 1 : elementItem?.favorites}{" "} */}
-          Favorites
+          {/* Favorites */}
         </div>
       </div>
     </article>

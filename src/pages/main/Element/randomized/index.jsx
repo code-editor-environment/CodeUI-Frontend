@@ -45,7 +45,7 @@ const item = [
     ),
   },
   {
-    name: "Descending Date",
+    name: "Descending date",
     url: "desc",
     icon: (
       <svg
@@ -63,7 +63,7 @@ const item = [
     ),
   },
   {
-    name: "Ascending Date",
+    name: "Ascending date",
     url: "asc",
     icon: (
       <svg

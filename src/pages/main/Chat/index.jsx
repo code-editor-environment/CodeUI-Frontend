@@ -24,7 +24,7 @@ function ChatBox() {
       if (isLogin) {
         if (isLogin) {
           const data = await axios.get(
-            `${import.meta.env.VITE_NODE_DOMAIN}/users?ne=${isLogin.id}`
+            `${import.meta.env.VITE_NODE_DOMAIN}/account?ne=${isLogin.id}`
           );
           setContacts(data.data.list);
         } else {
@@ -63,20 +63,20 @@ function ChatBox() {
           </div>
           <img
             className={styles.userProfile}
-            src="https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-1/245404670_615947496201936_748824372943985183_n.jpg?stp=cp0_dst-jpg_p40x40&_nc_cat=101&ccb=1-7&_nc_sid=fe8171&_nc_ohc=En_eiY7OgKMAX8iBv9D&_nc_ht=scontent.fsgn2-4.fna&oh=00_AfBnb3QjypXRPURtVq11FT7wjbCFMBkVY45gvwqhtTQNzg&oe=651DE323"
+            src="https://lh3.googleusercontent.com/a/ACg8ocLXyIFAX531FhXbdF9Zv46pjLu7wLvcH2VCtjF0_1nsBhw=s96-c"
             alt=""
           />
         </div>
       </div>
       <div className={styles.wrapper}>
-        {isLogin.user && (
+        {isLogin.id && (
           <Contacts contacts={contacts} changeChat={handleChatChange} />
         )}
         {currentChat && (
           <ChatContainers
             currentChat={currentChat}
             socket={socket}
-            isLogin={isLogin.user}
+            isLogin={isLogin}
           />
         )}
         <div className={styles.detailArea}>
@@ -84,7 +84,7 @@ function ChatBox() {
             <div className={`${styles.msgProfile} ${styles.group}`}>
               <img
                 className={styles.chatMsgImg}
-                src="https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-1/245404670_615947496201936_748824372943985183_n.jpg?stp=cp0_dst-jpg_p40x40&_nc_cat=101&ccb=1-7&_nc_sid=fe8171&_nc_ohc=En_eiY7OgKMAX8iBv9D&_nc_ht=scontent.fsgn2-4.fna&oh=00_AfBnb3QjypXRPURtVq11FT7wjbCFMBkVY45gvwqhtTQNzg&oe=651DE323"
+                src="https://lh3.googleusercontent.com/a/ACg8ocLXyIFAX531FhXbdF9Zv46pjLu7wLvcH2VCtjF0_1nsBhw=s96-c"
                 alt=""
               />
             </div>

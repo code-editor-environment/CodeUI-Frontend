@@ -135,7 +135,7 @@ function Guidelines() {
           <p>
             We don't approve posts that are either{" "}
             <span className="font-semibold text-red-400">already</span> posted
-            on Uiverse by you or someone else or they are too{" "}
+            on codeui by you or someone else or they are too{" "}
             <span className="font-semibold text-red-400">similar.</span>
           </p>
         </li>
@@ -334,7 +334,7 @@ function Guidelines() {
               src={approved2}
             />
             <figcaption className="text-green-300 text-sm ">
-              Good size, similar to all other buttons on Uiverse and in the real
+              Good size, similar to all other buttons on codeui and in the real
               world
             </figcaption>
           </figure>

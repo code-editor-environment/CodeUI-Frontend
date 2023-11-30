@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { close } from "../../store/modal/modal-slice";
 import { reportElement } from "../../api/element";
-
+import { toast } from "react-toastify";
 function ReportPostModal({ id }) {
   const reasons = [
     {
@@ -46,6 +46,11 @@ function ReportPostModal({ id }) {
       } else {
         console.log(data.data);
         dispatch(close());
+        toast.success("successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
+        });
       }
     });
   };

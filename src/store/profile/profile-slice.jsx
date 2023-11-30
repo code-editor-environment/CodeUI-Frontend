@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getStorage, removeStorage, setStorage } from "../../utils/helper";
+
 const initialState = {
   profiles: {},
   user: JSON.parse(getStorage("codeUiLog"))
@@ -47,6 +48,7 @@ export const ProfileSlice = createSlice({
       state.profileRes = payload;
     },
     actLogout: (state) => {
+      
       removeStorage("codeUiLog");
       removeStorage("profileResponse");
       state.user = null;

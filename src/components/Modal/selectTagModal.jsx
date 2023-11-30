@@ -1,6 +1,7 @@
 import { useState } from "react";
 import tailwindIcon from "../../assets/images/tailwind.svg";
 import { useSelector } from "react-redux";
+import { useParseUrl } from "../../hooks/useParseUrl";
 function SelectTagModal({
   cssText,
   typeCSS,
@@ -158,6 +159,7 @@ function SelectTagModal({
     "2d button",
     "pattern",
   ];
+  const { search } = useParseUrl();
   const { dataVariation } = useSelector((state) => state.element);
   const [back, setBack] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -175,14 +177,15 @@ function SelectTagModal({
   );
   const [isLinkValid, setIsLinkValid] = useState(true);
   const handleOptionChange = (e) => {
-    setOption(e.target.value);
+    search?.status !== "variation" && setOption(e.target.value);
   };
   const handleSourceLinkChange = (e) => {
-    setLinkSource(e.target.value);
-    setIsLinkValid(/^https?:\/\/.+/.test(e.target.value));
+    search?.status !== "variation" && setLinkSource(e.target.value);
+    search?.status !== "variation" &&
+      setIsLinkValid(/^https?:\/\/.+/.test(e.target.value));
   };
   const handleSourceNameChange = (e) => {
-    setNameSource(e.target.value);
+    search?.status !== "variation" && setNameSource(e.target.value);
   };
   const toggleTag = (tag) => {
     if (selectedTags.includes(tag)) {

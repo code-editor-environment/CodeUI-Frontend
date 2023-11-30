@@ -46,3 +46,30 @@ export const getFollowing = handleApi(async (username) => {
   );
   return result.data;
 });
+
+export const postPayment = handleApi(async (data) => {
+  const result = await NET().post("/payment/createPayment", {
+    money: data.money,
+    orderType: "billpayment",
+    orderDescription: data.orderDescription,
+    returnUrl: `http://127.0.0.1:5173/profile/${data.url}`,
+  });
+  return result.data;
+});
+
+export const postConfirmPayment = handleApi(async (data) => {
+  const result = await NET().post(`/payment/confirmPayment${data}`);
+  return result.data;
+});
+
+export const getPaymentHistory = handleApi(async () => {
+  const result = await NET().get("/payment/getPaymentHistory");
+  return result.data;
+});
+
+export const getDonation = handleApi(async (data) => {
+  const result = await NET().get(
+    `/donation/getDonationPackageByAccountId?accountId=${data}`
+  );
+  return result.data;
+});

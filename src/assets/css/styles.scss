@@ -897,6 +897,23 @@ kbd {
   color: var(--maindark);
   user-select: none;
 }
+.card__bookCate {
+  position: absolute;
+  left: 10px;
+  bottom: 35px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: var(--semibold);
+  font-family: inherit;
+  padding: 3px 6px 3px 4px;
+  border-radius: 8px;
+  z-index: 2;
+  color: #f2f2f2;
+  user-select: none;
+}
 .card__bookmark.show {
   opacity: 1;
   background: transparent;
