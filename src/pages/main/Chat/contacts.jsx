@@ -11,7 +11,7 @@ export default function Contacts({ contacts, changeChat }) {
       {contacts.map((contact, index) => {
         return (
           <div
-            key={contact.id}
+            key={contact._id}
             className={`${styles.msg} ${
               index === currentSelected ? styles.online : ""
             }`}

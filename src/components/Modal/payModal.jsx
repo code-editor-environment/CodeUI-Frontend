@@ -5,12 +5,8 @@ function PayModal({ url, datas, setData }) {
   useEffect(
     () => {
       postConfirmPayment(url).then((data) => {
-        if (data.data?.message === "ok") {
-          console.log("ok", data.data.amount);
-          setData(datas + data.data.amount);
-        } else {
-          console.log(data);
-        }
+         console.log("ok", datas, data.data.amount, datas + data.data.amount);
+         setData(datas + data.data.amount);
       });
     }, // eslint-disable-next-line
     []

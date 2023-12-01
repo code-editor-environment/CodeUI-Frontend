@@ -37,7 +37,7 @@ function PaymentHistoryModal() {
                 </span>
                 <div className="points-tag">
                   <img src={point} alt="" />
-                  {item.amount.toLocaleString("vi-VN", {
+                  {item?.amount.toLocaleString("vi-VN", {
                     style: "currency",
                     currency: "VND",
                   })}

@@ -11,11 +11,11 @@ function ChatBox() {
   const socket = useRef();
   const { isLogin } = useIsLogin();
   const [contacts, setContacts] = useState([]);
+  const [_id, setId] = useState(false);
   const [currentChat, setCurrentChat] = useState(undefined);
   useEffect(() => {
     if (isLogin) {
-      socket.current = io("http://localhost:5000");
-      socket.current.emit("add-user", isLogin.id);
+      
     }
   }, [isLogin]);
 
@@ -32,7 +32,22 @@ function ChatBox() {
         }
       }
     }
+    async function setAccountById(){
+      if (isLogin) {
+        if (isLogin) {
+          const data = await axios.get(
+            `${import.meta.env.VITE_NODE_DOMAIN}/accountById?id=${isLogin.id}`
+          );
+          setId(data.data.data._id);
+          socket.current = io("http://localhost:5000");
+          socket.current.emit("add-user", data.data.data._id);
+        } else {
+          // navigate("/setAvatar");
+        }
+      }
+    }
     setCont();
+    setAccountById();
     }, // eslint-disable-next-line
     [isLogin]
   );
@@ -72,11 +87,11 @@ function ChatBox() {
         {isLogin.id && (
           <Contacts contacts={contacts} changeChat={handleChatChange} />
         )}
-        {currentChat && (
+        {currentChat && _id && (
           <ChatContainers
             currentChat={currentChat}
             socket={socket}
-            isLogin={isLogin}
+            isLogin={{ _id }}
           />
         )}
         <div className={styles.detailArea}>

@@ -25,12 +25,37 @@ function Point() {
         if (data.error) {
           console.log(data.error);
         } else {
+          console.log("data.data.wallet", data.data.wallet);
+          search?.vnp_Amount
+            ? dispatch(
+                open(
+                  <PayModal
+                    url={location.search}
+                    datas={data.data.wallet}
+                    setData={setData}
+                  />
+                )
+              )
+            : setData(data.data.wallet);
+        }
+      });
+    }, // eslint-disable-next-line
+    []
+  );
+  useEffect(
+    () => {
+      getProfiles(isLogin.id).then((data) => {
+        if (data.error) {
+          console.log(data.error);
+        } else {
           setData(data.data.wallet);
         }
       });
       search?.vnp_Amount &&
         dispatch(
-          open(<PayModal url={location.search} datas={data} setData={setData} />)
+          open(
+            <PayModal url={location.search} datas={data} setData={setData} />
+          )
         );
     }, // eslint-disable-next-line
     []
@@ -43,7 +68,7 @@ function Point() {
         onClick={onPaymentModal}
       >
         <img src={point} alt="" />
-        {data.toLocaleString("vi-VN", {
+        {data?.toLocaleString("vi-VN", {
           style: "currency",
           currency: "VND",
         })}

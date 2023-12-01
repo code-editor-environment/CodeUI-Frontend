@@ -54,7 +54,7 @@ function DonationModal() {
                 </div>
                 <div className="points-tag">
                   <img src={point} alt="" />
-                  {item.price.toLocaleString("vi-VN", {
+                  {item?.price.toLocaleString("vi-VN", {
                     style: "currency",
                     currency: "VND",
                   })}
