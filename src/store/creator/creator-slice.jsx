@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-const initialState = { topCreator: [] };
+const initialState = { topCreator: [], subscription:[] };
 export const CreatorSlice = createSlice({
   name: "creator",
   initialState,
@@ -7,8 +7,11 @@ export const CreatorSlice = createSlice({
     getTopCreator: (state, { payload }) => {
       state.topCreator = payload;
     },
+    getSubscription: (state, { payload }) => {
+      state.subscription = payload;
+    },
   },
 });
 
-export const { getTopCreator } = CreatorSlice.actions;
+export const { getTopCreator, getSubscription } = CreatorSlice.actions;
 export default CreatorSlice.reducer;

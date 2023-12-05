@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 // import { Link } from "react-router-dom";
 import styles from "./subscription.module.scss";
 import AppButton from "../../../components/Button";
 import rocket from "../../../assets/images/rocket.svg";
 import subscription2 from "../../../assets/images/subscription2.png";
 import subscription1 from "../../../assets/images/pro1.png";
+import { useDispatch, useSelector } from "react-redux";
+import { getSubscriptions } from "../../../api/account";
+import { getSubscription } from "../../../store/creator/creator-slice";
 // import Element from './../Element/index';
 function Subscription() {
+    const dispatch = useDispatch();
+    // const query = useQuery();
+    // const text = query.get("text");
+    const { subscription } = useSelector((state) => state.creator);
+    console.log("🚀 ~ file: index.jsx:17 ~ Subscription ~ subscription:", subscription)
+    useEffect(() => {
+      window.scrollTo({ top: 0 });
+      getSubscriptions().then((data) => {
+        if (data.error) {
+          console.log(data.error);
+        } else {
+          dispatch(getSubscription(data.data));
+        }
+      });
+      // eslint-disable-next-line
+    }, []);
   return (
     <div className={styles.supportersSection}>
       <h2>
@@ -15,303 +34,70 @@ function Subscription() {
       </h2>
       <section className={styles.subscription}>
         <div className={styles.gradient}></div>
-        <div className={styles.subscriptionCard}>
-          <div className={styles.header}>
-            <div>
-              <h3>Pro</h3>
+        {subscription.length > 0 &&
+          subscription.map((sub, index) => (
+            <div className={styles.subscriptionCard} key={index}>
+              <div className={styles.header}>
+                <div>
+                  {sub.name === "Pro" ? (
+                    <h3>{sub.name}</h3>
+                  ) : (
+                    <h3 className={styles.h3nth2}>Pro+</h3>
+                  )}
+                </div>
+                <div className={styles.price}>
+                  {sub.price.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+                  <span>/month</span>
+                </div>
+                <p>
+                  With this plan, you'll gain access to advanced extra features.
+                </p>
+              </div>
+              <div className={styles.content}>
+                <ul>
+                  {sub.features.length > 0 &&
+                    sub.features.map((item, index) => (
+                      <li key={index}>
+                        <div className={styles.start}>
+                          <div className={styles.shrink}>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              width={24}
+                              height={24}
+                            >
+                              <path fill="none" d="M0 0h24v24H0z" />
+                              <path
+                                fill="currentColor"
+                                d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
+                              />
+                            </svg>
+                          </div>
+                          <p>{item.name}</p>
+                        </div>
+                        <p>{item.description}</p>
+                      </li>
+                    ))}
+                </ul>
+                {sub.name === "Pro" ? (
+                  <AppButton
+                    children="Get Started"
+                    btnType="button_1"
+                    htmlType="a"
+                  />
+                ) : (
+                  <AppButton
+                    children="Get Started"
+                    btnType="button_0"
+                    htmlType="a"
+                  />
+                )}
+              </div>
             </div>
-            <div className={styles.price}>
-              $4.99
-              <span>/month</span>
-            </div>
-            <p>
-              With this plan, you'll gain access to advanced extra features.
-            </p>
-          </div>
-          <div className={styles.content}>
-            <ul>
-              <li>
-                <div className={styles.start}>
-                  <div className={styles.shrink}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                      />
-                    </svg>
-                  </div>
-                  <p>Special Pro Badge</p>
-                </div>
-                <p>Stand out in the community with a unique Pro badge.</p>
-              </li>
-              <li>
-                <div className={styles.start}>
-                  <div className={styles.shrink}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                      />
-                    </svg>
-                  </div>
-                  <p>Collaboration on code</p>
-                </div>
-                <p>
-                  Multiple people can type and edit code in a element at the
-                  same time (2 person)
-                </p>
-              </li>
-              <li>
-                <div className={styles.start}>
-                  <div className={styles.shrink}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                      />
-                    </svg>
-                  </div>
-                  <p>Upload image with Asset Hosting</p>
-                </div>
-                <p>
-                  Drag-and-drop it right onto CodeUi and we’ll host it for you
-                  (500MB total storage 2 MB per file).
-                </p>
-              </li>
-              <li>
-                <div className={styles.start}>
-                  <div className={styles.shrink}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                      />
-                    </svg>
-                  </div>
-                  <p>Copy the embed code</p>
-                </div>
-                <p>
-                  Check the element for validity via iframe tag before using the
-                  code in the project.
-                </p>
-              </li>
-              <li>
-                <div className={styles.start}>
-                  <div className={styles.shrink}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                      />
-                    </svg>
-                  </div>
-                  <p>Support tool while coding</p>
-                </div>
-                <p>Beautifier code, Converter and minifier.</p>
-              </li>
-              <li>
-                <div className={styles.start}>
-                  <div className={styles.shrink}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                      />
-                    </svg>
-                  </div>
-                  <p>Custom color backgrounds</p>
-                </div>
-                <p>Add a custom background to your posts.</p>
-              </li>
-            </ul>
-            <AppButton children="Get Started" btnType="button_1" htmlType="a" />
-          </div>
-        </div>
-        <div className={styles.subscriptionCard}>
-          <div className={styles.header}>
-            <div>
-              <h3 className={styles.h3nth2}>Pro+</h3>
-            </div>
-            <div className={styles.price}>
-              $40.99
-              <span>/year</span>
-            </div>
-            <p>
-              With this plan, you'll gain access to advanced AI tools and extra
-              features.
-            </p>
-          </div>
-          <div className={styles.content}>
-            <ul>
-              <li>
-                <div className={styles.start}>
-                  <div className={styles.shrink}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                      />
-                    </svg>
-                  </div>
-                  <p>Special Pro Badge</p>
-                </div>
-                <p>Stand out in the community with a unique Pro badge.</p>
-              </li>
-              <li>
-                <div className={styles.start}>
-                  <div className={styles.shrink}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                      />
-                    </svg>
-                  </div>
-                  <p>Collaboration on code</p>
-                </div>
-                <p>
-                  Multiple people can type and edit code in a element at the
-                  same time (4 person)
-                </p>
-              </li>
-              <li>
-                <div className={styles.start}>
-                  <div className={styles.shrink}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                      />
-                    </svg>
-                  </div>
-                  <p>Upload image with Asset Hosting</p>
-                </div>
-                <p>
-                  Drag-and-drop it right onto CodeUi and we’ll host it for you
-                  (1000MB total storage 5MB per file).
-                </p>
-              </li>
-              <li>
-                <div className={styles.start}>
-                  <div className={styles.shrink}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                      />
-                    </svg>
-                  </div>
-                  <p>Copy the embed code</p>
-                </div>
-                <p>
-                  Check the element for validity via iframe tag before using the
-                  code in the project.
-                </p>
-              </li>
-              <li>
-                <div className={styles.start}>
-                  <div className={styles.shrink}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                      />
-                    </svg>
-                  </div>
-                  <p>Support tool while coding</p>
-                </div>
-                <p>Beautifier code, Converter and minifier.</p>
-              </li>
-              <li>
-                <div className={styles.start}>
-                  <div className={styles.shrink}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width={24}
-                      height={24}
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        fill="currentColor"
-                        d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-                      />
-                    </svg>
-                  </div>
-                  <p>Custom color backgrounds</p>
-                </div>
-                <p>Add a custom background to your posts.</p>
-              </li>
-            </ul>
-            <AppButton children="Get Started" btnType="button_0" htmlType="a" />
-          </div>
-        </div>
+          ))}
       </section>
       <section className="relative mb-44 mt-10 pb-32  lg:pb-10">
         <div className="absolute w-full h-4/5 bottom-0 left-0 bg-gradient-to-t from-dark-700 from-0% via-[99%] to-100% via-transparent to-transparent z-20" />
@@ -378,8 +164,8 @@ function Subscription() {
           </h3>
           <p className="text-lg text-center text-gray-400 pt-5 max-w-xl mx-auto">
             Live collaboration on code. Multiple people can type and edit code
-            in a Element at the same time, all while still seeing the live preview.
-            Great for long-distance pair programming!
+            in a Element at the same time, all while still seeing the live
+            preview. Great for long-distance pair programming!
           </p>
         </div>
         <div className="max-w-[1600px] w-full rounded-full h-h-3/6 bg-gradient-to-b z-0 from-transparent from-0% via-90% to-100% via-gray-700 to-transparent absolute bg-opacity-50 left-1/2 -translate-x-1/2 top-0 blur-[100px]" />

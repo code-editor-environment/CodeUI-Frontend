@@ -21,6 +21,11 @@ export const getTopCreators = handleApi(async (data) => {
   return result.data;
 });
 
+export const getSubscriptions = handleApi(async () => {
+  const result = await NET().get("/package/getPackageToShow");
+  return result.data;
+});
+
 export const getSaveFavorite = handleApi(async (elementId) => {
   const result = await NET().get(
     `react-element/saveFavorite?ElementId=${elementId}`
@@ -52,7 +57,7 @@ export const postPayment = handleApi(async (data) => {
     money: data.money,
     orderType: "billpayment",
     orderDescription: data.orderDescription,
-    returnUrl: `http://127.0.0.1:5173/profile/${data.url}`,
+    returnUrl: `https://codeui.vercel.app/profile/${data.url}`,
   });
   return result.data;
 });

@@ -39,7 +39,7 @@ function PaymentModal() {
             name="money"
             placeholder="Enter your money"
             onChange={handleChange}
-            value={values.money || 10000}
+            value={values.money}
             required
           />
           <Validate errors={errors.money} />
@@ -51,7 +51,7 @@ function PaymentModal() {
             name="orderDescription"
             placeholder="Enter your order description"
             onChange={handleChange}
-            value={values.orderDescription || ""}
+            value={values.orderDescription}
             required
           />
           <Validate errors={errors.orderDescription} />
