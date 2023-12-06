@@ -106,7 +106,7 @@ function Header() {
             className={`hover-underline-animation browse-link ${
               history !== "/" &&
               history !== "/subscription" &&
-              history !== "/challenges" &&
+              history !== "/request" &&
               history !== "/creators"
                 ? "active"
                 : "false"
@@ -117,9 +117,9 @@ function Header() {
           </Link>
           <Link
             className={`hover-underline-animation ${
-              history === "/challenges" ? "active" : "false"
+              history === "/request" ? "active" : "false"
             }`}
-            to="/challenges"
+            to="/request"
           >
             Request
           </Link>

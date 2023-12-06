@@ -30,11 +30,8 @@ function App() {
             <Route path="create" element={<Create />} />
             <Route path="elements" element={<Element />} />
             <Route path="detail/:postId" element={<Detail />} />
-            <Route path="challenges" element={<Challenges />} />
-            <Route
-              path="challenges/:challengesId"
-              element={<DetailChallenges />}
-            />
+            <Route path="request" element={<Challenges />} />
+            <Route path="request/:requestId" element={<DetailChallenges />} />
             <Route path="creators" element={<Creators />} />
             <Route path="subscription" element={<Subscription />} />
             <Route path="guidelines" element={<Guidelines />} />

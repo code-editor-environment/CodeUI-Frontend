@@ -39,7 +39,7 @@ function ChatBox() {
             `${import.meta.env.VITE_NODE_DOMAIN}/accountById?id=${isLogin.id}`
           );
           setId(data.data.data._id);
-          socket.current = io("http://localhost:5000");
+          socket.current = io("https://codeuapi.vercel.app");
           socket.current.emit("add-user", data.data.data._id);
         } else {
           // navigate("/setAvatar");

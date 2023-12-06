@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import io from "socket.io-client";
 // import HeaderMeeting from "./headerMeeting";
 import styles from "./chat.module.scss";
-const server_url = "http://localhost:5000";
+const server_url = "https://codeuapi.vercel.app";
 
 var connections = {};
 const peerConnectionConfig = {

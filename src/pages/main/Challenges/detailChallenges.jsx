@@ -5,13 +5,13 @@ import { doc, getDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 
 function DetailChallenges() {
-  const { challengesId } = useParams();
+  const { requestId } = useParams();
   const [data, setData] = useState(null);
     useEffect(() => {
       const fetchData = async () => {
         try {
           const querySnapshot = await getDoc(
-            doc(db, "challenges", challengesId.slice(14))
+            doc(db, "challenges", requestId.slice(14))
           );
           const data = querySnapshot.data();
           setData(data);
@@ -20,7 +20,7 @@ function DetailChallenges() {
         }
       };
       fetchData();
-    }, [challengesId]);
+    }, [requestId]);
   return (
     <div className="challenges-page pt-[40px] pb-[100px]">
       {data && (
