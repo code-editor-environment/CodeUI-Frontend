@@ -16,7 +16,9 @@ export const putProfiles = handleApi(async (values) => {
 
 export const getTopCreators = handleApi(async (data) => {
   const result = await NET().get(
-    `/account/getAll?Page=${data.page}&PageSize=${data.pageSize}`
+    `/account/getAll?Page=${data.page}&PageSize=${data.pageSize}${
+      data.userName ? "&Username=" + data.userName : ""
+    }`
   );
   return result.data;
 });

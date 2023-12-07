@@ -9,7 +9,7 @@ function IntegrationModal({ postId }) {
   };
   const [copyHtml, setCopyHtml] = useState(false);
   const iframeIn = `<iframe 
-  src="http://127.0.0.1:5173/integration/${postId}" 
+  src="https://codeui.vercel.app/integration/${postId}" 
   frameborder="0"
   style="height:100%">
 </iframe>`;

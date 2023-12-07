@@ -6,54 +6,58 @@ import Contacts from "./contacts";
 import ChatContainers from "./chatContainers";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import styles from "./chat.module.scss";
+import ChatScreen from "./ChatScreen";
+import SideBar from "./SideBar";
+import Chats from "./Chats";
+import Search from "./Search";
 function ChatBox() {
   // const navigate = useNavigate();
-  const socket = useRef();
-  const { isLogin } = useIsLogin();
-  const [contacts, setContacts] = useState([]);
-  const [_id, setId] = useState(false);
-  const [currentChat, setCurrentChat] = useState(undefined);
-  useEffect(() => {
-    if (isLogin) {
+  // const socket = useRef();
+  // const { isLogin } = useIsLogin();
+  // const [contacts, setContacts] = useState([]);
+  // const [_id, setId] = useState(false);
+  // const [currentChat, setCurrentChat] = useState(undefined);
+  // useEffect(() => {
+  //   if (isLogin) {
       
-    }
-  }, [isLogin]);
+  //   }
+  // }, [isLogin]);
 
-  useEffect(() => {
-    async function setCont(){
-      if (isLogin) {
-        if (isLogin) {
-          const data = await axios.get(
-            `${import.meta.env.VITE_NODE_DOMAIN}/account?ne=${isLogin.id}`
-          );
-          setContacts(data.data.list);
-        } else {
-          // navigate("/setAvatar");
-        }
-      }
-    }
-    async function setAccountById(){
-      if (isLogin) {
-        if (isLogin) {
-          const data = await axios.get(
-            `${import.meta.env.VITE_NODE_DOMAIN}/accountById?id=${isLogin.id}`
-          );
-          setId(data.data.data._id);
-          socket.current = io("https://codeuapi.vercel.app");
-          socket.current.emit("add-user", data.data.data._id);
-        } else {
-          // navigate("/setAvatar");
-        }
-      }
-    }
-    setCont();
-    setAccountById();
-    }, // eslint-disable-next-line
-    [isLogin]
-  );
-  const handleChatChange = (chat) => {
-    setCurrentChat(chat);
-  };
+  // useEffect(() => {
+  //   async function setCont(){
+  //     if (isLogin) {
+  //       if (isLogin) {
+  //         const data = await axios.get(
+  //           `${import.meta.env.VITE_NODE_DOMAIN}/account?ne=${isLogin.id}`
+  //         );
+  //         setContacts(data.data.list);
+  //       } else {
+  //         // navigate("/setAvatar");
+  //       }
+  //     }
+  //   }
+  //   async function setAccountById(){
+  //     if (isLogin) {
+  //       if (isLogin) {
+  //         const data = await axios.get(
+  //           `${import.meta.env.VITE_NODE_DOMAIN}/accountById?id=${isLogin.id}`
+  //         );
+  //         setId(data.data.data._id);
+  //         socket.current = io("https://codeuapi.vercel.app");
+  //         socket.current.emit("add-user", data.data.data._id);
+  //       } else {
+  //         // navigate("/setAvatar");
+  //       }
+  //     }
+  //   }
+  //   setCont();
+  //   setAccountById();
+  //   }, // eslint-disable-next-line
+  //   [isLogin]
+  // );
+  // const handleChatChange = (chat) => {
+  //   setCurrentChat(chat);
+  // };
   return (
     <div className={styles.app}>
       <div className={styles.header}>
@@ -84,7 +88,10 @@ function ChatBox() {
         </div>
       </div>
       <div className={styles.wrapper}>
-        {isLogin.id && (
+        <Search />
+        <Chats />
+        <ChatScreen />
+        {/* {isLogin.id && (
           <Contacts contacts={contacts} changeChat={handleChatChange} />
         )}
         {currentChat && _id && (
@@ -93,7 +100,7 @@ function ChatBox() {
             socket={socket}
             isLogin={{ _id }}
           />
-        )}
+        )} */}
         <div className={styles.detailArea}>
           <div className={styles.detailAreaHeader}>
             <div className={`${styles.msgProfile} ${styles.group}`}>

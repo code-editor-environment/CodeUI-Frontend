@@ -19,30 +19,39 @@ import Integration from "./core/integration";
 import Challenges from "./pages/main/Challenges";
 import DetailChallenges from "./pages/main/Challenges/detailChallenges";
 import Guidelines from "./pages/main/Guidelines";
+import { AuthContextProvider } from "./utils/AuthContext";
+import { ChatContextProvider } from "./utils/ChatContext";
 
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route path="" element={<Home />} />
-            <Route path="create" element={<Create />} />
-            <Route path="elements" element={<Element />} />
-            <Route path="detail/:postId" element={<Detail />} />
-            <Route path="request" element={<Challenges />} />
-            <Route path="request/:requestId" element={<DetailChallenges />} />
-            <Route path="creators" element={<Creators />} />
-            <Route path="subscription" element={<Subscription />} />
-            <Route path="guidelines" element={<Guidelines />} />
-            <Route path="profile/:accountID" element={<Profile />} />
-            <Route path="chat" element={<ChatBox />} />
-            <Route path="chat/:chatId" element={<VideoCall />} />
-          </Route>
-          <Route path="*" element={<Err />} />
-          <Route path="/integration/:postId" element={<Integration />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthContextProvider>
+        <ChatContextProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<MainLayout />}>
+                <Route path="" element={<Home />} />
+                <Route path="create" element={<Create />} />
+                <Route path="elements" element={<Element />} />
+                <Route path="detail/:postId" element={<Detail />} />
+                <Route path="request" element={<Challenges />} />
+                <Route
+                  path="request/:requestId"
+                  element={<DetailChallenges />}
+                />
+                <Route path="creators" element={<Creators />} />
+                <Route path="subscription" element={<Subscription />} />
+                <Route path="guidelines" element={<Guidelines />} />
+                <Route path="profile/:accountID" element={<Profile />} />
+                <Route path="chat" element={<ChatBox />} />
+                <Route path="chat/:chatId" element={<VideoCall />} />
+              </Route>
+              <Route path="*" element={<Err />} />
+              <Route path="/integration/:postId" element={<Integration />} />
+            </Routes>
+          </BrowserRouter>
+        </ChatContextProvider>
+      </AuthContextProvider>
     </Provider>
   );
 }
