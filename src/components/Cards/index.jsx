@@ -43,6 +43,8 @@ function Cards() {
           ? new Date(b.createDate) - new Date(a.createDate)
           : true && search.filter === "asc"
           ? new Date(a.createDate) - new Date(b.createDate)
+          : true && search.filter === "views"
+          ? b.viewCount - a.viewCount
           : true;
       });
   }, [randomizedArray, search, fav]);

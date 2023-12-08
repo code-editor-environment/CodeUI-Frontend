@@ -69,7 +69,7 @@ function MsgInput() {
   };
 
   const handleKey = (e) => {
-    if (e.code === "Enter" || e.code === "NumpadEnter") {
+    if ((e.code === "Enter" || e.code === "NumpadEnter") && text !== "") {
       handleSend();
     }
   };
@@ -106,7 +106,7 @@ function MsgInput() {
         {/* <label htmlFor="imgAttachment" className="imgAttachment">
           <ImAttachment size={20} />
         </label> */}
-        <button onClick={handleSend}>
+        <button onClick={handleSend} disabled={text === ""}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             version="1.1"

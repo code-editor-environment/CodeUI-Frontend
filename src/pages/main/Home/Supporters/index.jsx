@@ -12,7 +12,10 @@ function Supporters() {
       </div>
       <h2 className="supporters-section__heading">Supporters</h2>
       <section className="supporters creators">
-        <Link className="creator" to="/profile/tranquoclong">
+        <Link
+          className="creator"
+          to="/profile/1a0528d9-09f3-4664-85b5-31bedb01e3a7"
+        >
           <img
             className="avatar"
             src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
@@ -24,7 +27,10 @@ function Supporters() {
             <span className="button button--sup">PRO</span>
           </div>
         </Link>
-        <Link className="creator" to="/profile/tranquoclong">
+        <Link
+          className="creator"
+          to="/profile/d0105949-03e2-4901-a8e7-1faedccd7cac"
+        >
           <img
             className="avatar"
             src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
@@ -36,7 +42,10 @@ function Supporters() {
             <span className="button button--sup">PRO</span>
           </div>
         </Link>
-        <Link className="creator" to="/profile/tranquoclong">
+        <Link
+          className="creator"
+          to="/profile/853fa0f0-0683-4c4d-b345-e789236dd4d4"
+        >
           <img
             className="avatar"
             src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"
@@ -48,7 +57,10 @@ function Supporters() {
             <span className="button button--sup">PRO</span>
           </div>
         </Link>
-        <Link className="creator" to="/profile/tranquoclong">
+        <Link
+          className="creator"
+          to="/profile/cfa24f7b-6394-43bc-ac19-cfab5fc07e61"
+        >
           <img
             className="avatar"
             src="https://img.icons8.com/?size=200&id=keI1M862UTP2&format=png"

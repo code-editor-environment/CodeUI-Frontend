@@ -118,7 +118,7 @@ const RenderElement = ({ post, search }) => {
         </button>
       )} */}
       <button type="submit" className="card__bookCate">
-        <span>{post.category}</span>
+        <span>{post.viewCount} view</span>
       </button>
       <div className="card__footer">
         <Link to={`/profile/${post.accountID}`}>

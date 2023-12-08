@@ -1,6 +1,13 @@
 import { useState } from "react";
 import Editor from "@monaco-editor/react";
-import { doc, setDoc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  deleteDoc,
+  updateDoc,
+  runTransaction,
+} from "firebase/firestore";
 import { useIsHidden } from "../../../hooks/useIsHidden";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -85,6 +92,15 @@ function Detail() {
           setIsLike(data.data.isLiked);
         }
       });
+      const postRef = doc(db, `elements`, postId);
+      runTransaction(db, async (transaction) => {
+        const postDoc = await transaction.get(postRef);
+        if (!postDoc.exists()) {
+          throw new Error("Document does not exist!");
+        }
+        const newViewCount = (postDoc.data().viewCount || 0) + 1;
+        transaction.update(postRef, { viewCount: newViewCount });
+      });
     },
     // eslint-disable-next-line
     [postId]
@@ -115,7 +131,7 @@ function Detail() {
   //   // dispatch();
   //   // updatePost(postId, elementById, htmlText, cssText, hidden, navigate)
   // };
-  
+
   const onFavorite = () => {
     setFindFavorite(!findFavorite);
     const timeout = setTimeout(() => {
