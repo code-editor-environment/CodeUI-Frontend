@@ -103,9 +103,9 @@ function MsgInput() {
           onChange={(e) => setImg(e.target.files[0])}
           onKeyDown={handleKey}
         />
-        <label htmlFor="imgAttachment" className="imgAttachment">
-          {/* <ImAttachment size={20} /> */}zxc
-        </label>
+        {/* <label htmlFor="imgAttachment" className="imgAttachment">
+          <ImAttachment size={20} />
+        </label> */}
         <button onClick={handleSend}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

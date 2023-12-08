@@ -1,22 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  getDoc,
+  setDoc,
+  doc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import { actLogout, getProfile } from "../../../store/profile/profile-slice";
-import {
-  getProfiles,postFollowCreator,
-} from "../../../api/account";
+import { getProfiles, postFollowCreator } from "../../../api/account";
 import AppButton from "../../../components/Button";
 import { open } from "../../../store/modal/modal-slice";
 import UpdateProfileModal from "../../../components/Modal/updateProfileModal";
 import ElementView from "./elementView";
 import DonationModal from "../../../components/Modal/donationModal";
+import { AuthContext } from "../../../utils/AuthContext";
+import { db } from "../../../configs/firebase.configs";
+import { ChatContext } from "../../../utils/ChatContext";
 // import styles from "./profile.module.scss";
 // import Element from './../Element/index';
 function Profile() {
   const { accountID } = useParams();
-  const dispatch = useDispatch();
+  const dispatchs = useDispatch();
+  const navigate = useNavigate();
   const { isLogin } = useIsLogin();
+  const { currentUser } = useContext(AuthContext);
+  const { dispatch } = useContext(ChatContext);
   const { profiles } = useSelector((state) => state.profile);
   // const [postReview, setPostReview] = useState([]);
   const [follow, setFollow] = useState(false);
@@ -30,7 +41,7 @@ function Profile() {
           console.log(data.error);
         } else {
           console.log(data.data);
-          dispatch(getProfile(data.data));
+          dispatchs(getProfile(data.data));
           setFollow(data.data.isFollow);
         }
         // setLoading(false);
@@ -54,22 +65,71 @@ function Profile() {
     [accountID]
   );
   const onUpdateProfileModal = () => {
-    dispatch(open(<UpdateProfileModal />));
+    dispatchs(open(<UpdateProfileModal />));
   };
   const onDonationModal = () => {
-    dispatch(open(<DonationModal />));
+    dispatchs(open(<DonationModal />));
   };
   function handleLogout(e) {
     e.preventDefault();
-    dispatch(actLogout());
+    dispatchs(actLogout());
   }
-      const onFollow =() => {
-        setFollow(!follow);
-      const timeout = setTimeout(() => {
-        postFollowCreator(profiles.username);
-      }, 1000);
-      return () => clearTimeout(timeout);
-    }
+  const onFollow = () => {
+    setFollow(!follow);
+    const timeout = setTimeout(() => {
+      postFollowCreator(profiles.username);
+    }, 1000);
+    return () => clearTimeout(timeout);
+  };
+  const handleSelect = async () => {
+    const combinedId =
+      currentUser.id > profiles.accountID
+        ? currentUser.id + profiles.accountID
+        : profiles.accountID + currentUser.id;
+    try {
+      const res = await getDoc(doc(db, "chats", combinedId));
+      if (!res.exists()) {
+        // create a chat session
+        await setDoc(doc(db, "chats", combinedId), { messages: [] });
+        // create chats
+        await updateDoc(doc(db, "userChats", currentUser.id), {
+          [combinedId + ".userInfo"]: {
+            id: profiles.accountID,
+            username: profiles.username,
+            imageUrl: profiles.imageUrl,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
+        await updateDoc(doc(db, "userChats", profiles.accountID), {
+          [combinedId + ".userInfo"]: {
+            id: currentUser.id,
+            username: currentUser.username,
+            imageUrl: currentUser.imageUrl,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
+        dispatch({
+          type: "CHANGE_USER",
+          payload: {
+            id: profiles.accountID,
+            username: profiles.username,
+            imageUrl: profiles.imageUrl,
+          },
+        });
+        navigate("/chat");
+      } else {
+        dispatch({
+          type: "CHANGE_USER",
+          payload: {
+            id: profiles.accountID,
+            username: profiles.username,
+            imageUrl: profiles.imageUrl,
+          },
+        });
+        navigate("/chat");
+      }
+    } catch (error) {}
+  };
   return (
     <main className="profile-page">
       {!profiles ? (
@@ -223,6 +283,26 @@ function Profile() {
                     onClick={onFollow}
                   />
                   <AppButton
+                    children="Message"
+                    btnType="button_1"
+                    Icon={
+                      <svg
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24px"
+                        height="24px"
+                        viewBox="0,0,256,256"
+                      >
+                        <g fill="#ffffff">
+                          <g transform="scale(5.33333,5.33333)">
+                            <path d="M10.5,7c-3.57194,0 -6.5,2.92806 -6.5,6.5v17c0,3.57194 2.92806,6.5 6.5,6.5h1.5v5.5c0,1.96599 2.4273,3.17893 4,2l10,-7.5h11.5c3.57194,0 6.5,-2.92806 6.5,-6.5v-17c0,-3.57194 -2.92806,-6.5 -6.5,-6.5zM10.5,10h27c1.95006,0 3.5,1.54994 3.5,3.5v17c0,1.95006 -1.54994,3.5 -3.5,3.5h-12c-0.32478,0.00015 -0.64073,0.1057 -0.90039,0.30078l-9.59961,7.19922v-6c-0.00008,-0.82839 -0.67161,-1.49992 -1.5,-1.5h-3c-1.95006,0 -3.5,-1.54994 -3.5,-3.5v-17c0,-1.95006 1.54994,-3.5 3.5,-3.5z" />
+                          </g>
+                        </g>
+                      </svg>
+                    }
+                    onClick={handleSelect}
+                  />
+                  {/* <AppButton
                     children="Donate"
                     btnType="button_1"
                     Icon={
@@ -240,7 +320,7 @@ function Profile() {
                       </svg>
                     }
                     onClick={onDonationModal}
-                  />
+                  /> */}
                 </div>
               ))}
           </section>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
+import { Timestamp, doc, onSnapshot } from "firebase/firestore";
 import { AuthContext } from "../../../utils/AuthContext";
 import { ChatContext } from "../../../utils/ChatContext";
 import { db } from "../../../configs/firebase.configs";
@@ -9,6 +9,7 @@ function Chats() {
   const { dispatch } = useContext(ChatContext);
 
   const [chats, setChats] = useState([]);
+  console.log("🚀 ~ file: Chats.jsx:12 ~ Chats ~ chats:", chats)
   useEffect(() => {
     const getChats = () => {
       const unsub = onSnapshot(doc(db, "userChats", currentUser.id), (doc) => {
@@ -21,7 +22,22 @@ function Chats() {
 
     currentUser.id && getChats();
   }, [currentUser.id]);
+  const toHoursAndMinutes = (totalSeconds) => {
+    const totalMinutes = Math.floor(totalSeconds / 60);
 
+    const seconds = Math.floor(totalSeconds % 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = Math.floor(totalMinutes % 60);
+    if (hours !== 0) {
+      return `${hours} Hours Ago`;
+    } else if (hours === 0 && minutes !== 0) {
+      return `${minutes} Minutes Ago`;
+    } else if (hours === 0 && minutes === 0 && seconds !== 0) {
+      return `${seconds} Seconds Ago`;
+    } else if (hours === 0 && minutes === 0 && seconds === 0) {
+      return "Just now";
+    }
+  };
   const handleSelect = (user) => {
     dispatch({ type: "CHANGE_USER", payload: user });
   };
@@ -49,7 +65,10 @@ function Chats() {
                   <span className={styles.msgMessage}>
                     {chat[1].lastmessage?.text}
                   </span>
-                  <span className={styles.msgDate}>20m</span>
+                  <span className={styles.msgDate}>
+                    {" "}
+                    {toHoursAndMinutes(Timestamp.now() - chat[1].date)}
+                  </span>
                 </div>
               </div>
             </div>

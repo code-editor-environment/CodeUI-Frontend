@@ -88,7 +88,7 @@ function ChatBox() {
         </div>
       </div>
       <div className={styles.wrapper}>
-        <Search />
+        {/* <Search /> */}
         <Chats />
         <ChatScreen />
         {/* {isLogin.id && (
@@ -101,7 +101,7 @@ function ChatBox() {
             isLogin={{ _id }}
           />
         )} */}
-        <div className={styles.detailArea}>
+        {/* <div className={styles.detailArea}>
           <div className={styles.detailAreaHeader}>
             <div className={`${styles.msgProfile} ${styles.group}`}>
               <img
@@ -179,7 +179,7 @@ function ChatBox() {
               Shared photos
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

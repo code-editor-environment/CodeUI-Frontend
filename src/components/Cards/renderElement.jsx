@@ -1,30 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { useIsLogin } from "../../hooks/useIsLogin";
+// import { useIsLogin } from "../../hooks/useIsLogin";
 import tailwindIcon from "../../assets/images/tailwind.svg";
 // import { getStorage, setStorage } from "../../utils/helper";
-import { useDispatch, useSelector } from "react-redux";
-import { postFav, deleteFav } from "../../store/profile/profile-slice";
-import { saveFavorite } from "../../api/element";
-import { formatDateString } from "../../utils/functions";
+// import {  useSelector } from "react-redux";
+// import { postFav, deleteFav } from "../../store/profile/profile-slice";
+// import { saveFavorite } from "../../api/element";
+// import { formatDateString } from "../../utils/functions";
 const RenderElement = ({ post, search }) => {
-  const { isLogin } = useIsLogin();
-  const dispatch = useDispatch();
-  const { fav } = useSelector((state) => state.profile);
-  const [checkFavorite, setCheckFavorite] = useState(fav.includes(post.id));
-  const onFavorite = () => {
-    setCheckFavorite(!checkFavorite);
-    const timeout = setTimeout(() => {
-      if (checkFavorite) {
-        dispatch(deleteFav(post.id));
-        saveFavorite({ accountId: isLogin.id, postId:post.id });
-      } else {
-        dispatch(postFav(post.id));
-        saveFavorite({ accountId: isLogin.id, postId: post.id });
-      }
-    }, 1000);
-    return () => clearTimeout(timeout);
-  };
+  // const { isLogin } = useIsLogin();
+  // const dispatch = useDispatch();
+  // const { fav } = useSelector((state) => state.profile);
+  // const [checkFavorite, setCheckFavorite] = useState(fav.includes(post.id));
+  // const onFavorite = () => {
+  //   setCheckFavorite(!checkFavorite);
+  //   const timeout = setTimeout(() => {
+  //     if (checkFavorite) {
+  //       dispatch(deleteFav(post.id));
+  //       saveFavorite({ accountId: isLogin.id, postId:post.id });
+  //     } else {
+  //       dispatch(postFav(post.id));
+  //       saveFavorite({ accountId: isLogin.id, postId: post.id });
+  //     }
+  //   }, 1000);
+  //   return () => clearTimeout(timeout);
+  // };
   return (
     <article className="card card--checkbox dark-background h-full">
       <div

@@ -4,7 +4,6 @@ import { AuthContext } from "../../../utils/AuthContext";
 import { ChatContext } from "../../../utils/ChatContext";
 import styles from "./chat.module.scss";
 function Message({ message }) {
-  console.log("🚀 ~ file: Message.jsx:7 ~ Message ~ message:", message)
   const { currentUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
   const ref = useRef();

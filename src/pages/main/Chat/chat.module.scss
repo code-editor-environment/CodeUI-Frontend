@@ -55,7 +55,7 @@
 
 .conversationArea,
 .detailArea {
-  width: 340px;
+  width: 500px;
   flex-shrink: 0;
 }
 
@@ -286,7 +286,7 @@
 
 .chatMsgProfile {
   flex-shrink: 0;
-  margin-top: auto;
+  // margin-top: auto;
   margin-bottom: -20px;
   position: relative;
 }

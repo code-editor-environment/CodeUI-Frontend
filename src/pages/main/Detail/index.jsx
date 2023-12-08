@@ -115,6 +115,7 @@ function Detail() {
   //   // dispatch();
   //   // updatePost(postId, elementById, htmlText, cssText, hidden, navigate)
   // };
+  
   const onFavorite = () => {
     setFindFavorite(!findFavorite);
     const timeout = setTimeout(() => {
@@ -717,41 +718,84 @@ function Detail() {
                         <>
                           {/* <div /> */}
                           <button
-                            className="px-4 py-2.5 font-sans flex items-center gap-2 border-none rounded-lg text-sm font-semibold transition-colors duration-200 bg-transparent hover:bg-dark-600 max-md:bg-dark-600 text-offwhite cursor-pointer text-red-400 whitespace-nowrap"
+                            className="px-4 py-2.5 font-sans flex items-center justify-end gap-2 border-none rounded-lg text-sm font-semibold transition-colors duration-200 bg-transparent hover:bg-dark-600 max-md:bg-dark-600 text-offwhite cursor-pointer text-red-400 whitespace-nowrap"
                             onClick={() =>
                               dispatch(open(<IssueModal reason={reason} />))
                             }
                           >
                             {reason.length} issue
                           </button>
-                          <button
-                            className="button button--notifications button--icon"
-                            onClick={() =>
-                              dispatch(
-                                open(
-                                  <ConfirmModal
-                                    title={"Rejected"}
-                                    onClick={onDeletePost}
-                                  />
+                          <div className="buttons">
+                            <button
+                              className="button button--notifications button--icon"
+                              onClick={() =>
+                                dispatch(
+                                  open(
+                                    <ConfirmModal
+                                      title={"Rejected"}
+                                      onClick={onDeletePost}
+                                    />
+                                  )
                                 )
-                              )
-                            }
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              width={24}
-                              height={24}
-                              className="h-5 w-5"
+                              }
                             >
-                              <path fill="none" d="M0 0h24v24H0z" />
-                              <path
-                                fill="currentColor"
-                                d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z"
-                              />
-                            </svg>
-                            Delete
-                          </button>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                width={24}
+                                height={24}
+                                className="h-5 w-5"
+                              >
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path
+                                  fill="currentColor"
+                                  d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z"
+                                />
+                              </svg>
+                              Delete
+                            </button>
+                            <AppButton
+                              children="Update"
+                              btnType="button_1"
+                              Icon={
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  width={24}
+                                  height={24}
+                                  className="h-5 w-5 false"
+                                >
+                                  <path fill="none" d="M0 0h24v24H0z" />
+                                  <path
+                                    fill="currentColor"
+                                    d="M5.463 4.433A9.961 9.961 0 0 1 12 2c5.523 0 10 4.477 10 10 0 2.136-.67 4.116-1.81 5.74L17 12h3A8 8 0 0 0 6.46 6.228l-.997-1.795zm13.074 15.134A9.961 9.961 0 0 1 12 22C6.477 22 2 17.523 2 12c0-2.136.67-4.116 1.81-5.74L7 12H4a8 8 0 0 0 13.54 5.772l.997 1.795z"
+                                  />
+                                </svg>
+                              }
+                              onClick={() =>
+                                dispatch(
+                                  open(
+                                    <SelectTagModal
+                                      cssText={
+                                        cssText === ""
+                                          ? elementById.css
+                                          : cssText
+                                      }
+                                      typeCSS={elementById?.typeCSS}
+                                      htmlText={
+                                        htmlText === ""
+                                          ? elementById.html
+                                          : htmlText
+                                      }
+                                      clickSubmitReview={clickSubmitReview}
+                                      background={color}
+                                      elementById={elementById}
+                                    />
+                                  )
+                                )
+                              }
+                            />
+                          </div>
                         </>
                       ) : (
                         <>
