@@ -28,6 +28,11 @@ export const getSubscriptions = handleApi(async () => {
   return result.data;
 });
 
+export const getRequestList = handleApi(async (data) => {
+  const result = await NET().get(`request/getRequestList`);
+  return result.data;
+});
+
 export const getSaveFavorite = handleApi(async (elementId) => {
   const result = await NET().get(
     `react-element/saveFavorite?ElementId=${elementId}`
@@ -78,5 +83,10 @@ export const getDonation = handleApi(async (data) => {
   const result = await NET().get(
     `/donation/getDonationPackageByAccountId?accountId=${data}`
   );
+  return result.data;
+});
+
+export const postCreateRequest = handleApi(async (data) => {
+  const result = await NET().post(`/request/createRequest`, data);
   return result.data;
 });

@@ -219,7 +219,6 @@ function UpdateProfileModal() {
               )}
             </div>
           </div>
-
           <div style={{ width: "100%", display: "grid", gap: "1rem" }}>
             <div className="form-label grid-cols-3 relative">
               <label>Username</label>

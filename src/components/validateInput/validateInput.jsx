@@ -123,3 +123,23 @@ export function validateUpdateProfile(values) {
   }
   return errors;
 }
+export function validateRequest(values) {
+  let errors = {};
+  if (!values.categoryName) {
+    errors.categoryName = "categoryName is required";
+  }
+  if (!values.reward) {
+    errors.reward = "reward is required";
+  }
+  //  else if (values.reward < 1000) {
+  //   errors.reward =
+  //     "Money must be greater than 10.000 and smaller than 10.000.000";
+  // }
+  if (!values.name) {
+    errors.name = "name is required";
+  }
+  if (!values.deadline) {
+    errors.deadline = "deadline is required";
+  }
+  return errors;
+}
