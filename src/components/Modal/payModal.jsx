@@ -5,8 +5,7 @@ function PayModal({ url, datas, setData }) {
   useEffect(
     () => {
       postConfirmPayment(url).then((data) => {
-         console.log("ok", datas, data.data.amount, datas + data.data.amount);
-         setData(datas + data.data.amount);
+        setData(datas + data.data.amount);
       });
     }, // eslint-disable-next-line
     []

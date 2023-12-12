@@ -13,8 +13,23 @@ export const CreatorSlice = createSlice({
     getRequest: (state, { payload }) => {
       state.request = payload;
     },
+    postRequest: (state, { payload }) => {
+      state.request.push(payload);
+    },
+    putRequest: (state, { payload }) => {
+      state.request = payload;
+    },
+    deleteRequest: (state, { payload: id }) => {
+      state.request = state.request.filter((item) => item.id !== id);
+    },
   },
 });
 
-export const { getTopCreator, getSubscription, getRequest } = CreatorSlice.actions;
+export const {
+  getTopCreator,
+  getSubscription,
+  getRequest,
+  postRequest,
+  deleteRequest,
+} = CreatorSlice.actions;
 export default CreatorSlice.reducer;

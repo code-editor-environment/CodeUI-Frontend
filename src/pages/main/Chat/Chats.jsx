@@ -9,7 +9,6 @@ function Chats() {
   const { dispatch } = useContext(ChatContext);
 
   const [chats, setChats] = useState([]);
-  console.log("🚀 ~ file: Chats.jsx:12 ~ Chats ~ chats:", chats)
   useEffect(() => {
     const getChats = () => {
       const unsub = onSnapshot(doc(db, "userChats", currentUser.id), (doc) => {
@@ -22,19 +21,24 @@ function Chats() {
 
     currentUser.id && getChats();
   }, [currentUser.id]);
-  const toHoursAndMinutes = (totalSeconds) => {
+  const toDaysHoursMinutes = (totalSeconds) => {
     const totalMinutes = Math.floor(totalSeconds / 60);
+    const totalHours = Math.floor(totalMinutes / 60);
+    const days = Math.floor(totalHours / 24);
 
+    const hours = totalHours % 24;
+    const minutes = totalMinutes % 60;
     const seconds = Math.floor(totalSeconds % 60);
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = Math.floor(totalMinutes % 60);
-    if (hours !== 0) {
+
+    if (days !== 0) {
+      return `${days} Days Ago`;
+    } else if (days === 0 && hours !== 0) {
       return `${hours} Hours Ago`;
-    } else if (hours === 0 && minutes !== 0) {
+    } else if (days === 0 && hours === 0 && minutes !== 0) {
       return `${minutes} Minutes Ago`;
-    } else if (hours === 0 && minutes === 0 && seconds !== 0) {
+    } else if (days === 0 && hours === 0 && minutes === 0 && seconds !== 0) {
       return `${seconds} Seconds Ago`;
-    } else if (hours === 0 && minutes === 0 && seconds === 0) {
+    } else {
       return "Just now";
     }
   };
@@ -67,7 +71,7 @@ function Chats() {
                   </span>
                   <span className={styles.msgDate}>
                     {" "}
-                    {toHoursAndMinutes(Timestamp.now() - chat[1].date)}
+                    {toDaysHoursMinutes(Timestamp.now() - chat[1].date)}
                   </span>
                 </div>
               </div>

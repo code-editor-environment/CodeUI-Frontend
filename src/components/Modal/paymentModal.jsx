@@ -1,20 +1,18 @@
-import useForm from "./../../hooks/useForm";
 import { validateDonate } from "../validateInput/validateInput";
 import Validate from "./../validateInput/index";
 import { useDispatch } from "react-redux";
 import { close } from "../../store/modal/modal-slice";
 import { postPayment } from "../../api/account";
-import { useIsLogin } from './../../hooks/useIsLogin';
+import { useIsLogin } from "./../../hooks/useIsLogin";
+import { useEffect } from "react";
+import { useState } from "react";
 
+const tags = ["10000", "15000", "20000", "25000", "30000", "35000"];
 function PaymentModal() {
   const { isLogin } = useIsLogin();
   const dispatch = useDispatch();
-  const { values, errors, handleChange, handleSubmit } = useForm(
-    donate,
-    validateDonate
-  );
   function donate() {
-    postPayment({ ...values, url: isLogin.id}).then((data) => {
+    postPayment({ ...values, url: isLogin.id }).then((data) => {
       if (data.data?.message === "ok") {
         window.location.href = data.data.paymentUrl;
         dispatch(close());
@@ -23,6 +21,36 @@ function PaymentModal() {
       }
     });
   }
+  const [values, setValues] = useState({
+    money: 10000,
+    orderDescription: "Deposit money into your account",
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(
+    () => {
+      if (Object.keys(errors).length === 0 && isSubmitting) {
+        donate();
+      }
+    },
+    // eslint-disable-next-line
+    [errors]
+  );
+
+  const handleSubmit = (event) => {
+    if (event) event.preventDefault();
+    setErrors(validateDonate(values));
+    setIsSubmitting(true);
+  };
+
+  const handleChange = (event) => {
+    event.persist();
+    setValues((values) => ({
+      ...values,
+      [event.target.name]: event.target.value,
+    }));
+  };
   // const formatCurrency = (value) => {
   //   if (value) {
   //     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -43,6 +71,22 @@ function PaymentModal() {
             required
           />
           <Validate errors={errors.money} />
+          <div className="flex custom-scrollbar items-start flex-wrap gap-1 mt-3 max-lg:h-[200px] overflow-y-auto">
+            {tags.map((tag, index) => (
+              <span
+                className={`bg-dark-600 cursor-pointer hover:bg-dark-500 text-gray-200 rounded px-2 py-1`}
+                key={index}
+                onClick={() =>
+                  setValues((values) => ({
+                    ...values,
+                    money: tag,
+                  }))
+                }
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
         </div>
         <div className="form-label grid-cols-6 relative">
           <label>description</label>

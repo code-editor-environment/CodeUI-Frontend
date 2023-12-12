@@ -29,7 +29,14 @@ export const getSubscriptions = handleApi(async () => {
 });
 
 export const getRequestList = handleApi(async (data) => {
-  const result = await NET().get(`request/getRequestList`);
+  const result = await NET().get(
+    `request/getRequestList?SortStartDate=3&Status=1`
+  );
+  return result.data;
+});
+
+export const getRequestListById = handleApi(async (data) => {
+  const result = await NET().get(`request/getRequestById?requestId=${data}`);
   return result.data;
 });
 
@@ -88,5 +95,10 @@ export const getDonation = handleApi(async (data) => {
 
 export const postCreateRequest = handleApi(async (data) => {
   const result = await NET().post(`/request/createRequest`, data);
+  return result.data;
+});
+
+export const buyPackage = handleApi(async (id) => {
+  const result = await NET().post(`package/buyPackage?packageId=${id}`);
   return result.data;
 });

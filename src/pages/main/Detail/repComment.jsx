@@ -188,7 +188,7 @@ function RepComment({
                             dispatch(
                               open(
                                 <ConfirmModal
-                                  title={"Comment"}
+                                  title={"Delete Comment"}
                                   onClick={() => onDelete(inverseComment.id)}
                                 />
                               )

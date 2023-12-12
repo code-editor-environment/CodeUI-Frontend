@@ -121,7 +121,7 @@ function RenderComment({ comment, onEditComment, onDelete, index }) {
                     dispatch(
                       open(
                         <ConfirmModal
-                          title={"Comment"}
+                          title={"Delete Comment"}
                           onClick={() => onDelete(comment.id)}
                         />
                       )

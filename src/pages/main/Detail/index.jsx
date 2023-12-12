@@ -707,7 +707,7 @@ function Detail() {
                               dispatch(
                                 open(
                                   <ConfirmModal
-                                    title={"Review"}
+                                    title={"Delete Review"}
                                     onClick={onDeletePost}
                                   />
                                 )
@@ -748,7 +748,7 @@ function Detail() {
                                 dispatch(
                                   open(
                                     <ConfirmModal
-                                      title={"Rejected"}
+                                      title={"Delete Rejected"}
                                       onClick={onDeletePost}
                                     />
                                   )
@@ -848,7 +848,7 @@ function Detail() {
                               dispatch(
                                 open(
                                   <ConfirmModal
-                                    title={"Draft"}
+                                    title={"Delete Draft"}
                                     onClick={onDeletePost}
                                   />
                                 )

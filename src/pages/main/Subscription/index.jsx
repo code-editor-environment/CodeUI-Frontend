@@ -6,26 +6,48 @@ import rocket from "../../../assets/images/rocket.svg";
 import subscription2 from "../../../assets/images/subscription2.png";
 import subscription1 from "../../../assets/images/pro1.png";
 import { useDispatch, useSelector } from "react-redux";
-import { getSubscriptions } from "../../../api/account";
+import { buyPackage, getSubscriptions } from "../../../api/account";
 import { getSubscription } from "../../../store/creator/creator-slice";
+import { open } from "../../../store/modal/modal-slice";
+import ConfirmModal from "../../../components/Modal/confirmModal";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import { useIsLogin } from "../../../hooks/useIsLogin";
+import CheckLoginModal from "../../../components/Modal/checkLoginModal";
 // import Element from './../Element/index';
 function Subscription() {
-    const dispatch = useDispatch();
-    // const query = useQuery();
-    // const text = query.get("text");
-    const { subscription } = useSelector((state) => state.creator);
-    console.log("🚀 ~ file: index.jsx:17 ~ Subscription ~ subscription:", subscription)
-    useEffect(() => {
-      window.scrollTo({ top: 0 });
-      getSubscriptions().then((data) => {
-        if (data.error) {
-          console.log(data.error);
-        } else {
-          dispatch(getSubscription(data.data));
-        }
-      });
-      // eslint-disable-next-line
-    }, []);
+  const dispatch = useDispatch();
+  // const query = useQuery();
+  // const text = query.get("text");
+  const { isLogin } = useIsLogin();
+  const { subscription } = useSelector((state) => state.creator);
+  const [load, setLoad] = useState(false);
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+    getSubscriptions().then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        dispatch(getSubscription(data.data));
+      }
+    });
+    // eslint-disable-next-line
+  }, [load]);
+  const onBuy = (id) => {
+    buyPackage(id).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        // setComments(comments.filter((c) => c.id !== id));
+        setLoad(!load);
+        toast.success("successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
+        });
+      }
+    });
+  };
   return (
     <div className={styles.supportersSection}>
       <h2>
@@ -53,8 +75,13 @@ function Subscription() {
                   <span>/month</span>
                 </div>
                 <p>
-                  With this plan, you'll gain access to advanced extra features.
+                  {sub.isBought
+                    ? "The package you currently own will end on  "
+                    : "With this plan, you'll gain access to advanced extra features."}
                 </p>
+                {sub.isBought && (
+                  <span>{new Date(sub.endDate).toDateString()}</span>
+                )}
               </div>
               <div className={styles.content}>
                 <ul>
@@ -84,15 +111,45 @@ function Subscription() {
                 </ul>
                 {sub.name === "Pro" ? (
                   <AppButton
-                    children="Get Started"
+                    children={sub.isBought ? "Possession" : "Get Started"}
                     btnType="button_1"
-                    htmlType="a"
+                    disabled={sub.isBought}
+                    onClick={() =>
+                      dispatch(
+                        open(
+                          isLogin ? (
+                            <ConfirmModal
+                              title={"Buy package"}
+                              type={"package"}
+                              onClick={() => onBuy(sub.id)}
+                            />
+                          ) : (
+                            <CheckLoginModal />
+                          )
+                        )
+                      )
+                    }
                   />
                 ) : (
                   <AppButton
-                    children="Get Started"
+                    children={sub.isBought ? "Possession" : "Get Started"}
                     btnType="button_0"
-                    htmlType="a"
+                    disabled={sub.isBought}
+                    onClick={() =>
+                      dispatch(
+                        open(
+                          isLogin ? (
+                            <ConfirmModal
+                              title={"Buy package"}
+                              type={"package"}
+                              onClick={() => onBuy(sub.id)}
+                            />
+                          ) : (
+                            <CheckLoginModal />
+                          )
+                        )
+                      )
+                    }
                   />
                 )}
               </div>

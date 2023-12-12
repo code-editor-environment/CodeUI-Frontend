@@ -25,7 +25,7 @@ function Point() {
         if (data.error) {
           console.log(data.error);
         } else {
-          console.log("data.data.wallet", data.data.wallet);
+           console.log("datas", data.data.wallet);
           search?.vnp_Amount
             ? dispatch(
                 open(
@@ -42,24 +42,7 @@ function Point() {
     }, // eslint-disable-next-line
     []
   );
-  useEffect(
-    () => {
-      getProfiles(isLogin.id).then((data) => {
-        if (data.error) {
-          console.log(data.error);
-        } else {
-          setData(data.data.wallet);
-        }
-      });
-      search?.vnp_Amount &&
-        dispatch(
-          open(
-            <PayModal url={location.search} datas={data} setData={setData} />
-          )
-        );
-    }, // eslint-disable-next-line
-    []
-  );
+
   return (
     <div className={styles.point}>
       <div
@@ -72,6 +55,16 @@ function Point() {
           style: "currency",
           currency: "VND",
         })}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          width={24}
+          height={24}
+          style={{marginLeft: "10px", marginRight: "0px"}}
+        >
+          <path fill="none" d="M0 0h24v24H0z" />
+          <path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" />
+        </svg>
       </div>
       <div
         className={`${styles.info} styles-module_tooltip__mnnfp styles-module_dark__xNqje points-tooltip shadow-lg bg-dark-600 styles-module_show__2NboJ styles-module_clickable__Bv9o7`}

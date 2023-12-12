@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { storeImageToFireBase } from "../../utils/storeImageToFirebase.";
 import { close } from "../../store/modal/modal-slice";
 import { postCreateRequest } from "../../api/account";
-
+import { postRequest } from "../../store/creator/creator-slice";
+import { toast } from "react-toastify";
 function RequestModal() {
   const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState();
@@ -28,7 +29,14 @@ function RequestModal() {
       if (data.error) {
         console.log(data.error);
       } else {
+        console.log(data.data);
+        dispatch(postRequest(data.data));
         dispatch(close());
+        toast.success("successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
+        });
       }
     });
   }

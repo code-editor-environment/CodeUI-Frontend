@@ -12,19 +12,24 @@ function Message({ message }) {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
 
-  const toHoursAndMinutes = (totalSeconds) => {
+  const toDaysHoursMinutes = (totalSeconds) => {
     const totalMinutes = Math.floor(totalSeconds / 60);
+    const totalHours = Math.floor(totalMinutes / 60);
+    const days = Math.floor(totalHours / 24);
 
+    const hours = totalHours % 24;
+    const minutes = totalMinutes % 60;
     const seconds = Math.floor(totalSeconds % 60);
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = Math.floor(totalMinutes % 60);
-    if (hours !== 0) {
+
+    if (days !== 0) {
+      return `${days} Days Ago`;
+    } else if (days === 0 && hours !== 0) {
       return `${hours} Hours Ago`;
-    } else if (hours === 0 && minutes !== 0) {
+    } else if (days === 0 && hours === 0 && minutes !== 0) {
       return `${minutes} Minutes Ago`;
-    } else if (hours === 0 && minutes === 0 && seconds !== 0) {
+    } else if (days === 0 && hours === 0 && minutes === 0 && seconds !== 0) {
       return `${seconds} Seconds Ago`;
-    } else if (hours === 0 && minutes === 0 && seconds === 0) {
+    } else {
       return "Just now";
     }
   };
@@ -47,7 +52,7 @@ function Message({ message }) {
           alt=""
         />
         <div className={styles.chatMsgDate}>
-          {toHoursAndMinutes(Timestamp.now() - message.date)}
+          {toDaysHoursMinutes(Timestamp.now() - message.date)}
         </div>
       </div>
       <div className={styles.chatMsgContent}>
