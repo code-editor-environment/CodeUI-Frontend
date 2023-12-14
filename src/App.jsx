@@ -21,6 +21,7 @@ import DetailChallenges from "./pages/main/Challenges/detailChallenges";
 import Guidelines from "./pages/main/Guidelines";
 import { AuthContextProvider } from "./utils/AuthContext";
 import { ChatContextProvider } from "./utils/ChatContext";
+import RequestElement from "./pages/main/Detail/requestElement";
 
 function App() {
   return (
@@ -34,6 +35,10 @@ function App() {
                 <Route path="create" element={<Create />} />
                 <Route path="elements" element={<Element />} />
                 <Route path="detail/:postId" element={<Detail />} />
+                <Route
+                  path="requestElement/:postId"
+                  element={<RequestElement />}
+                />
                 <Route path="request" element={<Challenges />} />
                 <Route
                   path="request/:requestId"

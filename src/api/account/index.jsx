@@ -30,13 +30,35 @@ export const getSubscriptions = handleApi(async () => {
 
 export const getRequestList = handleApi(async (data) => {
   const result = await NET().get(
-    `request/getRequestList?SortStartDate=3&Status=1`
+    `request/getRequestList?SortStartDate=3&Status=${
+      data.search?.filter ? data.search?.filter : "5"
+    }${
+      data.search?.r
+        ? data.search.r === "myRequest"
+          ? `&accountID=${data.id}`
+          : `&requesterId=${data.id}`
+        : ""
+    }`
   );
   return result.data;
 });
 
 export const getRequestListById = handleApi(async (data) => {
   const result = await NET().get(`request/getRequestById?requestId=${data}`);
+  return result.data;
+});
+
+export const getFulfillmentByRequestId = handleApi(async (data) => {
+  const result = await NET().get(
+    `request/getFulfillmentByRequestId?requestId=${data}`
+  );
+  return result.data;
+});
+
+export const getProcessFulfillment = handleApi(async (data) => {
+  const result = await NET().get(
+    `request/getProcessFulfillment?requestId=${data}`
+  );
   return result.data;
 });
 

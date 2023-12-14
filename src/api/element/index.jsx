@@ -107,3 +107,39 @@ export const reportElement = handleApi(async (data) => {
   );
   return result.data;
 });
+
+export const createRequestElement = handleApi(async (data) => {
+  const result = await NET().put(`/request/acceptRequest?requestId=${data}`);
+  return result.data;
+});
+
+export const giveUpRequestElement = handleApi(async (data) => {
+  const result = await NET().put(`/request/giveUpRequest?requestId=${data}`);
+  return result.data;
+});
+
+export const cancelRequestElement = handleApi(async (data) => {
+  const result = await NET().put(`/request/cancelRequest?requestId=${data}`);
+  return result.data;
+});
+
+export const acceptFulfillment = handleApi(async (postId) => {
+  const result = await NET().put(
+    `request/acceptFulfillment?fulfillmentId=${postId}`
+  );
+  return result.data;
+});
+
+export const rejectFulfillment = handleApi(async (postId) => {
+  const result = await NET().put(
+    `request/rejectFulfillment?fulfillmentId=${postId}`
+  );
+  return result.data;
+});
+
+export const submitFulfillment = handleApi(async (postId) => {
+  const result = await NET().put(
+    `request/submitFulfillment?fulfillmentId=${postId}`
+  );
+  return result.data;
+});

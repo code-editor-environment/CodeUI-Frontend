@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import useForm from "./../../hooks/useForm";
+import Select from "react-select";
 import { validateRequest } from "../validateInput/validateInput";
 import Validate from "./../validateInput/index";
 import { useEffect, useState } from "react";
@@ -13,6 +14,14 @@ function RequestModal() {
   const [selectedFile, setSelectedFile] = useState();
   const [image, setImage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedGender, setSelectedGender] = useState({
+    value: "mixed",
+    label: "Mixed",
+  });
+    const [selectedCate, setSelectedCate] = useState({
+      value: "button",
+      label: "Button",
+    });
   const { values, errors, handleChange, handleSubmit } = useForm(
     login,
     validateRequest
@@ -24,7 +33,8 @@ function RequestModal() {
       name: values.requestDescription,
       deadline: parseInt(values.deadline),
       avatar: image,
-      categoryName: values.categoryName,
+      categoryName: selectedCate.value,
+      typeCss: selectedGender.value,
     }).then((data) => {
       if (data.error) {
         console.log(data.error);
@@ -72,6 +82,14 @@ function RequestModal() {
     }
     setSelectedFile(e.target.files[0]);
   };
+  const colorStyles = {
+    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+      return {
+        ...styles,
+        backgroundColor: isDisabled ? "rgb(41, 41, 41)" : "rgb(41, 41, 41)",
+      };
+    },
+  };
   return (
     <div className="customModal--sign-in options-modal">
       <h3 className="heading">Create request</h3>
@@ -80,80 +98,141 @@ function RequestModal() {
           className="form-label grid-cols-6 relative"
           style={{ display: "flex" }}
         >
-          <div style={{ position: "relative" }}>
-            <img
-              src={
-                image ||
-                "https://archaeology.co.uk/wp-content/themes/fox/images/placeholder.jpg"
-              }
-              alt=""
-              style={{
-                marginRight: "20px",
-                maxWidth: "150px",
-                height: "150px",
-                objectFit: "cover",
-                borderRadius: "8px",
-              }}
-            />
+          {image ? (
+            <div style={{ position: "relative" }}>
+              <img
+                src={image}
+                alt=""
+                style={{
+                  marginRight: "20px",
+                  maxWidth: "150px",
+                  height: "150px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "5px",
+                  left: "0px",
+                  width: "88%",
+                  textAlign: "-webkit-center",
+                }}
+              >
+                {isLoading ? (
+                  "load"
+                ) : (
+                  <>
+                    <input
+                      type="file"
+                      name="profileImageUrl"
+                      accept="image/*"
+                      onChange={onSelectFile}
+                      id="upload"
+                      style={{
+                        cursor: "pointer",
+                        position: "absolute",
+                        opacity: " 0",
+                      }}
+                    />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      version="1.1"
+                      xmlnsXlink="http://www.w3.org/1999/xlink"
+                      width={32}
+                      height={32}
+                      x={0}
+                      y={0}
+                      viewBox="0 0 24 24"
+                      style={{ enableBackground: "new 0 0 512 512" }}
+                      xmlSpace="preserve"
+                      className
+                    >
+                      <g>
+                        <linearGradient
+                          id="a"
+                          x1="-12.14"
+                          x2="31.14"
+                          y1="-8.14"
+                          y2="35.14"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop offset={0} stopColor="#9cecfb" />
+                          <stop offset=".51" stopColor="#65c7f7" />
+                          <stop offset={1} stopColor="#0052d4" />
+                        </linearGradient>
+                        <path
+                          fill="url(#a)"
+                          d="M20 23H4a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h2a1 1 0 0 1 0 2H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-2a1 1 0 0 1 0-2h2a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3zm-8-4a1 1 0 0 1-1-1V4.41l-2.29 2.3a1 1 0 1 1-1.42-1.42l4-4a1 1 0 0 1 1.42 0l4 4a1 1 0 0 1-1.42 1.42L13 4.41V18a1 1 0 0 1-1 1z"
+                          opacity={1}
+                          data-original="url(#a)"
+                        />
+                      </g>
+                    </svg>
+                  </>
+                )}
+              </div>
+            </div>
+          ) : (
             <div
+              className="relative flex items-center justify-center cursor-pointer false border-2 border-gray-600 bg-transparent border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               style={{
-                position: "absolute",
-                bottom: "5px",
-                left: "0px",
-                width: "88%",
-                textAlign: "center",
+                width: "150px",
+                height: "150px",
+                marginRight: "20px",
               }}
             >
-              {isLoading ? (
-                "load"
-              ) : (
-                <>
-                  <input
-                    type="file"
-                    name="profileImageUrl"
-                    accept="image/*"
-                    onChange={onSelectFile}
-                    id="upload"
-                    style={{
-                      cursor: "pointer",
-                      position: "absolute",
-                      opacity: " 0",
-                    }}
-                  />
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={34}
-                    height={34}
-                    viewBox="0 0 512 512"
-                    className="inline"
-                  >
-                    <g>
-                      <linearGradient
-                        id="a"
-                        gradientUnits="userSpaceOnUse"
-                      ></linearGradient>
-                      <path
-                        fill="url(#a)"
-                        d="M512 104.471v217a80.091 80.091 0 0 1-80 80h-86.5a16 16 0 0 1 0-32H432a48.054 48.054 0 0 0 48-48v-217a48.054 48.054 0 0 0-48-48H80a48.054 48.054 0 0 0-48 48v217a48.054 48.054 0 0 0 48 48h92.546a16 16 0 0 1 0 32H80a80.091 80.091 0 0 1-80-80v-217a80.09 80.09 0 0 1 80-80h352a80.09 80.09 0 0 1 80 80zM344.907 284.4a16 16 0 0 0 1.572-22.572l-78.407-90.142a16 16 0 0 0-24.144 0l-78.407 90.144a16 16 0 0 0 24.145 21L240 224.963v246.566a16 16 0 0 0 32 0V224.963l50.334 57.867a16 16 0 0 0 22.573 1.572z"
-                      />
-                    </g>
-                  </svg>
-                </>
+              {!isLoading && (
+                <input
+                  type="file"
+                  name="profileImageUrl"
+                  accept="image/*"
+                  onChange={onSelectFile}
+                  id="upload"
+                  style={{
+                    height: "100%",
+                    cursor: "pointer",
+                    position: "absolute",
+                    opacity: " 0",
+                  }}
+                />
               )}
+              <span className="flex items-center gap-3 mt-2 font-sans font-semibold text-gray-600 text-md">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6 mx-auto text-gray-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                >
+                  <path d="M12 19v-7m0 0V5m0 7H5m7 0h7" />
+                </svg>
+                {isLoading ? "loading" : "add image!"}
+              </span>
             </div>
-          </div>
+          )}
           <div style={{ width: "100%", display: "grid", gap: "1rem" }}>
             <div className="form-label grid-cols-3 relative">
               <label>Category name</label>
-              <input
-                type="text"
-                name="categoryName"
-                placeholder="Enter categoryName"
-                onChange={handleChange}
-                value={values.categoryName || ""}
-                required
+              <Select
+                styles={colorStyles}
+                options={[
+                  { value: "button", label: "Button" },
+                  { value: "card", label: "Card" },
+                  { value: "checkbox", label: "Checkbox" },
+                  { value: "input", label: "Input" },
+                  { value: "spinner", label: "Loaders" },
+                  { value: "switch", label: "Toggle switch" },
+                ]}
+                value={selectedCate}
+                onChange={(selectedOption) => setSelectedCate(selectedOption)}
+                className="react-select-container"
+                classNamePrefix="react-select"
               />
-              <Validate errors={errors.categoryName} valiSmall={true} />
             </div>
             <div className="form-label grid-cols-3 relative">
               <label>Reward</label>
@@ -180,7 +259,7 @@ function RequestModal() {
           />
           <Validate errors={errors.name} />
         </div>
-        <div className="form-label grid-cols-6 relative">
+        <div className="form-label grid-cols-3 relative">
           <label>Deadline</label>
           <input
             type="text"
@@ -192,6 +271,22 @@ function RequestModal() {
           />
           <Validate errors={errors.deadline} />
         </div>
+        <div className="form-label grid-cols-3">
+          <label>TypeCSS</label>
+          <Select
+            styles={colorStyles}
+            options={[
+              { value: "mixed", label: "Mixed" },
+              { value: "css", label: "CSS" },
+              { value: "tailwind", label: "Tailwind CSS" },
+            ]}
+            value={selectedGender}
+            onChange={(selectedOption) => setSelectedGender(selectedOption)}
+            className="react-select-container"
+            classNamePrefix="react-select"
+          />
+        </div>
+
         <div className="form-label grid-cols-6 relative">
           <label>Description</label>
           <textarea

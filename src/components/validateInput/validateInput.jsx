@@ -125,9 +125,9 @@ export function validateUpdateProfile(values) {
 }
 export function validateRequest(values) {
   let errors = {};
-  if (!values.categoryName) {
-    errors.categoryName = "categoryName is required";
-  }
+  // if (!values.categoryName) {
+  //   errors.categoryName = "categoryName is required";
+  // }
   if (!values.reward) {
     errors.reward = "reward is required";
   }
