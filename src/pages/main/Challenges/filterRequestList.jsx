@@ -41,7 +41,7 @@ function FilterRequestList() {
           .filter((item) =>
             search.filter
               ? item.url === parseInt(search.filter)
-              : item.url === 5
+              : item.url === 1
           )
           .map((item, i) => (
             <div className="flex" key={i}>
@@ -71,7 +71,7 @@ function FilterRequestList() {
               <Link
                 className="item"
                 to={`/${pathname}?${objectToQueryString("filter")}${
-                  item.url === 5 ? "" : "&filter=" + item.url
+                  item.url === 1 ? "" : "&filter=" + item.url
                 }`}
                 onClick={() => setIsActive(!isActive)}
               >

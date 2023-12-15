@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import CheckLoginModal from "../../../components/Modal/checkLoginModal";
+import { loadingMoney } from "../../../store/profile/profile-slice";
 // import Element from './../Element/index';
 function Subscription() {
   const dispatch = useDispatch();
@@ -35,10 +36,15 @@ function Subscription() {
   }, [load]);
   const onBuy = (id) => {
     buyPackage(id).then((data) => {
-      if (data.error) {
-        console.log(data.error);
+      if (!data) {
+        toast.error("Not enough money!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
+        });
       } else {
         // setComments(comments.filter((c) => c.id !== id));
+        dispatch(loadingMoney(id));
         setLoad(!load);
         toast.success("successfully!", {
           position: "top-center",
@@ -113,7 +119,7 @@ function Subscription() {
                   <AppButton
                     children={sub.isBought ? "Possession" : "Get Started"}
                     btnType="button_1"
-                    disabled={sub.isBought}
+                    // disabled={sub.isBought}
                     onClick={() =>
                       dispatch(
                         open(
@@ -134,7 +140,7 @@ function Subscription() {
                   <AppButton
                     children={sub.isBought ? "Possession" : "Get Started"}
                     btnType="button_0"
-                    disabled={sub.isBought}
+                    // disabled={sub.isBought}
                     onClick={() =>
                       dispatch(
                         open(

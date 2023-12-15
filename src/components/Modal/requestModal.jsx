@@ -9,6 +9,7 @@ import { close } from "../../store/modal/modal-slice";
 import { postCreateRequest } from "../../api/account";
 import { postRequest } from "../../store/creator/creator-slice";
 import { toast } from "react-toastify";
+import { loadingMoney } from "../../store/profile/profile-slice";
 function RequestModal() {
   const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState();
@@ -39,7 +40,7 @@ function RequestModal() {
       if (data.error) {
         console.log(data.error);
       } else {
-        console.log(data.data);
+        dispatch(loadingMoney(data.data.id));
         dispatch(postRequest(data.data));
         dispatch(close());
         toast.success("successfully!", {

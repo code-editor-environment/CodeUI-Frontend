@@ -13,6 +13,7 @@ const initialState = {
     ? JSON.parse(getStorage("profileResponse"))
     : null,
   fav: JSON.parse(getStorage("fav")) ? JSON.parse(getStorage("fav")) : [],
+  loadMoney:false
 };
 export const ProfileSlice = createSlice({
   name: "profile",
@@ -37,7 +38,7 @@ export const ProfileSlice = createSlice({
         value: JSON.stringify(state.fav),
       });
     },
-    deleteFav: (state, { payload:id }) => {
+    deleteFav: (state, { payload: id }) => {
       state.fav = state.fav.filter((item) => item !== id);
       setStorage({
         key: "fav",
@@ -47,8 +48,10 @@ export const ProfileSlice = createSlice({
     userProfileRes: (state, { payload }) => {
       state.profileRes = payload;
     },
+    loadingMoney: (state, { payload }) => {
+      state.loadMoney = payload;
+    },
     actLogout: (state) => {
-      
       removeStorage("codeUiLog");
       removeStorage("profileResponse");
       state.user = null;
@@ -65,6 +68,7 @@ export const {
   deleteFav,
   userProfile,
   userProfileRes,
+  loadingMoney,
   actLogout,
 } = ProfileSlice.actions;
 export default ProfileSlice.reducer;

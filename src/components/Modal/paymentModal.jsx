@@ -94,7 +94,6 @@ function PaymentModal() {
             type="text"
             name="orderDescription"
             placeholder="Enter your order description"
-            onChange={handleChange}
             value={values.orderDescription}
             required
           />

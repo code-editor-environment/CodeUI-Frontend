@@ -8,7 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useIsLogin } from "../../../hooks/useIsLogin";
 import { toast } from "react-toastify";
 import ColorPicker from "react-pick-color";
-import { acceptFulfillment, rejectFulfillment, submitFulfillment } from "../../../api/element";
+import {
+  acceptFulfillment,
+  rejectFulfillment,
+  submitFulfillment,
+  sendFulfillment,
+} from "../../../api/element";
 import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 import EditorHeader from "./editorHeader";
 import { db } from "../../../configs/firebase.configs";
@@ -20,6 +25,8 @@ import timeLineBlue from "../../../assets/images/time-line-blue.svg";
 import { pushElements } from "../../../store/element/elements-slice";
 import { open } from "../../../store/modal/modal-slice";
 import ConfirmModal from "../../../components/Modal/confirmModal";
+import RejectFulfillmentModal from "../../../components/Modal/rejectFulfillmentModal";
+import { loadingMoney } from "../../../store/profile/profile-slice";
 function RequestElement() {
   const { postId } = useParams();
   const { search } = useParseUrl();
@@ -75,7 +82,11 @@ function RequestElement() {
   const clickAcceptFulfillment = () => {
     acceptFulfillment(postId).then((data) => {
       if (data.errorCode) {
-        console.log(data.errorCode);
+        toast.error("Fulfillment not found!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
+        });
       } else {
         clickSubmitDraft("APPROVED");
         navigate(`/request/${data.data.id}`);
@@ -84,42 +95,60 @@ function RequestElement() {
           autoClose: 2000,
           theme: "dark",
         });
+        dispatch(loadingMoney(data.data.id));
+        sendFulfillment({
+          email: data.data.receiverEmail,
+          action: data.data.id,
+          type: "approved",
+        });
       }
     });
   };
-    const clickRejectFulfillment = () => {
-      // rejectFulfillment(postId).then((data) => {
-      //   if (data.errorCode) {
-      //     console.log(data.errorCode);
-      //   } else {
-      //     clickSubmitDraft("REJECTED");
-      //     navigate(`/request/${data.data.requestId}`);
-      //     toast.success("successfully!", {
-      //       position: "top-center",
-      //       autoClose: 2000,
-      //       theme: "dark",
-      //     });
-      //   }
-      // });
-    };
-      const clickSubmitReview = () => {
-        submitFulfillment(postId).then((data) => {
-          if (data.errorCode) {
-            console.log(data.errorCode);
-          } else {
-            clickSubmitDraft("PENDING");
-            navigate(`/request/${data.data.requestId}`);
-            toast.success("successfully!", {
-              position: "top-center",
-              autoClose: 2000,
-              theme: "dark",
-            });
-          }
+  const clickRejectFulfillment = (data) => {
+    rejectFulfillment({ postId, data }).then((data) => {
+      if (data.errorCode) {
+        toast.error("Fulfillment not found!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
         });
-      };
-  const clickSubmitDraft = async (
-    status,
-  ) => {
+      } else {
+        clickSubmitDraft("REJECTED");
+        navigate(`/request/${data.data.id}`);
+        toast.success("successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
+        });
+        sendFulfillment({
+          email: data.data.receiverEmail,
+          action: data.data.id,
+          type: "reject",
+        });
+      }
+    });
+  };
+  const clickSubmitReview = () => {
+    submitFulfillment(postId).then((data) => {
+      if (data.errorCode) {
+        console.log(data.errorCode);
+      } else {
+        clickSubmitDraft("PENDING");
+        navigate(`/request/${data.data.requestId}`);
+        toast.success("successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
+        });
+        sendFulfillment({
+          email: data.data.requesterEmail,
+          action: data.data.requestId,
+          type: "submit",
+        });
+      }
+    });
+  };
+  const clickSubmitDraft = async (status) => {
     const elementRef = doc(db, "request", postId.toString());
     const dataUpdate = {
       background: color,
@@ -143,7 +172,7 @@ function RequestElement() {
   useEffect(
     () => {
       const autoSave = setTimeout(() => {
-      elementById.accountID === isLogin?.id && clickSubmitDraft("DRAFT");
+        elementById.accountID === isLogin?.id && clickSubmitDraft("DRAFT");
       }, settingEditor?.autoSave || 3000);
       return () => clearTimeout(autoSave);
     }, // eslint-disable-next-line
@@ -399,10 +428,8 @@ function RequestElement() {
                       onClick={() =>
                         dispatch(
                           open(
-                            <ConfirmModal
-                              title={"Reject fulfillment"}
-                              onClick={() => clickRejectFulfillment()}
-                              type="package"
+                            <RejectFulfillmentModal
+                              onClick={clickRejectFulfillment}
                             />
                           )
                         )

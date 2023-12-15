@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import point from "../../../assets/images/logoCover.png";
 import styles from "./point.module.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { open } from "../../../store/modal/modal-slice";
 import PaymentModal from "../../../components/Modal/paymentModal";
 import PayModal from "../../../components/Modal/payModal";
@@ -15,6 +15,7 @@ function Point() {
   const { isLogin } = useIsLogin();
   const { search } = useParseUrl();
   const location = useLocation();
+  const { loadMoney } = useSelector((state) => state.profile);
   const onPaymentModal = () => {
     dispatch(open(<PaymentModal />));
   };
@@ -25,7 +26,7 @@ function Point() {
         if (data.error) {
           console.log(data.error);
         } else {
-           console.log("datas", data.data.wallet);
+          console.log("datas", data.data.wallet);
           search?.vnp_Amount
             ? dispatch(
                 open(
@@ -40,7 +41,7 @@ function Point() {
         }
       });
     }, // eslint-disable-next-line
-    []
+    [loadMoney]
   );
 
   return (

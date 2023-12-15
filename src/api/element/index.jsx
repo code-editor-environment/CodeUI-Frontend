@@ -1,4 +1,4 @@
-import { NET } from "../../utils/define";
+import { NET, NODE } from "../../utils/define";
 import { handleApi } from "../../utils/helper";
 
 export const getListElements = handleApi(
@@ -130,9 +130,9 @@ export const acceptFulfillment = handleApi(async (postId) => {
   return result.data;
 });
 
-export const rejectFulfillment = handleApi(async (postId) => {
+export const rejectFulfillment = handleApi(async (data) => {
   const result = await NET().put(
-    `request/rejectFulfillment?fulfillmentId=${postId}`
+    `request/rejectFulfillment?fulfillmentId=${data.postId}`,data.data
   );
   return result.data;
 });
@@ -141,5 +141,10 @@ export const submitFulfillment = handleApi(async (postId) => {
   const result = await NET().put(
     `request/submitFulfillment?fulfillmentId=${postId}`
   );
+  return result.data;
+});
+
+export const sendFulfillment = handleApi(async (data) => {
+  const result = await NODE().post(`/admin/sendFulfillment`, data);
   return result.data;
 });

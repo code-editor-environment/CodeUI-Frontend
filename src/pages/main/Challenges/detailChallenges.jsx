@@ -17,6 +17,7 @@ import ConfirmModal from "../../../components/Modal/confirmModal";
 import { toast } from "react-toastify";
 import Fulfillment from "./fulfillment";
 import CheckLoginModal from "../../../components/Modal/checkLoginModal";
+import { loadingMoney } from "../../../store/profile/profile-slice";
 function DetailChallenges() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function DetailChallenges() {
   const [selectedFile, setSelectedFile] = useState();
   const [data, setData] = useState(null);
   const [dataFulfillment, setDataFulfillment] = useState(null);
+  const [dataFulfillmentPro, setDataFulfillmentPro] = useState(null);
   const [image, setImage] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
@@ -47,7 +49,7 @@ function DetailChallenges() {
       if (data.error) {
         console.log(data.error);
       } else {
-        console.log(data.data);
+        setDataFulfillmentPro(data.data);
       }
     });
   }, [requestId]);
@@ -86,7 +88,7 @@ function DetailChallenges() {
   const submit = () => {
     createRequestElement(requestId).then((datas) => {
       if (!datas) {
-        toast.error("Someone else accepted the request!", {
+        toast.error("Wallet is not enough!", {
           position: "top-center",
           autoClose: 2000,
           theme: "dark",
@@ -113,6 +115,7 @@ function DetailChallenges() {
           }
         );
         navigate(`/requestElement/${datas.data.fulfillmentResponse.id}`);
+        dispatch(loadingMoney(datas.data.id));
       }
     });
   };
@@ -127,14 +130,19 @@ function DetailChallenges() {
           autoClose: 2000,
           theme: "dark",
         });
+        dispatch(loadingMoney(data.data.deposit));
       }
     });
   };
 
     const cancelRequest = () => {
       cancelRequestElement(requestId).then((data) => {
-        if (data.statusCode) {
-          console.log(data.error);
+        if (!data) {
+          toast.error("someone has accepted this request!", {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "dark",
+          });
         } else {
           navigate("/request");
           toast.success("successfully!", {
@@ -248,10 +256,12 @@ function DetailChallenges() {
           <div className="absolute inset-0 flex items-start ms:justify-end">
             <div
               className="challenge-cover scale-105 group-hover:scale-110 transition-transform challenge-cover-shift"
-              style={{
-                backgroundImage: `url(${data.avatar})`,
-              }}
-            />
+              // style={{
+              //   backgroundImage: `url(${data.avatar})`,
+              // }}
+            >
+              <img src={data.avatar} alt="" className="w-full h-full" />
+            </div>
           </div>
           <div className="pt-[65%] p-10 ms:pt-10 relative z-40 flex flex-col items-start flex-1 ms:max-w-[65%]">
             {isLogin ? (
@@ -285,7 +295,8 @@ function DetailChallenges() {
                     Cancel request
                   </div>
                 </div>
-              ) : data.isAccepted ? (
+              ) : data.receiveBy === isLogin.id &&
+                data.status === "PROCESSING" ? (
                 <div
                   className="flex items-center gap-3 flex-wrap"
                   onClick={() =>
@@ -437,6 +448,10 @@ function DetailChallenges() {
             >
               {dataFulfillment?.length > 0 &&
                 dataFulfillment.map((item, index) => (
+                  <Fulfillment item={item} index={index} />
+                ))}
+              {dataFulfillmentPro?.length > 0 &&
+                dataFulfillmentPro.map((item, index) => (
                   <Fulfillment item={item} index={index} />
                 ))}
             </div>

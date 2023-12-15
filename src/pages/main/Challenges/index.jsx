@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import planet from "../../../assets/images/planet.png";
 import AppButton from "../../../components/Button";
 import { useParseUrl } from "../../../hooks/useParseUrl";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +27,7 @@ function Challenges() {
       }
     });
     // eslint-disable-next-line
-  }, [request.length, search?.r, search?.filter]);
+  }, [request.length, search?.r, search?.filter, search?.name]);
 
   const navC = [
     {
@@ -47,8 +46,8 @@ function Challenges() {
   const handleSubmit = (e) => {
     e.preventDefault();
     navigate(
-      `/elements?${objectToQueryString("creator")}${
-        searchCreator === "" ? "" : `&creator=${searchCreator}`
+      `/request?${objectToQueryString("name")}${
+        searchCreator === "" ? "" : `&name=${searchCreator}`
       }`
     );
   };
@@ -73,7 +72,7 @@ function Challenges() {
                   d="M17 15.245v6.872a.5.5 0 0 1-.757.429L12 20l-4.243 2.546a.5.5 0 0 1-.757-.43v-6.87a8 8 0 1 1 10 0zm-8 1.173v3.05l3-1.8 3 1.8v-3.05A7.978 7.978 0 0 1 12 17a7.978 7.978 0 0 1-3-.582zM12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"
                 ></path>
               </svg>{" "}
-              Request started
+              Available
             </div>
           </div>
         ),
@@ -140,46 +139,30 @@ function Challenges() {
     };
   return (
     <div className="pt-[40px] pb-[100px]">
-      <section className="w-full mb-10 m-auto flex-wrap-reverse min-h-[400px] max-w-[1200px]">
-        <article className="no-posts-card">
-          <div className="no-posts-card__content">
-            <div className="image-container">
-              <img className="image" src={planet} alt="" />
-            </div>
-            <h3 className="heading">
-              Unleash Your Creative Spirit, Embrace the Flexibility of
-              Freelancing, and Transform Your Talents into Triumphs.
-            </h3>
-            <p className="paragraph" />
-            <AppButton
-              children="Create request"
-              btnType="button_1"
-              onClick={onDonationModal}
-              Icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width={24}
-                  height={24}
-                >
-                  <path fill="none" d="M0 0h24v24H0z" />
-                  <path
-                    fill="currentColor"
-                    d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"
-                  />
-                </svg>
-              }
-            />
-          </div>
-        </article>
-      </section>
       <section className="w-full mb-10 m-auto flex-wrap-reverse max-w-[1200px]">
         <div className="filters-container">
           <div className="filters">
-            <p className="category-description">
-              Open-Source with <span className="bgTextRed">HTML</span> and{" "}
-              <span className="bgTextBlue">CSS</span>
-            </p>
+            <div>
+              <AppButton
+                children="Create request"
+                btnType="button_1"
+                onClick={onDonationModal}
+                Icon={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    height={24}
+                  >
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path
+                      fill="currentColor"
+                      d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"
+                    />
+                  </svg>
+                }
+              />
+            </div>
             <div className="filters-controls flex justify-end flex-wrap gap-1 gap-y-2 false">
               <div className="h-[30px] w-[2px] bg-dark-600 mx-1 hidden lg:block" />
               {isLogin && (
@@ -206,14 +189,14 @@ function Challenges() {
               <FilterRequestList />
               <form
                 className="flex ml-2 items-center [&:has(:focus-visible)]:ring-4 overflow-visible rounded-lg focus-visible:ring-sky-400 focus-visible:border-sky-400"
-                // onSubmit={handleSubmit}
+                onSubmit={handleSubmit}
               >
                 <input
                   type="text"
                   name="search"
                   id="search"
-                  // value={searchCreator}
-                  // onChange={(e) => setSearchCreator(e.target.value)}
+                  value={searchCreator}
+                  onChange={(e) => setSearchCreator(e.target.value)}
                   placeholder="Search creator, posts..."
                   className="block focus:ring-0 w-full font-[inherit] placeholder:text-sm border-none rounded-l-lg shadow-sm bg-dark-600  md:text-base text-offwhite placeholder:text-gray-400"
                 />
@@ -236,10 +219,12 @@ function Challenges() {
                 <div
                   className="challenge-cover scale-105 group-hover:scale-110 transition-transform challenge-cover-shift"
                   style={{
-                    backgroundImage: `url(${item.avatar})`,
+                    // backgroundImage: `url(${item.avatar})`,
                     zIndex: "3",
                   }}
-                />
+                >
+                  <img src={item.avatar} alt="" className="w-full h-full" />
+                </div>
               </div>
               <div className="pt-[65%] p-10 ms:pt-10 relative z-40 flex flex-col items-start flex-1 ms:max-w-[65%]">
                 <ViewStatus item={item.status} />

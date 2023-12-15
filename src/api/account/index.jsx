@@ -31,14 +31,14 @@ export const getSubscriptions = handleApi(async () => {
 export const getRequestList = handleApi(async (data) => {
   const result = await NET().get(
     `request/getRequestList?SortStartDate=3&Status=${
-      data.search?.filter ? data.search?.filter : "5"
+      data.search?.filter ? data.search?.filter : "1"
     }${
       data.search?.r
         ? data.search.r === "myRequest"
           ? `&accountID=${data.id}`
           : `&requesterId=${data.id}`
         : ""
-    }`
+    }${data.search?.name ? `&RequestName=${data.search.name}` : ""}`
   );
   return result.data;
 });
