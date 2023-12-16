@@ -46,11 +46,11 @@ function Element() {
       icon: <img src={cssIcon} alt="cssIcon" style={{ width: "27px" }} />,
       url: "css",
     },
-    {
-      name: "SCSS",
-      icon: <img src={scssIcon} alt="scssIcon" style={{ width: "22px" }} />,
-      url: "scss",
-    },
+    // {
+    //   name: "SCSS",
+    //   icon: <img src={scssIcon} alt="scssIcon" style={{ width: "22px" }} />,
+    //   url: "scss",
+    // },
   ];
   const handleSubmit = (e) => {
     e.preventDefault();
