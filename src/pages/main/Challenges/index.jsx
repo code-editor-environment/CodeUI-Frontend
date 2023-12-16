@@ -229,15 +229,17 @@ function Challenges() {
               <div className="pt-[65%] p-10 ms:pt-10 relative z-40 flex flex-col items-start flex-1 ms:max-w-[65%]">
                 <ViewStatus item={item.status} />
                 <div className="mt-6 mb-4 text-4xl font-bold">
-                  {item.categoryName}
+                  {item.categoryName} - {item.typeCss}
                 </div>
                 <div className="mb-2 text-lg italic font-semibold transition-colors group-hover:text-fuchsia-400">
                   {item.name}
                 </div>
-                {/* <p className="text-base text-gray-400">{item.description}</p> */}
-                <footer className="flex items-center gap-4 mt-8 flex-wrap">
+                <p className="text-base text-gray-400">
+                  {item.requestDescription}
+                </p>
+                {/* <footer className="flex items-center gap-4 mt-8 flex-wrap">
                   <div>🎉 You've already submitted a button !</div>
-                </footer>
+                </footer> */}
                 <footer className="flex flex-wrap items-end flex-1 gap-6 mt-8 font-semibold">
                   <div className="flex items-center gap-2">
                     <svg

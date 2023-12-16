@@ -28,6 +28,10 @@ function FilterRequestList() {
       name: "Completed",
       url: 4,
     },
+    {
+      name: "Submitted",
+      url: 6,
+    },
   ];
 
   return (

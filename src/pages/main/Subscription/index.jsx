@@ -81,12 +81,18 @@ function Subscription() {
                   <span>/month</span>
                 </div>
                 <p>
-                  {sub.isBought
-                    ? "The package you currently own will end on  "
-                    : "With this plan, you'll gain access to advanced extra features."}
+                  {sub.isBought ? (
+                    <span className="underline underline-offset-2 text-fuchsia-400">
+                      The package you currently own will end on{" "}
+                    </span>
+                  ) : (
+                    "With this plan, you'll gain access to advanced extra features."
+                  )}
                 </p>
                 {sub.isBought && (
-                  <span>{new Date(sub.endDate).toDateString()}</span>
+                  <span className="underline underline-offset-2 text-fuchsia-400">
+                    {new Date(sub.endDate).toDateString()}
+                  </span>
                 )}
               </div>
               <div className={styles.content}>

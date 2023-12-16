@@ -4,6 +4,7 @@ import { db } from "../../../configs/firebase.configs";
 import point from "../../../assets/images/logoCover.png";
 import { Link } from "react-router-dom";
 function Fulfillment({ item,index }) {
+
   const [dataFulfillment, setDataFulfillment] = useState(null);
   const fetchPost = async () => {
     await getDoc(doc(db, `request`, item.id.toString())).then((querySnapshot) => {
@@ -39,7 +40,10 @@ function Fulfillment({ item,index }) {
             </a> */}
             <div className="absolute z-20 flex items-center left-1.5 top-[6px] gap-0.5" />
             <div className="clickable-wrapper">
-              <Link className="get-html-css text-white" to={`/requestElement/${item.id}`}>
+              <Link
+                className="get-html-css text-white"
+                to={`/requestElement/${item.id}`}
+              >
                 Get <span className="html">HTML</span> &amp;{" "}
                 <span className="css">CSS</span>
               </Link>
@@ -49,7 +53,7 @@ function Fulfillment({ item,index }) {
         <head>
         <style>${dataFulfillment.css}</style>
         ${
-          dataFulfillment?.typeCss === "tailwind"
+          dataFulfillment?.typeCSS === "tailwind"
             ? `<script src="https://cdn.tailwindcss.com"></script>`
             : ""
         }
@@ -74,7 +78,8 @@ function Fulfillment({ item,index }) {
         <div className="absolute top-2 inset-x-4 pointer-events-none flex justify-between items-start z-30 ">
           <div className="text-offwhite false rounded-md flex gap-2 items-center font-bold z-30">
             <p className="text-lg font-bold">
-              1<span className="text-sm font-normal">st</span>
+              {index+1}
+              <span className="text-sm font-normal">st</span>
             </p>
           </div>
           <div
@@ -82,7 +87,7 @@ function Fulfillment({ item,index }) {
             id="points-tooltip"
           >
             <img src={point} alt="" style={{ width: "24px" }} />
-            2000
+            {/* {item.} */}
           </div>
         </div>
         <div className="relative bg-neutral-800 rounded-b-xl p-4 h-16 -mt-2 overflow-x-hidden">

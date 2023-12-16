@@ -351,12 +351,12 @@ function DetailChallenges() {
               </div>
             )}
             <div className="mt-6 mb-4 text-4xl font-bold">
-              {data.categoryName}
+              {data.categoryName} - {data.typeCss}
             </div>
             <div className="mb-2 text-lg italic font-semibold transition-colors group-hover:text-fuchsia-400">
               {data.name}
             </div>
-            <p className="text-base text-gray-400">{data.description}</p>
+            <p className="text-base text-gray-400">{data.requestDescription}</p>
             <footer className="flex flex-wrap items-end flex-1 gap-6 mt-8 font-semibold">
               <div className="flex items-center gap-2">
                 <svg

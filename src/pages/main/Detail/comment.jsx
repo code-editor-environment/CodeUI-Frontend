@@ -96,7 +96,7 @@ function Comment({ postId, element, elementById }) {
                     alt=""
                     className="w-[44px] h-[44px] hidden sm:block rounded-lg flex-shrink-0"
                   />
-                  <textarea
+                  <input
                     name="content"
                     id="content"
                     rows={1}
@@ -110,6 +110,7 @@ function Comment({ postId, element, elementById }) {
                     <button
                       onClick={onComment}
                       className="relative z-30 px-8 py-3 h-12 font-sans  disabled:cursor-auto border-none cursor-pointer bg-blue-800 text-offwhite font-semibold rounded-lg transition disabled:bg-dark-400"
+                      disabled={comment === ""}
                     >
                       Send
                     </button>

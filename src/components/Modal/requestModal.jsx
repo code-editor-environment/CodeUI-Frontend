@@ -31,7 +31,7 @@ function RequestModal() {
     postCreateRequest({
       requestDescription: values.requestDescription,
       reward: parseInt(values.reward),
-      name: values.requestDescription,
+      name: values.name,
       deadline: parseInt(values.deadline),
       avatar: image,
       categoryName: selectedCate.value,
