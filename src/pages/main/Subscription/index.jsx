@@ -44,7 +44,7 @@ function Subscription() {
         });
       } else {
         // setComments(comments.filter((c) => c.id !== id));
-        dispatch(loadingMoney(id));
+        dispatch(loadingMoney(data.data.endDate));
         setLoad(!load);
         toast.success("successfully!", {
           position: "top-center",

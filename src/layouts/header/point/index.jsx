@@ -52,10 +52,7 @@ function Point() {
         onClick={onPaymentModal}
       >
         <img src={point} alt="" />
-        {data?.toLocaleString("vi-VN", {
-          style: "currency",
-          currency: "VND",
-        })}
+        {data?.toLocaleString("vi-VN")}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

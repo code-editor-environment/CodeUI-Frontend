@@ -57,7 +57,7 @@ export const getFulfillmentByRequestId = handleApi(async (data) => {
 
 export const getProcessFulfillment = handleApi(async (data) => {
   const result = await NET().get(
-    `request/getProcessFulfillment?requestId=${data}`
+    `request/getOwnFulfillmentByRequestId?requestId=${data}`
   );
   return result.data;
 });

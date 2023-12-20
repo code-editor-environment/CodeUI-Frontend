@@ -115,14 +115,16 @@ function Header() {
           >
             Elements
           </Link>
-          <Link
-            className={`hover-underline-animation ${
-              history === "/request" ? "active" : "false"
-            }`}
-            to="/request"
-          >
-            Request
-          </Link>
+          {isLogin && (
+            <Link
+              className={`hover-underline-animation ${
+                history === "/request" ? "active" : "false"
+              }`}
+              to="/request"
+            >
+              Request
+            </Link>
+          )}
           <Link
             className={`hover-underline-animation ${
               history === "/creators" ? "active" : "false"

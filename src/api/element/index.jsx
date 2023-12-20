@@ -23,6 +23,11 @@ export const getListElementById = handleApi(async (elementId) => {
   return result.data;
 });
 
+export const getRequestElementById = handleApi(async (elementId) => {
+  const result = await NET().get(`/element/getByID?id=${elementId}`);
+  return result.data;
+});
+
 export const getListElementByCreator = handleApi(async (data) => {
   const result = await NET().get(
     `/element/getAll?Status=${

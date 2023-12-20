@@ -19,23 +19,30 @@ function Integration() {
   );
 
   return (
-    <main className="wrapper">
-      {elementById && (
-        <div>
-          <style
-            dangerouslySetInnerHTML={{
-              __html: `.prefix123 ${elementById.css}`,
-            }}
-          />
-          <div
-            className="preview prefix123"
-            dangerouslySetInnerHTML={{
-              __html: elementById.html,
-            }}
-          ></div>
-        </div>
-      )}
-    </main>
+    elementById && (
+      <iframe
+        srcDoc={`
+        <html style="height: 100%;overflow: hidden;">
+        <head>
+        <style>${elementById.css}</style>
+        ${
+          elementById?.typeCSS === "tailwind"
+            ? `<script src="https://cdn.tailwindcss.com"></script>`
+            : ""
+        }
+        </head>
+        <body style="width: 95%; height: 95%; display: flex; align-items: center; justify-content: center; font-family: Montserrat, sans-serif;">${
+          elementById.html
+        }</body>
+        </html>
+      `}
+        title="output"
+        sandbox="allow-scripts"
+        frameBorder="0"
+        width="100%"
+        height="100%"
+      />
+    )
   );
 }
 

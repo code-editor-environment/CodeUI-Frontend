@@ -3,41 +3,27 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../configs/firebase.configs";
 import point from "../../../assets/images/logoCover.png";
 import { Link } from "react-router-dom";
-function Fulfillment({ item,index }) {
-
+function Fulfillment({ item, reward, index }) {
   const [dataFulfillment, setDataFulfillment] = useState(null);
   const fetchPost = async () => {
-    await getDoc(doc(db, `request`, item.id.toString())).then((querySnapshot) => {
-      setDataFulfillment(querySnapshot.data());
-    });
+    await getDoc(doc(db, `request`, item.id.toString())).then(
+      (querySnapshot) => {
+        setDataFulfillment(querySnapshot.data());
+      }
+    );
   };
-  useEffect(() => {
-    fetchPost();
-  }, [item.id]);
+  useEffect(
+    () => {
+      fetchPost();
+    }, // eslint-disable-next-line
+    [item.id]
+  );
 
   return (
     dataFulfillment && (
       <div className="flex flex-col w-full relative " key={index}>
         <article className="card text-black h-full card--tooltip group dark-background false">
           <div className="card-content compact">
-            {/* <a
-              className="get-code font-sans font-semibold bg-dark-400"
-              href="/vikas7754/evil-mule-52"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                className="w-[20px] h-[20px]"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-              >
-                <path d="M17 18a28.201 28.201 0 0 0 4.848-5.49.93.93 0 0 0 0-1.02A28.201 28.201 0 0 0 17 6M7.004 18a28.2 28.2 0 0 1-4.848-5.49.93.93 0 0 1 0-1.02A28.2 28.2 0 0 1 7.004 6m7-1.999-4 16" />
-              </svg>{" "}
-              Get code
-            </a> */}
             <div className="absolute z-20 flex items-center left-1.5 top-[6px] gap-0.5" />
             <div className="clickable-wrapper">
               <Link
@@ -76,18 +62,50 @@ function Fulfillment({ item,index }) {
           </div>
         </article>
         <div className="absolute top-2 inset-x-4 pointer-events-none flex justify-between items-start z-30 ">
-          <div className="text-offwhite false rounded-md flex gap-2 items-center font-bold z-30">
-            <p className="text-lg font-bold">
-              {index+1}
-              <span className="text-sm font-normal">st</span>
-            </p>
-          </div>
+          {item.status === "REJECTED" ? (
+            <div className="py-2 pl-3 pr-4 rounded-lg inline-flex items-center gap-2 text-sm font-bold bg-red-500 text-white">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width={24}
+                height={24}
+                className="w-5 h-5"
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                  fill="currentColor"
+                  d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"
+                />
+              </svg>
+              Rejected
+            </div>
+          ) : (
+            <div className="flex items-center gap-3 flex-wrap">
+              <div className="py-2 pl-3 pr-4 rounded-lg inline-flex items-center gap-2 text-sm font-bold bg-blue-500 text-blue-100">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  height={24}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-5 h-5"
+                  strokeWidth={2}
+                >
+                  <path d="m4 12.374 5.351 5.346.428-.748a30.506 30.506 0 0 1 9.278-10.048L20 6.28" />
+                </svg>
+                Submit
+              </div>
+            </div>
+          )}
           <div
             className="text-offwhite flex gap-2 items-center font-semibold w-fit m-1 pointer-events-auto winners-points"
             id="points-tooltip"
           >
             <img src={point} alt="" style={{ width: "24px" }} />
-            {/* {item.} */}
+            {reward * 0.1}
           </div>
         </div>
         <div className="relative bg-neutral-800 rounded-b-xl p-4 h-16 -mt-2 overflow-x-hidden">

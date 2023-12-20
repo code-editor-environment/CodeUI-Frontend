@@ -4,11 +4,15 @@ import { useDetectOutsideClick } from "../../../hooks/useOutsideClick";
 import { useDispatch } from "react-redux";
 import { open } from "../../../store/modal/modal-slice";
 import PaymentHistoryModal from "../../../components/Modal/paymentHistoryModal";
+import HelpModal from "../../../components/Modal/helpModal";
 
 function Menu({ handleLogout, user, isLogin }) {
   const dispatch = useDispatch();
   const { isActive, setIsActive, nodeRef, triggerRef } =
     useDetectOutsideClick(false);
+      const onHelpModal = () => {
+        dispatch(open(<HelpModal />));
+      };
   return (
     <div className="dropdown-container header-dropdown-menu">
       <button
@@ -73,9 +77,7 @@ function Menu({ handleLogout, user, isLogin }) {
                 height="24px"
                 viewBox="0,0,256,256"
               >
-                <g
-                  fill="#ffffff"
-                >
+                <g fill="#ffffff">
                   <g transform="scale(10.66667,10.66667)">
                     <path d="M8,2c-1.64497,0 -3,1.35503 -3,3v11h-3v3c0,1.64497 1.35503,3 3,3h9h1c1.64497,0 3,-1.35503 3,-3v-11h4v-3c0,-1.64497 -1.35503,-3 -3,-3zM8,4h8.1875c-0.11356,0.31489 -0.1875,0.64816 -0.1875,1v14c0,0.56018 -0.42838,0.99067 -0.98633,0.99805v-0.01172c-0.56349,0.00761 -1.00602,-0.42324 -1.01367,-0.98633l-0.02734,-2.99609l-0.97266,0.00977v-0.01367h-6v-11c0,-0.56503 0.43497,-1 1,-1zM19,4c0.56503,0 1,0.43497 1,1v1h-2v-1c0,-0.56503 0.43497,-1 1,-1zM4,18h7.99023l0.00977,1.02539v0.00195c0.00465,0.34255 0.08123,0.66635 0.19336,0.97266h-7.19336c-0.56503,0 -1,-0.43497 -1,-1z" />
                   </g>
@@ -108,7 +110,7 @@ function Menu({ handleLogout, user, isLogin }) {
             </a>
           </li>
           <li className="list-item">
-            <a href="#" className="item item--help">
+            <div className="item item--help" onClick={onHelpModal}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -122,7 +124,7 @@ function Menu({ handleLogout, user, isLogin }) {
                 />
               </svg>
               <span>We need your help</span>
-            </a>
+            </div>
           </li>
           <li className="list-item list-item--separator" />
           <li className="list-item">
