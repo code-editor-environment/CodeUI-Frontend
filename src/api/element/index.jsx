@@ -23,6 +23,13 @@ export const getListElementById = handleApi(async (elementId) => {
   return result.data;
 });
 
+export const getFulfillmentDetailById = handleApi(async (fulfillmentId) => {
+  const result = await NET().get(
+    `/request/getFulfillmentDetailById?fulfillmentId=${fulfillmentId}`
+  );
+  return result.data;
+});
+
 export const getRequestElementById = handleApi(async (elementId) => {
   const result = await NET().get(`/element/getByID?id=${elementId}`);
   return result.data;
@@ -108,6 +115,17 @@ export const reportElement = handleApi(async (data) => {
     {
       reportContent: "string",
       reportImages: [],
+    }
+  );
+  return result.data;
+});
+
+export const ReportFulfillment = handleApi(async (data) => {
+  const result = await NET().post(
+    `report/createFulfillmentReport?fulfillmentId=${data.id}`,
+    {
+      reportContent: "string",
+      reason: "string",
     }
   );
   return result.data;

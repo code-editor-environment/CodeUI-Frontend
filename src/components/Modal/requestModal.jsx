@@ -261,7 +261,7 @@ function RequestModal() {
           <Validate errors={errors.name} />
         </div>
         <div className="form-label grid-cols-3 relative">
-          <label>Deadline</label>
+          <label>Deadline (hour)</label>
           <input
             type="text"
             name="deadline"

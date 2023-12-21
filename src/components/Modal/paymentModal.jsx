@@ -7,7 +7,7 @@ import { useIsLogin } from "./../../hooks/useIsLogin";
 import { useEffect } from "react";
 import { useState } from "react";
 
-const tags = ["10000", "15000", "20000", "25000", "30000", "35000"];
+const tags = ["20000", "50000", "100000", "200000", "500000"];
 function PaymentModal() {
   const { isLogin } = useIsLogin();
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ function PaymentModal() {
       <h3 className="heading">Payment</h3>
       <form className="form-login" onSubmit={handleSubmit} noValidate>
         <div className="form-label grid-cols-6 relative">
-          <label>Money VND</label>
+          <label>Money (1VND = 1 point)</label>
           <input
             type="number"
             name="money"

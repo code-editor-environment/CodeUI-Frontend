@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 // import { Link } from "react-router-dom";
+import point from "../../../assets/images/logoCover.png";
 import styles from "./subscription.module.scss";
 import AppButton from "../../../components/Button";
 import rocket from "../../../assets/images/rocket.svg";
@@ -74,10 +75,8 @@ function Subscription() {
                   )}
                 </div>
                 <div className={styles.price}>
-                  {sub.price.toLocaleString("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  })}
+                  {sub.price.toLocaleString("vi-VN")}
+                  <img src={point} alt="" style={{width:"48px"}}/>
                   <span>/month</span>
                 </div>
                 <p>
