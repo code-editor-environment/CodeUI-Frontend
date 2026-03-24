@@ -11,23 +11,23 @@ import { getTopCreators } from "../../../api/account";
 function Home() {
   const [topCreator, setTopCreator] = useState([]);
   const [users, setUsers] = useState(0);
-  useEffect(() => {
-    getTopCreators({ page: 1, pageSize: 6 }).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        setTopCreator(data.data);
-        setUsers(data.metadata.total);
-      }
-    });
-    // eslint-disable-next-line
-  }, []);
+  // useEffect(() => {
+  //   getTopCreators({ page: 1, pageSize: 6 }).then((data) => {
+  //     if (data.error) {
+  //       console.log(data.error);
+  //     } else {
+  //       setTopCreator(data.data);
+  //       setUsers(data.metadata.total);
+  //     }
+  //   });
+  //   // eslint-disable-next-line
+  // }, []);
   return (
     <div className="home-page">
       {/* <Hero /> */}
       <HeroTest />
-      <Stat users={users} />
-      {/* <TopCreate topCreator={topCreator} /> */}
+      <Stat />
+      <TopCreate topCreator={topCreator} /
       <TopElement />
       <Supporters />
       <AdsViaCarbon />
