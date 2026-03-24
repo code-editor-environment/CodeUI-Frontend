@@ -27,7 +27,7 @@ function Home() {
       {/* <Hero /> */}
       <HeroTest />
       <Stat users={users} />
-      <TopCreate topCreator={topCreator} />
+      {/* <TopCreate topCreator={topCreator} /> */}
       <TopElement />
       <Supporters />
       <AdsViaCarbon />
