@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-function Stat({ users }) {
+function Stat() {
    const { elements } = useSelector((state) => state.element);
   return (
     <div className="flex z-[1] py-24 px-6 pt-20 items-center justify-center flex-wrap gap-10 relative overflow-hidden">
@@ -71,7 +71,7 @@ function Stat({ users }) {
         >
           <path d="M7.328 8.191a2.596 2.596 0 1 1 0-5.191 2.596 2.596 0 0 1 0 5.191Zm0 0c1.931 0 3.638.959 4.672 2.426a5.704 5.704 0 0 1 4.672-2.426m-9.344 0a5.704 5.704 0 0 0-4.672 2.426m14.016-2.426a2.596 2.596 0 1 1 0-5.191 2.596 2.596 0 0 1 0 5.191Zm0 0c1.931 0 3.639.959 4.672 2.426M7.328 18.575a2.596 2.596 0 1 1 0-5.192 2.596 2.596 0 0 1 0 5.192Zm0 0c1.931 0 3.638.958 4.672 2.426a5.704 5.704 0 0 1 4.672-2.426m-9.344 0A5.704 5.704 0 0 0 2.656 21m14.016-2.426a2.596 2.596 0 1 1 0-5.192 2.596 2.596 0 0 1 0 5.192Zm0 0c1.931 0 3.639.958 4.672 2.426" />
         </svg>
-        <span className="text-4xl md:text-6xl font-bold">{users}</span>
+        <span className="text-4xl md:text-6xl font-bold">codeui</span>
         <p className="mt-2 text-base font-semibold text-gray-400">
           Contributors to the community
         </p>
